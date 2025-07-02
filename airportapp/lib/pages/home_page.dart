@@ -1,7 +1,9 @@
 import 'dart:async';
 
-import 'package:airportapp/components/cell.dart';
-import 'package:airportapp/components/cell_item.dart';
+import 'package:airportapp/components/home_screen/cell.dart';
+import 'package:airportapp/components/home_screen/cell_item.dart';
+import 'package:airportapp/components/home_screen/static_tile.dart';
+import 'package:airportapp/components/home_screen/static_tile_item.dart';
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/models/weather_model.dart';
 import 'package:airportapp/pages/inbox_page.dart';
@@ -338,16 +340,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              //tiles
-              const SizedBox(height: 30),
+              //small tiles
+              const SizedBox(height: 50),
               SizedBox(
                 height: 110,
                 child: ListView.builder(
                   itemCount: 6,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index){
-                    final items = CellItem.getCellList();
-                    return Cell(item: items[index]);
+                    final items1 = CellItem.getCellList();
+                    return Cell(item: items1[index]);
                   }
                 ),
               ),
@@ -365,7 +367,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              // bigger tiles
+              // animated tiles
               Padding(
                 padding: const EdgeInsets.only(top: 20, left: 15),
                 child: SizedBox(
@@ -431,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(top: 70, left: 15),
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  child: Text('Top picks for you', 
+                  child: Text('Explore HKIA', 
                     style: TextStyle(
                       color: Colors.white, 
                       fontWeight: FontWeight.bold,
@@ -440,36 +442,22 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              //static tiles
               Padding(
                 padding: const EdgeInsets.only(top: 20, right: 15),
                 child: SizedBox(
-                  height: 90,
+                  height: 250,
                   child: ListView.builder(
                     itemCount: tileLinks.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 10, left: 10),
-                          height: 100,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.white, width: 3),
-                          ),
-                          child: Image.asset(
-                            image[index],
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      );
+                      final items2 = StaticTileItem.getTileList();
+                      return StaticTile(item: items2[index]);
                     },
                   ),
                 ),
               ),
+              SizedBox(height: 50)
             ],
           ),
         ]

@@ -144,7 +144,7 @@ class TrackMyBag extends StatelessWidget {
 
           Padding(
             padding: const EdgeInsets.all(25),
-            child: Text('For Hkairport Rewards Member', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+            child: Text('For HKairport Rewards Member', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),

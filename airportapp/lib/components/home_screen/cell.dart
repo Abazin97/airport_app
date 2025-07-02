@@ -1,4 +1,4 @@
-import 'package:airportapp/components/cell_item.dart';
+import 'package:airportapp/components/home_screen/cell_item.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,6 +46,3 @@ class Cell extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -1,4 +1,4 @@
-import 'package:airportapp/components/flights_cart.dart';
+import 'package:airportapp/components/flights_screen/flights_cart.dart';
 import 'package:airportapp/models/flight_info.dart';
 import 'package:flutter/material.dart';
 

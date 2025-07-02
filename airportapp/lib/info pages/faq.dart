@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class Faq extends StatelessWidget {
   Faq({super.key});
 
-  final List _phone = [
-    'Airport Enquery Hotline',
-    'Car Parks',
-    'MTR Corporation Ltd',
-    'Citybus Ltd. (City Flyer)',
-    'Long Win Bus Co Ltd. (Airbus)',
-    'New Lantao Bus Co (1973) Ltd',
-    'Residents` Coaches Discovery Bay\nTransit Services Ltd.',
-    'Park Island Transport Company Ltd.',
-    'Airport Hotel Link',
-    'The Hong Kong Society for\nRehabilitation (Hong Kong residents)',
-    'The Hong Kong Society for\nRehabilitation (Overseas Visitiors)',
-    'Hong Kong International Airport Ferry\nTerminal Services Limited',
-    'CKS',
-    'Cotai Water Jet',
-    'TurboJET',
-    'China Travel Service (Hong Kong)',
-    'Eternal East Tours Company Limited',
-    'Kwoon Chung Trans-Island',
-    'S.T. Travel',
-    'Transport Department'
-  ];
+  final Map<String, String> _phone = {
+    'Airport Enquery Hotline': '+85221818888',
+    'Car Parks': '+85221834360',
+    'MTR Corporation Ltd': '+85228818888',
+    'Citybus Ltd. (City Flyer)': '+85228730818',
+    'Long Win Bus Co Ltd. (Airbus)': '+85222612791',
+    'New Lantao Bus Co (1973) Ltd': '+85229849848',
+    'Residents` Coaches Discovery Bay\nTransit Services Ltd.': '+85236512345',
+    'Park Island Transport Company Ltd.': '+85229468888',
+    'Airport Hotel Link': '+85227389500',
+    'The Hong Kong Society for\nRehabilitation (Hong Kong residents)': '+85228178154',
+    'The Hong Kong Society for\nRehabilitation (Overseas Visitiors)': '+85281008655',
+    'Hong Kong International Airport Ferry\nTerminal Services Limited': '+85222153232',
+    'CKS': '+85228591669',
+    'Cotai Water Jet': '+85223599990',
+    'TurboJET': '+85228593333',
+    'China Travel Service (Hong Kong)': '+85225225560',
+    'Eternal East Tours Company Limited': '+85235591083',
+    'Kwoon Chung Trans-Island': '+85222612636',
+    'S.T. Travel': '+85231979312',
+    'Transport Department': '+85228042600'
+  };
 
   Widget phoneTile(int index) => Padding(
     padding: const EdgeInsets.only(left: 25, top: 7),
     child: GestureDetector(
-      onTap: () {
-        print('biba');
+      onTap: () async{
+        await FlutterPhoneDirectCaller.callNumber(_phone.entries.elementAt(index).value);
       },
       child: Stack(
         children: [
@@ -40,7 +41,7 @@ class Faq extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 40),
-            child: Text(_phone[index]),
+            child: Text(_phone.entries.elementAt(index).key),
           ),
           Align(
             alignment: Alignment.centerRight,

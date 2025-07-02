@@ -1,5 +1,5 @@
 import 'package:airportapp/components/bottom_nav_bar.dart';
-import 'package:airportapp/pages/faq.dart';
+import 'package:airportapp/info%20pages/faq.dart';
 import 'package:flutter/material.dart';
 
 class TransportToFrom extends StatefulWidget {

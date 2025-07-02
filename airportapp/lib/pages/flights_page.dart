@@ -2,7 +2,7 @@ import 'package:airportapp/components/bottom_nav_bar.dart';
 import 'package:airportapp/components/calendar_cell.dart';
 import 'package:airportapp/data/database.dart';
 import 'package:airportapp/models/flight_info.dart';
-import 'package:airportapp/components/flights_tile.dart';
+import 'package:airportapp/components/flights_screen/flights_tile.dart';
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:flutter/material.dart';

@@ -1,8 +1,6 @@
 import 'package:airportapp/components/bottom_nav_bar.dart';
-import 'package:airportapp/components/nav_provider.dart';
-import 'package:airportapp/pages/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 class InboxPage extends StatefulWidget {
   const InboxPage({super.key});
@@ -22,7 +20,6 @@ class _InboxPageState extends State<InboxPage> {
         elevation: 0,
         leading: IconButton(
           onPressed: (){
-            Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
             Navigator.pop(context);
           }, 
           icon: Icon(
