@@ -20,7 +20,7 @@ class CalendarCell extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15),
         height: 60,
-        width: 60,
+        width: 50,
         decoration: BoxDecoration(
           color: isSelected ? Colors.yellow : Colors.blue[600],
           borderRadius: BorderRadius.circular(8),
@@ -29,7 +29,7 @@ class CalendarCell extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if(isSelected && index == 1)
-              Text('(Today)', style: TextStyle(color: Colors.blue[600])),
+              Text('(Today)', style: TextStyle(color: Colors.blue[600], fontSize: 13)),
             Text(
               day,
               style: TextStyle(

@@ -19,7 +19,7 @@ class BottomNavWid extends StatelessWidget {
       },
       child: SizedBox(
         height: 90,
-        width: 80,
+        width: 90,
         child: Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Column(

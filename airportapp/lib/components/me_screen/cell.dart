@@ -19,7 +19,7 @@ class Cell extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(right: 40),
             height: 150,
-            width: 300,
+            width: 250,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

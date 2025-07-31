@@ -83,7 +83,7 @@ class _ReconnectTagsState extends State<ReconnectTags>{
                 Row(
                   children: [
                     SizedBox(
-                      width: 180,
+                      width: 160,
                       child: CustomField(
                         hintText: 'Enter verification code', 
                         validator: (val){
@@ -98,7 +98,7 @@ class _ReconnectTagsState extends State<ReconnectTags>{
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {}
                       }, 
-                      style: ElevatedButton.styleFrom(minimumSize: Size(170, 40)),
+                      style: ElevatedButton.styleFrom(minimumSize: Size(150, 40)),
                       child: Text('Get code')
                     )
                   ],

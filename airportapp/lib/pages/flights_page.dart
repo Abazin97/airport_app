@@ -51,7 +51,7 @@ class _FlightsPageState extends State<FlightsPage> {
     bool isSelected = selected == label;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(110, 35),
+        minimumSize: Size(100, 35),
         backgroundColor: isSelected ? Colors.yellow : Colors.white,
         textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
       ),
@@ -184,7 +184,7 @@ class _FlightsPageState extends State<FlightsPage> {
                     ),
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
                         children: [
                           const Divider(color: Colors.white),

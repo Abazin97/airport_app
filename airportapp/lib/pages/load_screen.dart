@@ -41,7 +41,7 @@ class _LoadScreenState extends State<LoadScreen> with SingleTickerProviderStateM
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 90, right: 90),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 children: [
                   SizedBox(height: 150),
@@ -54,16 +54,16 @@ class _LoadScreenState extends State<LoadScreen> with SingleTickerProviderStateM
                       fontSize: 24
                     ),
                   ),
-                  SizedBox(height: 200),
+                  SizedBox(height: 150),
                   Text(
                     'The initial loading may take some time. Thank you for your patience.'
                   ),
-                  SizedBox(height: 150),
                 ],
               ),
             ),
+            SizedBox(height: 50),
             Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25),
+              padding: const EdgeInsets.only(left: 10, right: 10),
               child: Row(
                   children: [
                     Image.asset(

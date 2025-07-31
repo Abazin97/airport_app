@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blue[600],
         elevation: 0,
         title: Padding(
-          padding: const EdgeInsets.only(left: 15, top: 15),
+          padding: const EdgeInsets.only(top: 15),
           child: Text(
             'Welcome to My HKG',
             style: TextStyle(
@@ -155,11 +155,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+        centerTitle: false,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(50), 
           child: Container(
             color: Colors.transparent,
-            padding: EdgeInsets.only(left: 30, right: 0),
+            padding: EdgeInsets.only(left: 15, right: 0),
             child: Row(
               children: [
                 Expanded(

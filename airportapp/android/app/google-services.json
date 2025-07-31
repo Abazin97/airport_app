@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "298450581970",
+    "project_id": "airport-app-5144d",
+    "storage_bucket": "airport-app-5144d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298450581970:android:d0c6012f051c00e4ae300b",
+        "android_client_info": {
+          "package_name": "com.example.airportapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYOeKDi3vyahwdGo5qOUOZ4YqHV5XhUMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

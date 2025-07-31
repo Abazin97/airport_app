@@ -108,13 +108,13 @@ class TrackMyBag extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
+                      padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              minimumSize: Size(150, 30),
+                              minimumSize: Size(140, 30),
                               textStyle: TextStyle(fontSize: 15),
                               backgroundColor: Colors.yellow,
                             ),
@@ -125,7 +125,7 @@ class TrackMyBag extends StatelessWidget {
                           ),
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              minimumSize: Size(150, 30),
+                              minimumSize: Size(140, 30),
                               textStyle: TextStyle(fontSize: 15),
                             ),
                             onPressed: () {
