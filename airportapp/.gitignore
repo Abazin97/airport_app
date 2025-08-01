@@ -36,6 +36,14 @@ migrate_working_dir/
 # Firebase local
 .firebase/
 .firebaserc
+# Firebase config files (iOS / Android)
+ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
+
+# FlutterFire generated config
+lib/firebase_options.dart
+
+
 
 # Symbolication related
 app.*.symbols
