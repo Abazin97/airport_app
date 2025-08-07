@@ -10,11 +10,63 @@ class AuthService {
 
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 
-  Future<UserCredential> signIn({
-    required String email,
-    required String password,
-  }) async{
-    return await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+  Future<UserCredential?> signIn({
+    required String login,
+    String? password,
+    String? smsCode,
+    String? verificationId,
+  }) async {
+    final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+
+    if (emailRegex.hasMatch(login)) {
+      // Вход по email + пароль
+      if (password == null || password.isEmpty) {
+        throw FirebaseAuthException(
+          code: "missing-password",
+          message: "Введите пароль для входа по email",
+        );
+      }
+      return await firebaseAuth.signInWithEmailAndPassword(
+        email: login,
+        password: password,
+      );
+    } else {
+      // Вход по телефону (через verificationId + smsCode)
+      if (verificationId == null || smsCode == null) {
+        throw FirebaseAuthException(
+          code: "missing-sms-code",
+          message: "Не хватает verificationId или smsCode для входа по телефону",
+        );
+      }
+
+      final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      return await firebaseAuth.signInWithCredential(credential);
+    }
+  }
+
+
+  Future<void> sendOtp({
+    required String phoneNumber,
+    required Function(String verificationId) onCodeSent,
+    required Function(FirebaseAuthException error) onError,
+    required Function(String verificationId) onTimeout,
+  }) async {
+    await firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (_){},
+      verificationFailed: (e) {
+        onError(e);
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        onCodeSent(verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        onTimeout(verificationId);
+      },
+    );
   }
   
 
