@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
+
 ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 
 class AuthService {
@@ -19,11 +20,10 @@ class AuthService {
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
     if (emailRegex.hasMatch(login)) {
-      // Вход по email + пароль
       if (password == null || password.isEmpty) {
         throw FirebaseAuthException(
           code: "missing-password",
-          message: "Введите пароль для входа по email",
+          message: "Enter password for email auth",
         );
       }
       return await firebaseAuth.signInWithEmailAndPassword(
@@ -31,11 +31,10 @@ class AuthService {
         password: password,
       );
     } else {
-      // Вход по телефону (через verificationId + smsCode)
       if (verificationId == null || smsCode == null) {
         throw FirebaseAuthException(
           code: "missing-sms-code",
-          message: "Не хватает verificationId или smsCode для входа по телефону",
+          message: "Out of verificationId or smsCode for phone auth",
         );
       }
 

@@ -13,7 +13,7 @@ class _InboxPageState extends State<InboxPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue[800],

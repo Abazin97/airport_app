@@ -1,4 +1,6 @@
 import 'package:airportapp/components/auth_layout.dart';
+import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/pages/home_screen.dart';
 import 'package:airportapp/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,8 @@ class _ChangePassState extends State<ChangePass> {
   }
 
   void popPage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AuthLayout()));
+    Provider.of<NavProvider>(context, listen: false).pageIndex = 3;
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   @override
