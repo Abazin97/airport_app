@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:airportapp/components/home_screen/cell.dart';
 import 'package:airportapp/components/home_screen/cell_item.dart';
+import 'package:airportapp/components/home_screen/custom_drawer.dart';
 import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
 import 'package:airportapp/components/nav_provider.dart';
@@ -236,54 +237,7 @@ class _HomePageState extends State<HomePage> {
         )
       ), 
       //right panel
-      endDrawer: Drawer(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        width: 550,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            Container(
-              height: 90,
-              child: DrawerHeader(
-                decoration: BoxDecoration(    
-                  color: Colors.blue[800],
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        'More',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ),
-          ],
-        ),
-      ),
+      endDrawer: CustomDrawer(),
       body: ListView(
         children: [
           Column(

@@ -1,6 +1,5 @@
-import 'package:airportapp/models/flight_info.dart';
+import 'package:airportapp/models/flightInfo.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
@@ -60,14 +59,21 @@ class Database {
   
   final dio = Dio();
       
-  Future<void> fetchData() async{
-    final response = await dio.get('https://www.hongkongairport.com/flightinfo-rest/rest/flights/past?date=2025-05-19&lang=en&cargo=false&arrival=true');
-    debugPrint(exdata.toString());
-  }
+  Future<List<FlightInfo>> fetchData() async{
 
-
+    var response = await dio.get('https://www.hongkongairport.com/flightinfo-rest/rest/flights/past?date=2025-08-09&lang=en&cargo=false&arrival=true');
     
+    debugPrint(response.data.toString());
+    
+    if (response.statusCode == 200){
+      final flightsJson = response.data;
+      return (flightsJson as List).map((item) => FlightInfo.fromJson(item)).toList();
+    }
+    return [];
+  }
 }
+
+ 
 
 /* class MainCategory{
   List<DayLight> allData;

@@ -1,10 +1,9 @@
-import 'package:airportapp/components/bottom_nav_bar.dart';
-import 'package:airportapp/components/calendar_cell.dart';
-import 'package:airportapp/data/database.dart';
-import 'package:airportapp/models/flight_info.dart';
+import 'package:airportapp/components/flights_screen/calendar_cell.dart';
+import 'package:airportapp/models/flightDay.dart';
 import 'package:airportapp/components/flights_screen/flights_tile.dart';
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,14 +17,13 @@ class FlightsPage extends StatefulWidget {
 }
 
 class _FlightsPageState extends State<FlightsPage> {
-
+  List<FlightDay> _flights = [];
+  final dio = Dio();
   String selected = 'All';
   int selectedIndex = 1;
+  bool flightsFilter = false;
   DateTime today = DateTime.now();
-
-  List<FlightInfo>? _flightsList;
-  Database db = Database();
-  
+  String dayStr = DateTime.now().day.toString().padLeft(2, '0');
   
 
   List<String> image = [
@@ -56,24 +54,100 @@ class _FlightsPageState extends State<FlightsPage> {
         textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
       ),
       onPressed: (){
+        // onTap filter departed/arrived flights to be later
         setState(() {
           selected = label;
+          //flightsFilter = !flightsFilter;
         });
+        
       },
       child: Text(label),
     );
   }
 
-  Future<void> loadFlights() async {
-    //_flightsList = await db.fetchData();
-    setState(() {});
-  }
-
   @override
   void initState() {
-    loadFlights();
+    fetchData();
     super.initState();
   }
+
+  void fetchData() async {
+    final String dateStr = '2025-08-$dayStr';
+
+    try {
+      final responses = await Future.wait([
+        dio.get(
+          'https://www.hongkongairport.com/flightinfo-rest/rest/flights/past',
+          queryParameters: {
+            'date': dateStr,
+            'lang': 'en',
+            'cargo': false,
+            'arrival': false,
+          },
+        ),
+        dio.get(
+          'https://www.hongkongairport.com/flightinfo-rest/rest/flights/past',
+          queryParameters: {
+            'date': dateStr,
+            'lang': 'en',
+            'cargo': false,
+            'arrival': true,
+          },
+        ),
+      ]);
+
+      final departures = (responses[0].data as List)
+          .map((item) => FlightDay.fromJson(item))
+          .toList();
+
+      final arrivals = (responses[1].data as List)
+          .map((item) => FlightDay.fromJson(item))
+          .toList();
+
+      final allFlights = [...departures, ...arrivals];
+      allFlights.sort((a, b) {
+        final dateA = DateTime.parse(a.date);
+        final dateB = DateTime.parse(b.date);
+
+        if (dateA != dateB) {
+          return dateA.compareTo(dateB);
+        }
+        final timeA = _parseTime(a.list.first.time);
+        final timeB = _parseTime(b.list.first.time);
+        return timeA.compareTo(timeB);
+      });
+
+      setState(() {
+        _flights = allFlights;
+      });
+    } catch (e) {
+      debugPrint('Ошибка загрузки данных: $e');
+    }
+  }
+
+  DateTime _parseTime(String time) {
+    final parts = time.split(':');
+    return DateTime(0, 1, 1, int.parse(parts[0]), int.parse(parts[1]));
+  }
+
+  int getTotalItemCount(List<FlightDay> flights) {
+    int total = 0;
+    for (var day in flights) {
+      total += day.list.length;
+    }
+    return total;
+  }
+
+  String getDisplayStatus(String status) {
+    if (status.startsWith('Dep')) {
+      return 'Departed';
+    }
+    else if(status.startsWith('At')){
+      return 'At Gate';
+    }
+    return status;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -234,23 +308,55 @@ class _FlightsPageState extends State<FlightsPage> {
               ),
             ),
           ),
-          /* SliverList(
+          if (_flights.isEmpty)
+            SliverFillRemaining(
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else
+          SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final flight = _flightsList![index];
+                int offset = index;
 
-                return FlightsTile(flightData: flight);
+                for (var day in _flights) {
+                  if (offset < day.list.length) {
+                    final flight = day.list[offset];
+
+                    final flightNumbers = flight.flight.map((f) => f.no).toList();
+                    final airlines = flight.flight.map((f) => f.airline).toList();
+
+                    return FlightsTile(
+                      isArrival: day.arrival,
+                      date: day.date,
+                      time: flight.time,
+                      status: getDisplayStatus(flight.status),
+                      destination: (flight.destination?.isNotEmpty ?? false) ? flight.destination![0] : '',
+                      origin: (flight.origin?.isNotEmpty ?? false) ? flight.origin![0] : '',
+                      terminal: flight.terminal ?? '',
+                      aisle: flight.aisle ?? '',
+                      gate: flight.gate ?? '',
+                      baggage: flight.baggage ?? '',
+                      hall: flight.hall ?? '',
+                      stand: flight.stand ?? '',
+                      flightNumbers: flightNumbers,
+                      airlines: airlines,
+                    );
+                  } else {
+                    offset -= day.list.length;
+                  }
+                }
+
+                return const SizedBox.shrink();
               },
-              childCount: _flightsList!.length,
+              childCount: getTotalItemCount(_flights),
             ),
-          ), */
-
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 60),
               child: Text('Flight information is subject to changes. Please be reminded to check with your airlines for the latest flight details', style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic)),
             ),
-          )
+          ),
           //SliverFillRemaining(),
         ],
       ),

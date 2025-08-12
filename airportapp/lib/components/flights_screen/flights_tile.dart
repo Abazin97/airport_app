@@ -1,21 +1,66 @@
 import 'package:airportapp/components/flights_screen/flights_cart.dart';
-import 'package:airportapp/models/flight_info.dart';
 import 'package:flutter/material.dart';
 
 class FlightsTile extends StatelessWidget {
   FlightsTile({
     Key? key, 
-    required this.flightData,
+    required this.isArrival,
+    required this.date,
+    required this.time,
+    required this.status,
+    this.destination,
+    this.origin,
+    this.terminal,
+    this.aisle,
+    this.gate,
+    this.baggage,
+    this.hall,
+    this.stand,
+    required this.flightNumbers,
+    required this.airlines
   }) : super(key: key);
 
-  final FlightInfo flightData;
-  void Function()?onTap;
+  final bool isArrival;
+  final String date;
+  final String time;
+  final String status;
+  final String? destination;
+  final String? origin;
+  final String? terminal;
+  final String? aisle;
+  final String? gate;
+  final String? baggage;
+  final String? hall;
+  final String? stand;
+  final List<String> flightNumbers;
+  final List<String> airlines;
+
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => FlightsCart(status: flightData.status, airlineLogo: 'lib/images/cathay_logo.png', flightNo: flightData.flightNo, destination: flightData.dest, time: flightData.time, aisle: flightData.aisle, gate: flightData.gate,)));
+        Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => FlightsCart(
+              isArrival: isArrival,
+              date: date,
+              time: time,
+              status: status,
+              destination: (destination?.isNotEmpty ?? false) ? destination! : '',
+              origin: (origin?.isNotEmpty ?? false) ? origin! : '',
+              terminal: terminal ?? '',
+              aisle: aisle ?? '',
+              gate: gate ?? '',
+              baggage: baggage ?? '',
+              hall: hall ?? '',
+              stand: stand ?? '',
+              flightNumbers: flightNumbers,
+              airlines: airlines,
+            )
+          )
+        );
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 25, right: 25, bottom: 10),
@@ -32,20 +77,34 @@ class FlightsTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      flightData.status,
-                      style: TextStyle(color: Colors.blue[800], fontSize: 15, fontWeight: FontWeight.bold),
+                      isArrival ? 'ARRIVAL' : 'DEPARTURE',
+                      style: TextStyle(color: Colors.blue[800], fontSize: 15),
                     ),
                     IconButton(
                       onPressed: () {
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => FlightsCart(status: flightData.status, airlineLogo: 'lib/images/cathay_logo.png', flightNo: flightData.flightNo, destination: flightData.dest, time:flightData.time, aisle: flightData.aisle, gate: flightData.gate,)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => FlightsCart(
+                          isArrival: isArrival,
+                          date: date,
+                          time: time,
+                          status: status,
+                          destination: (destination?.isNotEmpty ?? false) ? destination! : '',
+                          origin: (origin?.isNotEmpty ?? false) ? origin! : '',
+                          terminal: terminal ?? '',
+                          aisle: aisle ?? '',
+                          gate: gate ?? '',
+                          baggage: baggage ?? '',
+                          hall: hall ?? '',
+                          stand: stand ?? '',
+                          flightNumbers: flightNumbers,
+                          airlines: airlines,
+                        )));
                       },
                       icon: const Icon(Icons.add_circle_outline),
                     ),  
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,23 +115,34 @@ class FlightsTile extends StatelessWidget {
                           width: 24,
                         ),
                         Text(
-                          flightData.flightNo[0],
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          flightNumbers[0],
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ]
                     ),
+                    SizedBox(width: 20),
                     SizedBox(
                       height: 40,
-                      child: Transform.translate(
-                        offset: Offset(-80, 0),
-                        child: VerticalDivider(
+                      child: VerticalDivider(
                           color: Colors.grey,
-                        ),
                       ),
                     ),
-                    Text(
-                      flightData.flightNo[0],
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Wrap(
+                          spacing: 8,
+                          runSpacing: 4,
+                          children: [
+                            if (flightNumbers.length > 1)
+                              for(int i = 1; i < flightNumbers.length; i++)
+                                Text(
+                                  flightNumbers[i],
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                          ]
+                        ),
+                      ),
                     ),
                   ]
                 ),
@@ -87,12 +157,12 @@ class FlightsTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          flightData.dest,
+                          isArrival ? (origin?.isNotEmpty == true ? origin! : '') : (destination?.isNotEmpty == true ? destination! : ''),
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          flightData.time,
+                          time,
                           style: const TextStyle(color: Colors.black, fontSize: 15),
                         ),
                       ],
@@ -101,13 +171,13 @@ class FlightsTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          flightData.aisle,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          isArrival ? (baggage?.isNotEmpty == true ? 'Belt no.$baggage' : '') : (gate?.isNotEmpty == true ? 'Gate $gate' : ''),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'data',
-                          style: const TextStyle(color: Colors.grey),
+                          status,
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
