@@ -11,7 +11,7 @@ FlightInfo _$FlightInfoFromJson(Map<String, dynamic> json) => FlightInfo(
   flight: (json['flight'] as List<dynamic>)
       .map((e) => FlightNumber.fromJson(e as Map<String, dynamic>))
       .toList(),
-  status: json['status'] as String,
+  status: json['status'] as String?,
   destination: (json['destination'] as List<dynamic>?)
       ?.map((e) => e as String)
       .toList(),

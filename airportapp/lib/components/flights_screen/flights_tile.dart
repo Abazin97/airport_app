@@ -1,8 +1,9 @@
 import 'package:airportapp/components/flights_screen/flights_cart.dart';
+import 'package:airportapp/data/database.dart';
 import 'package:flutter/material.dart';
 
 class FlightsTile extends StatelessWidget {
-  FlightsTile({
+  const FlightsTile({
     Key? key, 
     required this.isArrival,
     required this.date,
@@ -110,13 +111,13 @@ class FlightsTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.asset(
-                          'lib/images/cathay_logo.png',
-                          height: 24,
-                          width: 24,
+                          Database.airlineLogos[airlines[0]] ?? '',
+                          height: 28,
+                          width: 28,
                         ),
                         Text(
                           flightNumbers[0],
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ]
                     ),
@@ -171,7 +172,7 @@ class FlightsTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          isArrival ? (baggage?.isNotEmpty == true ? 'Belt no.$baggage' : '') : (gate?.isNotEmpty == true ? 'Gate $gate' : ''),
+                          isArrival ? (baggage?.isNotEmpty == true ? 'Belt no.$baggage' : 'Belt no.--') : (gate?.isNotEmpty == true ? 'Gate $gate' : 'Gate --'),
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),

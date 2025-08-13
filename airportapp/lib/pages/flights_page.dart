@@ -2,9 +2,11 @@ import 'package:airportapp/components/flights_screen/calendar_cell.dart';
 import 'package:airportapp/models/flightDay.dart';
 import 'package:airportapp/components/flights_screen/flights_tile.dart';
 import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/models/flightInfo.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,14 +18,27 @@ class FlightsPage extends StatefulWidget {
   State<FlightsPage> createState() => _FlightsPageState();
 }
 
+class FlightEntry {
+  final bool isArrival;
+  final String date;
+  final FlightInfo flight;
+
+  FlightEntry({
+    required this.isArrival,
+    required this.date,
+    required this.flight,
+  });
+}
+
+
 class _FlightsPageState extends State<FlightsPage> {
-  List<FlightDay> _flights = [];
+  List<FlightEntry> _flights = [];
   final dio = Dio();
   String selected = 'All';
   int selectedIndex = 1;
   bool flightsFilter = false;
   DateTime today = DateTime.now();
-  String dayStr = DateTime.now().day.toString().padLeft(2, '0');
+  String dateStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
   
 
   List<String> image = [
@@ -67,12 +82,11 @@ class _FlightsPageState extends State<FlightsPage> {
 
   @override
   void initState() {
-    fetchData();
+    fetchData(dateStr);
     super.initState();
   }
 
-  void fetchData() async {
-    final String dateStr = '2025-08-$dayStr';
+  void fetchData(String dateStr) async {
 
     try {
       final responses = await Future.wait([
@@ -96,24 +110,34 @@ class _FlightsPageState extends State<FlightsPage> {
         ),
       ]);
 
-      final departures = (responses[0].data as List)
-          .map((item) => FlightDay.fromJson(item))
-          .toList();
+      final List<FlightEntry> allFlights = [];
+      for (var day in (responses[0].data as List).map((e) => FlightDay.fromJson(e))) {
+        for (var f in day.list) {
+          allFlights.add(FlightEntry(
+            isArrival: false,
+            date: day.date,
+            flight: f,
+          ));
+        }
+      }
+      for (var day in (responses[1].data as List).map((e) => FlightDay.fromJson(e))) {
+        for (var f in day.list) {
+          allFlights.add(FlightEntry(
+            isArrival: true,
+            date: day.date,
+            flight: f,
+          ));
+        }
+      }
 
-      final arrivals = (responses[1].data as List)
-          .map((item) => FlightDay.fromJson(item))
-          .toList();
-
-      final allFlights = [...departures, ...arrivals];
       allFlights.sort((a, b) {
         final dateA = DateTime.parse(a.date);
         final dateB = DateTime.parse(b.date);
 
-        if (dateA != dateB) {
-          return dateA.compareTo(dateB);
-        }
-        final timeA = _parseTime(a.list.first.time);
-        final timeB = _parseTime(b.list.first.time);
+        if (dateA != dateB) return dateA.compareTo(dateB);
+
+        final timeA = _parseTime(a.flight.time);
+        final timeB = _parseTime(b.flight.time);
         return timeA.compareTo(timeB);
       });
 
@@ -124,6 +148,7 @@ class _FlightsPageState extends State<FlightsPage> {
       debugPrint('Ошибка загрузки данных: $e');
     }
   }
+
 
   DateTime _parseTime(String time) {
     final parts = time.split(':');
@@ -138,7 +163,8 @@ class _FlightsPageState extends State<FlightsPage> {
     return total;
   }
 
-  String getDisplayStatus(String status) {
+  String getDisplayStatus(String? status) {
+    if (status == null) return '';
     if (status.startsWith('Dep')) {
       return 'Departed';
     }
@@ -245,7 +271,9 @@ class _FlightsPageState extends State<FlightsPage> {
                                 index: index,
                                 isSelected: selectedIndex == index,
                                 onTap: () {
+                                  final selectedDate = DateFormat('yyyy-MM-dd').format(today.add(Duration(days: index - 1)),);
                                   setState(() {
+                                    fetchData(selectedDate);
                                     selectedIndex = index;
                                   });
                                 },
@@ -316,39 +344,30 @@ class _FlightsPageState extends State<FlightsPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                int offset = index;
+                final flightEntry = _flights[index];
+                final flight = flightEntry.flight;
 
-                for (var day in _flights) {
-                  if (offset < day.list.length) {
-                    final flight = day.list[offset];
+                final flightNumbers = flight.flight.map((f) => f.no).toList();
+                final airlines = flight.flight.map((f) => f.airline).toList();
 
-                    final flightNumbers = flight.flight.map((f) => f.no).toList();
-                    final airlines = flight.flight.map((f) => f.airline).toList();
-
-                    return FlightsTile(
-                      isArrival: day.arrival,
-                      date: day.date,
-                      time: flight.time,
-                      status: getDisplayStatus(flight.status),
-                      destination: (flight.destination?.isNotEmpty ?? false) ? flight.destination![0] : '',
-                      origin: (flight.origin?.isNotEmpty ?? false) ? flight.origin![0] : '',
-                      terminal: flight.terminal ?? '',
-                      aisle: flight.aisle ?? '',
-                      gate: flight.gate ?? '',
-                      baggage: flight.baggage ?? '',
-                      hall: flight.hall ?? '',
-                      stand: flight.stand ?? '',
-                      flightNumbers: flightNumbers,
-                      airlines: airlines,
-                    );
-                  } else {
-                    offset -= day.list.length;
-                  }
-                }
-
-                return const SizedBox.shrink();
+                return FlightsTile(
+                  isArrival: flightEntry.isArrival,
+                  date: flightEntry.date,
+                  time: flight.time,
+                  status: getDisplayStatus(flight.status),
+                  destination: (flight.destination?.isNotEmpty ?? false) ? flight.destination![0] : '',
+                  origin: (flight.origin?.isNotEmpty ?? false) ? flight.origin![0] : '',
+                  terminal: flight.terminal ?? '',
+                  aisle: flight.aisle ?? '',
+                  gate: flight.gate ?? '',
+                  baggage: flight.baggage ?? '',
+                  hall: flight.hall ?? '',
+                  stand: flight.stand ?? '',
+                  flightNumbers: flightNumbers,
+                  airlines: airlines,
+                );
               },
-              childCount: getTotalItemCount(_flights),
+              childCount: _flights.length,
             ),
           ),
           SliverToBoxAdapter(
@@ -357,7 +376,6 @@ class _FlightsPageState extends State<FlightsPage> {
               child: Text('Flight information is subject to changes. Please be reminded to check with your airlines for the latest flight details', style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic)),
             ),
           ),
-          //SliverFillRemaining(),
         ],
       ),
     );

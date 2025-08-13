@@ -1,3 +1,4 @@
+import 'package:airportapp/data/database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -118,10 +119,10 @@ class FlightsCart extends StatelessWidget {
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(airlines[i], style: TextStyle(color: Colors.blue[900])),
+                                              Text(Database.airlineCodes[airlines[i]] ?? airlines[i], style: TextStyle(color: Colors.blue[900])),
                                               Row(
                                                 children: [
-                                                  Image.asset('lib/images/cathay_logo.png', height: 24, width: 24),
+                                                  Image.asset(Database.airlineLogos[airlines[i]] ?? '', height: 34, width: 34),
                                                   SizedBox(width: 5),
                                                   Text(flightNumbers[i], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]))
                                                 ]  

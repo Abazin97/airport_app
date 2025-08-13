@@ -7,7 +7,7 @@ part 'flightInfo.g.dart';
 class FlightInfo {
   final String time;
   final List<FlightNumber> flight;
-  final String status;
+  final String? status;
   final List<String>? destination;
   final List<String>? origin;
   final String? terminal;
@@ -20,7 +20,7 @@ class FlightInfo {
   FlightInfo({
     required this.time,
     required this.flight,
-    required this.status,
+    this.status,
     this.destination,
     this.origin,
     this.terminal,
