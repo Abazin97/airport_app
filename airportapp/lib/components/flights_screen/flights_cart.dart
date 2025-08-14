@@ -131,7 +131,7 @@ class FlightsCart extends StatelessWidget {
                                           ),
                                         SizedBox(height: 10),
                                         Text(isArrival ? 'From' : 'To', style: TextStyle(color: Colors.blue[900])),
-                                        Text(isArrival ? (origin?.isNotEmpty == true ? origin! : '') : (destination?.isNotEmpty == true ? destination! : ''), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900])),
+                                        Text(isArrival ? (Database.airportCodes[origin]?.isNotEmpty == true ? Database.airportCodes[origin]! : '') : (Database.airportCodes[destination]?.isNotEmpty == true ? Database.airportCodes[destination]! : ''), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900])),
                                         SizedBox(height: 20),
                                         Row(
                                           children: [
@@ -188,7 +188,7 @@ class FlightsCart extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30),
-                  Text('Travel Tips of ${isArrival ? origin : destination}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                  Text('Travel Tips of ${isArrival ? Database.airportCodes[origin] : Database.airportCodes[destination]}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
                   SizedBox(height: 20),
                   // ListView.builder(
                   //   itemBuilder: (context, index){

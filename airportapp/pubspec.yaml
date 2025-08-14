@@ -74,6 +74,7 @@ flutter:
    - lib/images/award.png
    - lib/images/idc.png
    - lib/images/
+   - lib/images/airline_logos/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

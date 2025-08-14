@@ -6,6 +6,7 @@ import 'package:airportapp/components/home_screen/custom_drawer.dart';
 import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
 import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/data/database.dart';
 import 'package:airportapp/models/weather_model.dart';
 import 'package:airportapp/pages/inbox_page.dart';
 import 'package:airportapp/pages/track_my_bag.dart';
@@ -24,31 +25,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  List<String> image = [
-    'lib/images/world_of_icecream.jpg',
-    'lib/images/early_summer_delights.jpg',
-    'lib/images/baggage-porter-service.jpg',
-    'lib/images/meet&assist.png',
-    'lib/images/vintage_buggy.jpg',
-  ];
-
-  List<String> tileLinks = [
-    'https://hkairportshop.com/eshop_en/icecream25',
-    'https://hkairportshop.com/eshop_en/summerdelights25',
-    'https://www.hkairportbooking.com/en/ppg00015.html',
-    'https://www.hkairportbooking.com/en/ppg00016.html',
-    'https://www.hkairportbooking.com/en/ppg00013.html',
-  ];
-
-  List<String> tileNames = [
-    'World of Ice Cream',
-    'HKairportShop.com',
-    'Porter Service',
-    'Meet and Assist with Add-on Services',
-    'Airport Vintage Buggy Service',
-  ];
-
 
   final PageController _pageController = PageController();
   int _currentPage = 0;
@@ -113,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     _fetchWeather();
     Future.delayed(Duration(seconds: 1),() {
       Timer.periodic(Duration(seconds: 4), (Timer timer) {
-        if (_currentPage < image.length - 1) {
+        if (_currentPage < Database.imageHome.length - 1) {
           _currentPage++;
         } else {
           _currentPage = 0;
@@ -176,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Icon(iconsMap[getWeatherCondition(_weather?.mainCondition)], color: Colors.white, size: 14,),
-                      Text(temperatureIsExist ? '  -'  : '  ${_weather?.temperature.round()}°C', style: TextStyle(color: Colors.white, fontSize: 16))
+                      Text(temperatureIsExist ? ' -' : '  ${_weather?.temperature.round()}°C', style: TextStyle(color: Colors.white, fontSize: 16))
                     ],
                   ),
                 ),
@@ -328,13 +304,13 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 190,
                   child: PageView.builder(
-                    itemCount: image.length,
+                    itemCount: Database.imageHome.length,
                     scrollDirection: Axis.horizontal,
                     controller: _pageController,
                     itemBuilder: (context, index){
                       return GestureDetector(
                         onTap: () async {
-                          final _url = Uri.parse(tileLinks[index]);
+                          final _url = Uri.parse(Database.tileLinksHome[index]);
                           await launchUrl(_url, mode: LaunchMode.inAppWebView);
                         },
                         child: Column(
@@ -353,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                                 fit: StackFit.expand,
                                 children: [
                                   Image.asset(
-                                    image[index],
+                                    Database.imageHome[index],
                                     fit: BoxFit.fill,
                                   ),
                                   Positioned(
@@ -376,7 +352,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             SizedBox(height: 15),
-                            Text(tileNames[index], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),)
+                            Text(Database.tileNames[index], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),)
                           ],
                         ),
                       );
@@ -403,7 +379,7 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 250,
                   child: ListView.builder(
-                    itemCount: tileLinks.length,
+                    itemCount: Database.tileLinksHome.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       final items2 = StaticTileItem.getTileList();

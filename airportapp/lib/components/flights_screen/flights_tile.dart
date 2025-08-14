@@ -112,8 +112,8 @@ class FlightsTile extends StatelessWidget {
                       children: [
                         Image.asset(
                           Database.airlineLogos[airlines[0]] ?? '',
-                          height: 28,
-                          width: 28,
+                          height: 32,
+                          width: 32,
                         ),
                         Text(
                           flightNumbers[0],
@@ -151,29 +151,28 @@ class FlightsTile extends StatelessWidget {
                 const Divider(),
 
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          isArrival ? (origin?.isNotEmpty == true ? origin! : '') : (destination?.isNotEmpty == true ? destination! : ''),
+                          isArrival ? (Database.airportCodes[origin]?.isNotEmpty == true ? Database.airportCodes[origin]! : origin!) : (Database.airportCodes[destination]?.isNotEmpty == true ? Database.airportCodes[destination]! : destination!),
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          time,
-                          style: const TextStyle(color: Colors.black, fontSize: 15),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
                         Text(
                           isArrival ? (baggage?.isNotEmpty == true ? 'Belt no.$baggage' : 'Belt no.--') : (gate?.isNotEmpty == true ? 'Gate $gate' : 'Gate --'),
                           style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          time,
+                          style: const TextStyle(color: Colors.black, fontSize: 15),
                         ),
                         const SizedBox(height: 4),
                         Text(

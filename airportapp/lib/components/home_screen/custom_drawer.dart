@@ -1,3 +1,4 @@
+import 'package:airportapp/components/home_screen/departures_drawer.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -123,7 +124,7 @@ class PageLink extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        
+        DeparturesDrawer();
       },
       child: Row(
         children: [

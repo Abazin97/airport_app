@@ -1,4 +1,5 @@
 import 'package:airportapp/components/flights_screen/calendar_cell.dart';
+import 'package:airportapp/data/database.dart';
 import 'package:airportapp/models/flightDay.dart';
 import 'package:airportapp/components/flights_screen/flights_tile.dart';
 import 'package:airportapp/components/nav_provider.dart';
@@ -33,31 +34,14 @@ class FlightEntry {
 
 class _FlightsPageState extends State<FlightsPage> {
   List<FlightEntry> _flights = [];
+  List<FlightEntry> _filteredFlights = [];
   final dio = Dio();
   String selected = 'All';
   int selectedIndex = 1;
   bool flightsFilter = false;
+  bool isLoading = false;
   DateTime today = DateTime.now();
   String dateStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  
-
-  List<String> image = [
-    'lib/images/pocket_wifi.jpg',
-    'lib/images/home_checkin.jpg',
-    'lib/images/vintage_buggy.jpg',
-    'lib/images/culinary.jpg',
-    'lib/images/buggy.jpg',
-    'lib/images/round_trip.jpg'
-  ];
-
-  List<String> tileLinks = [
-    'https://www.hkairportbooking.com/en/wbb00002.html',
-    'https://www.hkairportbooking.com/en/sfe00014.html',
-    'https://www.hkairportbooking.com/en/ppg00013.html',
-    'https://www.hkairportbooking.com/en/ppg00009.html',
-    'https://www.hkairportbooking.com/en/ppg00008.html',
-    'https://www.hkairportbooking.com/en/ctf00001.html'
-  ];
 
   
   Widget flightsButton(String label){
@@ -69,10 +53,10 @@ class _FlightsPageState extends State<FlightsPage> {
         textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
       ),
       onPressed: (){
-        // onTap filter departed/arrived flights to be later
+        // onTap filter departed/arrived flights
         setState(() {
           selected = label;
-          //flightsFilter = !flightsFilter;
+          _applyFilter();
         });
         
       },
@@ -86,8 +70,24 @@ class _FlightsPageState extends State<FlightsPage> {
     super.initState();
   }
 
-  void fetchData(String dateStr) async {
+  void _applyFilter() {
+    if (selected == 'All') {
+      _filteredFlights = List.from(_flights);
+    } else if (selected == 'Departures') {
+      _filteredFlights = _flights.where((f) => f.isArrival == false).toList();
+    } else if (selected == 'Arrivals') {
+      _filteredFlights = _flights.where((f) => f.isArrival == true).toList();
+    }
+  }
 
+  void _setLoading(bool value){
+    setState(() {
+      isLoading = value;
+    });
+  }
+
+  void fetchData(String dateStr) async {
+    _setLoading(true);
     try {
       final responses = await Future.wait([
         dio.get(
@@ -143,12 +143,13 @@ class _FlightsPageState extends State<FlightsPage> {
 
       setState(() {
         _flights = allFlights;
+        _applyFilter();
       });
+      _setLoading(false);
     } catch (e) {
       debugPrint('Ошибка загрузки данных: $e');
     }
   }
-
 
   DateTime _parseTime(String time) {
     final parts = time.split(':');
@@ -306,12 +307,12 @@ class _FlightsPageState extends State<FlightsPage> {
                     SizedBox(
                       height: 90,
                       child: ListView.builder(
-                        itemCount: tileLinks.length,
+                        itemCount: Database.tileLinksFlights.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () async {
-                              final _url = Uri.parse(tileLinks[index]);
+                              final _url = Uri.parse(Database.tileLinksFlights[index]);
                               await launchUrl(_url, mode: LaunchMode.inAppWebView);
                             },
                             child: Container(
@@ -323,8 +324,8 @@ class _FlightsPageState extends State<FlightsPage> {
                                 border: Border.all(color: Colors.white, width: 3),
                               ),
                               child: Image.asset(
-                                image[index],
-                                fit: BoxFit.contain,
+                                Database.imageHome[index],
+                                fit: BoxFit.fitHeight,
                               ),
                             ),
                           );
@@ -336,7 +337,7 @@ class _FlightsPageState extends State<FlightsPage> {
               ),
             ),
           ),
-          if (_flights.isEmpty)
+          if (isLoading)
             SliverFillRemaining(
               child: Center(child: CircularProgressIndicator()),
             )
@@ -344,7 +345,7 @@ class _FlightsPageState extends State<FlightsPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final flightEntry = _flights[index];
+                final flightEntry = _filteredFlights[index];
                 final flight = flightEntry.flight;
 
                 final flightNumbers = flight.flight.map((f) => f.no).toList();
@@ -367,7 +368,7 @@ class _FlightsPageState extends State<FlightsPage> {
                   airlines: airlines,
                 );
               },
-              childCount: _flights.length,
+              childCount: _filteredFlights.length,
             ),
           ),
           SliverToBoxAdapter(
