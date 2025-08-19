@@ -43,7 +43,8 @@ android/app/google-services.json
 # FlutterFire generated config
 lib/firebase_options.dart
 
-
+#DS_Store
+.DS_Store
 
 # Symbolication related
 app.*.symbols

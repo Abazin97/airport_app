@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                 //search bar
                 children: [
                   Flexible(
-                    child: GestureDetector(
+                    child: InkWell(
                       onTap: () {
                         context.read<NavProvider>().pageIndex = 1;
                       },
@@ -272,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               //small tiles
-              const SizedBox(height: 50),
+              const SizedBox(height: 40),
               SizedBox(
                 height: 110,
                 child: ListView.builder(

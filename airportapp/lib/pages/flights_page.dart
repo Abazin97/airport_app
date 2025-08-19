@@ -175,6 +175,16 @@ class _FlightsPageState extends State<FlightsPage> {
     return status;
   }
 
+  List<FlightEntry> searchFlight(String query) {
+  if (query.isEmpty) return [];
+
+  return _flights.where((entry) {
+    // entry.flight.flight == List<FlightNumber>
+    return entry.flight.flight.any((f) =>
+        f.no.toLowerCase().contains(query.toLowerCase()));
+  }).toList();
+}
+
 
   @override
   Widget build(BuildContext context) {

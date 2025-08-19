@@ -238,7 +238,7 @@ class Database {
   };
 
   static const Map<String, String> airportCodes = {
-    "AMS": "Amasterdam",
+    "AMS": "Amsterdam",
     "BCN": "Barcelona",
     "BRU": "Brussel",
     "BER": "Berlin",
@@ -308,6 +308,9 @@ class Database {
     "XMN": "Xiamen",
     "URC": "Urumqi",
     "WNZ": "Wenzhou",
+    "SYX": "Sanya",
+    "CZX": "Changzhou",
+    "KWE": "Guiyang",
     "WUH": "Wuhan",
     "XIY": "Xian/Xianyang",
     "HGH": "Hangzhou",
