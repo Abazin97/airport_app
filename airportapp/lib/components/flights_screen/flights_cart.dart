@@ -189,7 +189,7 @@ class FlightsCart extends StatelessWidget {
                   ),
                   SizedBox(height: 30),
                   Text('Travel Tips of ${isArrival ? Database.airportCodes[origin] : Database.airportCodes[destination]}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-                  SizedBox(height: 20),
+                  SizedBox(height: 50),
                   // ListView.builder(
                   //   itemBuilder: (context, index){
                   //     return ;

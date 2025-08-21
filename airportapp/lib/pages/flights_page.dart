@@ -74,14 +74,29 @@ class _FlightsPageState extends State<FlightsPage> {
     super.initState();
   }
 
-  void _applyFilter() {
-    if (selected == 'All') {
-      _filteredFlights = List.from(_flights);
-    } else if (selected == 'Departures') {
-      _filteredFlights = _flights.where((f) => f.isArrival == false).toList();
-    } else if (selected == 'Arrivals') {
-      _filteredFlights = _flights.where((f) => f.isArrival == true).toList();
+  List<FlightEntry> get flightToShow {
+    if (_searchQuery.isEmpty) {
+      return _filteredFlights;
+    } else {
+      return _filteredFlights.where((entry) {
+        return entry.flight.flight.any((f) =>
+            f.no.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+            f.airline.toLowerCase().contains(_searchQuery.toLowerCase()));
+      }).toList();
     }
+  }
+
+
+  void _applyFilter() {
+    setState(() {
+      if (selected == 'All') {
+        _filteredFlights = List.from(_flights);
+      } else if (selected == 'Departures') {
+        _filteredFlights = _flights.where((f) => f.isArrival == false).toList();
+      } else if (selected == 'Arrivals') {
+        _filteredFlights = _flights.where((f) => f.isArrival == true).toList();
+      }
+    });
   }
 
   void _setLoading(bool value){
@@ -173,7 +188,7 @@ class _FlightsPageState extends State<FlightsPage> {
   // status modificator
   String getDisplayStatus(String? status) {
     if (status == null) {
-      return 'bboba';
+      return '';
     }
     else if (status.startsWith('Dep')) {
       return 'Departed';
@@ -181,28 +196,30 @@ class _FlightsPageState extends State<FlightsPage> {
     else if(status.startsWith('At')){
       return 'At Gate';
     }
-    else{
-      return status;
-    }
+    return status;
   }
 
 
   List<FlightEntry> searchFlight(String query) {
-    if (query.isEmpty) return [];
+  if (query.isEmpty) return _flights;
 
-    return _flights.where((entry) {
-      return entry.flight.flight.any((f) =>
-          f.no.toLowerCase().contains(query.toLowerCase()));
-    }).toList();
-  }
+  final lowerQuery = query.toLowerCase();
+
+  return _flights.where((entry) {
+    return entry.flight.flight.any((f) =>
+        f.no.toLowerCase().contains(lowerQuery) ||
+        f.airline.toLowerCase().contains(lowerQuery));
+  }).toList();
+}
+
 
 
 
   @override
   Widget build(BuildContext context) {
-    final flightToShow = _searchQuery.isEmpty
-      ? _filteredFlights
-      : searchItems;
+    // final flightToShow = _searchQuery.isEmpty
+    //   ? _filteredFlights
+    //   : searchItems;
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: CustomScrollView(
