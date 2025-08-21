@@ -172,14 +172,18 @@ class _FlightsPageState extends State<FlightsPage> {
 
   // status modificator
   String getDisplayStatus(String? status) {
-    if (status == null) return '';
-    if (status.startsWith('Dep')) {
+    if (status == null) {
+      return 'bboba';
+    }
+    else if (status.startsWith('Dep')) {
       return 'Departed';
     }
     else if(status.startsWith('At')){
       return 'At Gate';
     }
-    return status;
+    else{
+      return status;
+    }
   }
 
 
