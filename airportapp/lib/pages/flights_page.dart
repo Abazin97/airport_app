@@ -19,6 +19,8 @@ class FlightsPage extends StatefulWidget {
   State<FlightsPage> createState() => _FlightsPageState();
 }
 
+
+// model for 1 item(exactly flight)
 class FlightEntry {
   final bool isArrival;
   final String date;
@@ -33,10 +35,12 @@ class FlightEntry {
 
 
 class _FlightsPageState extends State<FlightsPage> {
+  List<FlightEntry> searchItems = [];
   List<FlightEntry> _flights = [];
   List<FlightEntry> _filteredFlights = [];
   final dio = Dio();
   String selected = 'All';
+  String _searchQuery = "";
   int selectedIndex = 1;
   bool flightsFilter = false;
   bool isLoading = false;
@@ -86,7 +90,8 @@ class _FlightsPageState extends State<FlightsPage> {
     });
   }
 
-  void fetchData(String dateStr) async {
+  // getting data from API
+  Future<void> fetchData(String dateStr) async {
     _setLoading(true);
     try {
       final responses = await Future.wait([
@@ -151,6 +156,7 @@ class _FlightsPageState extends State<FlightsPage> {
     }
   }
 
+  // filter by date 
   DateTime _parseTime(String time) {
     final parts = time.split(':');
     return DateTime(0, 1, 1, int.parse(parts[0]), int.parse(parts[1]));
@@ -164,6 +170,7 @@ class _FlightsPageState extends State<FlightsPage> {
     return total;
   }
 
+  // status modificator
   String getDisplayStatus(String? status) {
     if (status == null) return '';
     if (status.startsWith('Dep')) {
@@ -175,19 +182,23 @@ class _FlightsPageState extends State<FlightsPage> {
     return status;
   }
 
-  List<FlightEntry> searchFlight(String query) {
-  if (query.isEmpty) return [];
 
-  return _flights.where((entry) {
-    // entry.flight.flight == List<FlightNumber>
-    return entry.flight.flight.any((f) =>
-        f.no.toLowerCase().contains(query.toLowerCase()));
-  }).toList();
-}
+  List<FlightEntry> searchFlight(String query) {
+    if (query.isEmpty) return [];
+
+    return _flights.where((entry) {
+      return entry.flight.flight.any((f) =>
+          f.no.toLowerCase().contains(query.toLowerCase()));
+    }).toList();
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
+    final flightToShow = _searchQuery.isEmpty
+      ? _filteredFlights
+      : searchItems;
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: CustomScrollView(
@@ -240,6 +251,12 @@ class _FlightsPageState extends State<FlightsPage> {
                               children: [
                                 Expanded(
                                   child: TextField(
+                                    onSubmitted: (value) {
+                                      setState(() {
+                                        _searchQuery = value;
+                                        searchItems = searchFlight(value);
+                                      });                                      
+                                    },
                                     decoration: InputDecoration(
                                       hintText: 'e.g. Airport, Flight no., Airline or Time',
                                       hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
@@ -281,11 +298,12 @@ class _FlightsPageState extends State<FlightsPage> {
                               return CalendarCell(
                                 index: index,
                                 isSelected: selectedIndex == index,
-                                onTap: () {
+                                onTap: () async{
                                   final selectedDate = DateFormat('yyyy-MM-dd').format(today.add(Duration(days: index - 1)),);
+                                  await fetchData(selectedDate);
                                   setState(() {
-                                    fetchData(selectedDate);
                                     selectedIndex = index;
+                                    searchItems = searchFlight(_searchQuery);
                                   });
                                 },
                                 date: today.add(Duration(days: index - 1)),
@@ -355,7 +373,7 @@ class _FlightsPageState extends State<FlightsPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final flightEntry = _filteredFlights[index];
+                final flightEntry = flightToShow[index];
                 final flight = flightEntry.flight;
 
                 final flightNumbers = flight.flight.map((f) => f.no).toList();
@@ -378,7 +396,7 @@ class _FlightsPageState extends State<FlightsPage> {
                   airlines: airlines,
                 );
               },
-              childCount: _filteredFlights.length,
+              childCount: flightToShow.length,
             ),
           ),
           SliverToBoxAdapter(
@@ -389,6 +407,23 @@ class _FlightsPageState extends State<FlightsPage> {
           ),
         ],
       ),
+      
+    );
+  }
+
+  Widget _searchListView(){
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.80,
+      width: MediaQuery.sizeOf(context).width,
+      child: ListView.builder(
+        itemCount: searchItems.length,
+        itemBuilder: (context, index){
+          final flight = searchItems[index];
+          final flightNumbers = flight.flight.flight.map((e) => e.no).toList();
+          return ListTile(
+            title: Text(flightNumbers.join(", ")),
+          );
+        }),
     );
   }
 }
