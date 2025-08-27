@@ -75,17 +75,14 @@ class _FlightsPageState extends State<FlightsPage> {
   }
 
   List<FlightEntry> get flightToShow {
-    if (_searchQuery.isEmpty) {
-      return _filteredFlights;
-    } else {
-      return _filteredFlights.where((entry) {
-        return entry.flight.flight.any((f) =>
-            f.no.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            f.airline.toLowerCase().contains(_searchQuery.toLowerCase()));
-      }).toList();
-    }
+  if (_searchQuery.isEmpty) {
+    return _filteredFlights;
+  } else {
+    return searchFlight(_searchQuery)
+        .where((e) => _filteredFlights.contains(e))
+        .toList();
   }
-
+}
 
   void _applyFilter() {
     setState(() {
@@ -199,21 +196,22 @@ class _FlightsPageState extends State<FlightsPage> {
     return status;
   }
 
-
-  List<FlightEntry> searchFlight(String query) {
-  if (query.isEmpty) return _flights;
-
-  final lowerQuery = query.toLowerCase();
-
-  return _flights.where((entry) {
-    return entry.flight.flight.any((f) =>
-        f.no.toLowerCase().contains(lowerQuery) ||
-        f.airline.toLowerCase().contains(lowerQuery));
-  }).toList();
-}
-
-
-
+  List<FlightEntry> searchFlight(String query) { 
+    if (query.isEmpty) return _flights; 
+    final lowerQuery = query.toLowerCase();
+    return _flights.where((e) {
+      
+      return e.flight.flight.any((f) {
+        final no = f.no.toLowerCase().replaceAll(' ', ''); 
+        final airline = f.airline.toLowerCase(); 
+        final airlineName = (Database.airlineCodes[f.airline] ?? '').toLowerCase();
+        return no.startsWith(lowerQuery) || 
+          no.contains(lowerQuery) || 
+          airline.contains(lowerQuery) || 
+          airlineName.contains(lowerQuery); 
+      }); 
+    }).toList(); 
+  }
 
   @override
   Widget build(BuildContext context) {
