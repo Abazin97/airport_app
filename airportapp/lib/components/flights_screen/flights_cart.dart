@@ -8,8 +8,8 @@ class FlightsCart extends StatelessWidget {
   final String date;
   final String time;
   final String status;
-  final String? destination;
-  final String? origin;
+  final List<String>? destination;
+  final List<String>? origin;
   final String? terminal;
   final String? aisle;
   final String? gate;
@@ -131,7 +131,31 @@ class FlightsCart extends StatelessWidget {
                                           ),
                                         SizedBox(height: 10),
                                         Text(isArrival ? 'From' : 'To', style: TextStyle(color: Colors.blue[900])),
-                                        Text(isArrival ? (Database.airportCodes[origin]?.isNotEmpty == true ? Database.airportCodes[origin]! : '') : (Database.airportCodes[destination]?.isNotEmpty == true ? Database.airportCodes[destination]! : ''), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900])),
+                                        Text(
+                                          isArrival
+                                              ? ((origin?.isNotEmpty == true)
+                                                  ? (Database.airportCodes[origin?[0]] ?? origin![0])
+                                                  : "--")
+                                              : ((destination?.isNotEmpty == true)
+                                                  ? ((destination!.length > 1)
+                                                      ? (Database.airportCodes[destination?[1]] ?? destination![1])
+                                                      : (Database.airportCodes[destination?[0]] ?? destination![0]))
+                                                  : "--"),
+                                          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]),
+                                        ),
+                                        if ((origin?.length ?? 0) > 1 || 
+                                          (destination?.length ?? 0) > 1)
+                                            Row(
+                                              children: [
+                                                Text('via ', style: TextStyle(color: Colors.blue[900], fontSize: 12)),
+                                                Text(
+                                                  isArrival
+                                                    ? (Database.airportCodes[origin?[1]] ?? origin![1])
+                                                    : (Database.airportCodes[destination?[0]] ?? destination![0]),
+                                                  style: TextStyle(color: Colors.blue[900], fontSize: 12),
+                                                )
+                                              ],
+                                            ),
                                         SizedBox(height: 20),
                                         Row(
                                           children: [

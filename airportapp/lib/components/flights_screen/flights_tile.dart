@@ -25,8 +25,8 @@ class FlightsTile extends StatelessWidget {
   final String date;
   final String time;
   final String status;
-  final String? destination;
-  final String? origin;
+  final List<String>? destination;
+  final List<String>? origin;
   final String? terminal;
   final String? aisle;
   final String? gate;
@@ -49,8 +49,8 @@ class FlightsTile extends StatelessWidget {
               date: date,
               time: time,
               status: status,
-              destination: (destination?.isNotEmpty ?? false) ? destination! : '',
-              origin: (origin?.isNotEmpty ?? false) ? origin! : '',
+              destination: (destination?.isNotEmpty ?? false) ? destination! : [],
+              origin: (origin?.isNotEmpty ?? false) ? origin! : [],
               terminal: terminal ?? '',
               aisle: aisle ?? '',
               gate: gate ?? '',
@@ -89,8 +89,8 @@ class FlightsTile extends StatelessWidget {
                           date: date,
                           time: time,
                           status: status,
-                          destination: (destination?.isNotEmpty ?? false) ? destination! : '',
-                          origin: (origin?.isNotEmpty ?? false) ? origin! : '',
+                          destination: (destination?.isNotEmpty ?? false) ? destination! : [],
+                          origin: (origin?.isNotEmpty ?? false) ? origin! : [],
                           terminal: terminal ?? '',
                           aisle: aisle ?? '',
                           gate: gate ?? '',
@@ -150,22 +150,44 @@ class FlightsTile extends StatelessWidget {
               
                 const Divider(),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 5),
                 Column(
                   children: [
                     Row(
-                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          isArrival ? (Database.airportCodes[origin]?.isNotEmpty == true ? Database.airportCodes[origin]! : origin!) : (Database.airportCodes[destination]?.isNotEmpty == true ? Database.airportCodes[destination]! : destination!),
+                          isArrival
+                              ? ((origin?.isNotEmpty == true)
+                                  ? (Database.airportCodes[origin?[0]] ?? origin![0])
+                                  : "--")
+                              : ((destination?.isNotEmpty == true)
+                                  ? ((destination!.length > 1)
+                                      ? (Database.airportCodes[destination?[1]] ?? destination![1])
+                                      : (Database.airportCodes[destination?[0]] ?? destination![0]))
+                                  : "--"),
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          isArrival ? (baggage?.isNotEmpty == true ? 'Belt no.$baggage' : 'Belt no.--') : (gate?.isNotEmpty == true ? 'Gate $gate' : 'Gate --'),
+                          isArrival
+                              ? (baggage?.isNotEmpty == true ? 'Belt no.$baggage' : 'Belt no.--')
+                              : (gate?.isNotEmpty == true ? 'Gate $gate' : 'Gate --'),
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
+                    if ((origin?.length ?? 0) > 1 || 
+                      (destination?.length ?? 0) > 1)
+                        Row(
+                          children: [
+                            Text('Via ', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                            Text(
+                              isArrival
+                                ? (Database.airportCodes[origin?[1]] ?? origin![1])
+                                : (Database.airportCodes[destination?[0]] ?? destination![0])
+                            )
+                          ],
+                        ),
                     SizedBox(height: 5),
                     Row(
                       mainAxisAlignment:  MainAxisAlignment.spaceBetween,

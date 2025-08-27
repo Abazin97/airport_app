@@ -200,15 +200,25 @@ class _FlightsPageState extends State<FlightsPage> {
     if (query.isEmpty) return _flights; 
     final lowerQuery = query.toLowerCase();
     return _flights.where((e) {
+      final destination = e.flight.destination ?? [];
+      final origin = e.flight.origin ?? [];
+      final dest = destination.any((d) =>
+          d.contains(lowerQuery));
+      final orig = origin.any((o) =>
+          o.contains(lowerQuery));
       
       return e.flight.flight.any((f) {
         final no = f.no.toLowerCase().replaceAll(' ', ''); 
         final airline = f.airline.toLowerCase(); 
         final airlineName = (Database.airlineCodes[f.airline] ?? '').toLowerCase();
+
         return no.startsWith(lowerQuery) || 
           no.contains(lowerQuery) || 
           airline.contains(lowerQuery) || 
-          airlineName.contains(lowerQuery); 
+          airlineName.contains(lowerQuery) ||
+          destination.contains(lowerQuery) ||
+          dest ||
+          orig; 
       }); 
     }).toList(); 
   }
@@ -403,8 +413,8 @@ class _FlightsPageState extends State<FlightsPage> {
                   date: flightEntry.date,
                   time: flight.time,
                   status: getDisplayStatus(flight.status),
-                  destination: (flight.destination?.isNotEmpty ?? false) ? flight.destination![0] : '',
-                  origin: (flight.origin?.isNotEmpty ?? false) ? flight.origin![0] : '',
+                  destination: (flight.destination?.isNotEmpty ?? false) ? flight.destination! : [],
+                  origin: (flight.origin?.isNotEmpty ?? false) ? flight.origin! : [],
                   terminal: flight.terminal ?? '',
                   aisle: flight.aisle ?? '',
                   gate: flight.gate ?? '',

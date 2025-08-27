@@ -409,6 +409,8 @@ class Database {
     "WNZ": "Wenzhou",
     "SYX": "Sanya",
     "CZX": "Changzhou",
+    "YNT": "Yantai",
+    "CGQ": "Changchun",
     "KWE": "Guiyang",
     "WUH": "Wuhan",
     "XIY": "Xian/Xianyang",
