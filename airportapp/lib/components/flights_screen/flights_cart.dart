@@ -115,20 +115,36 @@ class FlightsCart extends StatelessWidget {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        for(int i = 0; i < airlines.length; i++)
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(Database.airlineCodes[airlines[i]] ?? airlines[i], style: TextStyle(color: Colors.blue[900])),
-                                              Row(
-                                                children: [
-                                                  Image.asset(Database.airlineLogos[airlines[i]] ?? '', height: 34, width: 34),
-                                                  SizedBox(width: 5),
-                                                  Text(flightNumbers[i], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]))
-                                                ]  
-                                              ),
-                                            ],
+                                        SizedBox(
+                                          height: 80,
+                                          child:  ListView.builder(
+                                            itemCount: airlines.length,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index){
+                                              final code = airlines[index];
+                                              final airlineName = Database.airlineCodes[code];
+                                              final airlineLogo = Database.airlineLogos[code];
+                                              final flightNo = flightNumbers[index];
+                                              return Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(airlineName ?? '', style: TextStyle(color: Colors.blue[900])),
+                                                    Row(
+                                                      children: [
+                                                        if (airlineLogo != null && airlineLogo.isNotEmpty)
+                                                        Image.asset(airlineLogo, height: 34, width: 34),
+                                                        SizedBox(width: 5),
+                                                        Text(flightNo, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]))
+                                                      ]  
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            }
                                           ),
+                                        ),
                                         SizedBox(height: 10),
                                         Text(isArrival ? 'From' : 'To', style: TextStyle(color: Colors.blue[900])),
                                         Text(
@@ -212,7 +228,12 @@ class FlightsCart extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30),
-                  Text('Travel Tips of ${isArrival ? Database.airportCodes[origin] : Database.airportCodes[destination]}', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                  Text('Travel Tips of ${isArrival 
+                    ? Database.airportCodes[origin?[0]] 
+                    : ((destination!.length > 1)
+                      ? (Database.airportCodes[destination?[1]] ?? destination![1])
+                      : (Database.airportCodes[destination?[0]] ?? destination![0]))}', 
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
                   SizedBox(height: 50),
                   // ListView.builder(
                   //   itemBuilder: (context, index){

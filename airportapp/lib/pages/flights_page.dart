@@ -202,6 +202,8 @@ class _FlightsPageState extends State<FlightsPage> {
     return _flights.where((e) {
       final destination = e.flight.destination ?? [];
       final origin = e.flight.origin ?? [];
+      final destCode = destination.join('').toLowerCase();
+      final origCode = origin.join('').toLowerCase();
       final destStr = (Database.airportCodes[destination.join('')] ?? '').toLowerCase();
       final origStr = (Database.airportCodes[origin.join(' ')] ?? '').toLowerCase();
       
@@ -215,6 +217,8 @@ class _FlightsPageState extends State<FlightsPage> {
           airline.contains(lowerQuery) || 
           airlineName.contains(lowerQuery) ||
           destination.contains(lowerQuery) ||
+          destCode.contains(lowerQuery) ||
+          origCode.contains(lowerQuery) ||
           destStr.contains(lowerQuery) ||
           origStr.contains(lowerQuery); 
       }); 
