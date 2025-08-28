@@ -202,10 +202,8 @@ class _FlightsPageState extends State<FlightsPage> {
     return _flights.where((e) {
       final destination = e.flight.destination ?? [];
       final origin = e.flight.origin ?? [];
-      final dest = destination.any((d) =>
-          d.contains(lowerQuery));
-      final orig = origin.any((o) =>
-          o.contains(lowerQuery));
+      final destStr = (Database.airportCodes[destination.join('')] ?? '').toLowerCase();
+      final origStr = (Database.airportCodes[origin.join(' ')] ?? '').toLowerCase();
       
       return e.flight.flight.any((f) {
         final no = f.no.toLowerCase().replaceAll(' ', ''); 
@@ -217,8 +215,8 @@ class _FlightsPageState extends State<FlightsPage> {
           airline.contains(lowerQuery) || 
           airlineName.contains(lowerQuery) ||
           destination.contains(lowerQuery) ||
-          dest ||
-          orig; 
+          destStr.contains(lowerQuery) ||
+          origStr.contains(lowerQuery); 
       }); 
     }).toList(); 
   }
