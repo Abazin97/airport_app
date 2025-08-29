@@ -38,12 +38,14 @@ class _FlightsPageState extends State<FlightsPage> {
   List<FlightEntry> searchItems = [];
   List<FlightEntry> _flights = [];
   List<FlightEntry> _filteredFlights = [];
+  List<String> queryResults = [];
   final dio = Dio();
   String selected = 'All';
   String _searchQuery = "";
   int selectedIndex = 1;
   bool flightsFilter = false;
   bool isLoading = false;
+  bool isSearching = false;
   DateTime today = DateTime.now();
   String dateStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
@@ -196,6 +198,19 @@ class _FlightsPageState extends State<FlightsPage> {
     return status;
   }
 
+  List<String> displayQuery(String query, List<FlightEntry> flights){
+    if (query.isEmpty) return [];    
+    return flights.expand((el) => el.flight.flight).where((e){
+      final no = e.no.toLowerCase().replaceAll(' ', '');
+      final airline = e.airline.toLowerCase();
+      final airlineName = (Database.airlineCodes[e.airline] ?? '').toLowerCase();
+
+      return no.contains(query) ||
+      airline == query ||
+      airlineName.contains(query);
+    }).map((e) => e.no).toList();
+  }
+
   List<FlightEntry> searchFlight(String query) { 
     if (query.isEmpty) return _flights; 
     final lowerQuery = query.toLowerCase();
@@ -212,7 +227,7 @@ class _FlightsPageState extends State<FlightsPage> {
         final airline = f.airline.toLowerCase(); 
         final airlineName = (Database.airlineCodes[f.airline] ?? '').toLowerCase();
 
-        return no.startsWith(lowerQuery) || 
+        return no.startsWith(lowerQuery) ||
           no.contains(lowerQuery) || 
           airline.contains(lowerQuery) || 
           airlineName.contains(lowerQuery) ||
@@ -220,106 +235,113 @@ class _FlightsPageState extends State<FlightsPage> {
           destCode.contains(lowerQuery) ||
           origCode.contains(lowerQuery) ||
           destStr.contains(lowerQuery) ||
-          origStr.contains(lowerQuery); 
+          origStr.contains(lowerQuery);
       }); 
     }).toList(); 
   }
 
   @override
   Widget build(BuildContext context) {
-    // final flightToShow = _searchQuery.isEmpty
-    //   ? _filteredFlights
-    //   : searchItems;
     return Scaffold(
       backgroundColor: Colors.blue[600],
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            floating: true,
-            expandedHeight: 400,
-            backgroundColor: Colors.blue[600],
-            leading: IconButton(
-                onPressed: () {
-                  Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                  );
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              title: Text(
-                'Flights',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            centerTitle: true,
-            toolbarHeight: 50, 
-            flexibleSpace: FlexibleSpaceBar(
-              background: Padding(
-                padding: EdgeInsets.only(top: kToolbarHeight + MediaQuery.of(context).padding.top),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Container(
-                            height: 50,
-                            padding: const EdgeInsets.all(12),
-                            margin: const EdgeInsets.symmetric(horizontal: 25),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        _searchQuery = value;
-                                        searchItems = searchFlight(value);
-                                      });                                      
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'e.g. Airport, Flight no., Airline or Time',
-                                      hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                                      border: InputBorder.none,
-                                      isCollapsed: true,
-                                    ),
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.search,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Builder(
-                          builder: (context) {
-                            return IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.document_scanner,
-                                color: Colors.white,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+      body: Stack(
+        children: [
+          CustomScrollView(
+            physics: isSearching
+              ? const NeverScrollableScrollPhysics()
+              : const BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                floating: true,
+                expandedHeight: 400,
+                backgroundColor: Colors.blue[600],
+                leading: IconButton(
+                    onPressed: () {
+                      Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_outlined,
+                      color: Colors.white,
                     ),
-                    const SizedBox(height: 30),
-                    Stack(
+                  ),
+                  title: Text(
+                    'Flights',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                centerTitle: true,
+                toolbarHeight: 50, 
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Padding(
+                    padding: EdgeInsets.only(top: kToolbarHeight + MediaQuery.of(context).padding.top),
+                    child: Column(
                       children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Container(
+                                height: 50,
+                                padding: const EdgeInsets.all(12),
+                                margin: const EdgeInsets.symmetric(horizontal: 25),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextField(
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isSearching = value.isNotEmpty;
+                                            _searchQuery = value;
+                                            searchItems = searchFlight(value);
+                                            queryResults = displayQuery(_searchQuery, searchItems);
+                                          });                                   
+                                        },
+                                        onSubmitted: (value) {
+                                          setState(() {
+                                            isSearching = false;
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                          hintText: 'e.g. Airport, Flight no., Airline or Time',
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          border: InputBorder.none,
+                                          isCollapsed: true,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.search,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Builder(
+                              builder: (context) {
+                                return IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.document_scanner,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
                         SizedBox(
                           height: 70,
                           child: ListView.builder(
@@ -342,119 +364,122 @@ class _FlightsPageState extends State<FlightsPage> {
                             },
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
-                        children: [
-                          const Divider(color: Colors.white),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
                             children: [
-                              flightsButton('All'),
-                              flightsButton('Departures'),
-                              flightsButton('Arrivals'),
+                              const Divider(color: Colors.white),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  flightsButton('All'),
+                                  flightsButton('Departures'),
+                                  flightsButton('Arrivals'),
+                                ],
+                              ),
+                              const SizedBox(height: 10), 
                             ],
                           ),
-                          const SizedBox(height: 10), 
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 90,
-                      child: ListView.builder(
-                        itemCount: Database.tileLinksFlights.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () async {
-                              final _url = Uri.parse(Database.tileLinksFlights[index]);
-                              await launchUrl(_url, mode: LaunchMode.inAppWebView);
+                        ),
+                        SizedBox(
+                          height: 90,
+                          child: ListView.builder(
+                            itemCount: Database.tileLinksFlights.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () async {
+                                  final _url = Uri.parse(Database.tileLinksFlights[index]);
+                                  await launchUrl(_url, mode: LaunchMode.inAppWebView);
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 10, left: 10),
+                                  height: 100,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: Colors.white, width: 3),
+                                  ),
+                                  child: Image.asset(
+                                    Database.imageHome[index],
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              );
                             },
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 10, left: 10),
-                              height: 100,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.white, width: 3),
-                              ),
-                              child: Image.asset(
-                                Database.imageHome[index],
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              if (isLoading)
+                SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final flightEntry = flightToShow[index];
+                    final flight = flightEntry.flight;
+          
+                    final flightNumbers = flight.flight.map((f) => f.no).toList();
+                    final airlines = flight.flight.map((f) => f.airline).toList();
+          
+                    return FlightsTile(
+                      isArrival: flightEntry.isArrival,
+                      date: flightEntry.date,
+                      time: flight.time,
+                      status: getDisplayStatus(flight.status),
+                      destination: (flight.destination?.isNotEmpty ?? false) ? flight.destination! : [],
+                      origin: (flight.origin?.isNotEmpty ?? false) ? flight.origin! : [],
+                      terminal: flight.terminal ?? '',
+                      aisle: flight.aisle ?? '',
+                      gate: flight.gate ?? '',
+                      baggage: flight.baggage ?? '',
+                      hall: flight.hall ?? '',
+                      stand: flight.stand ?? '',
+                      flightNumbers: flightNumbers,
+                      airlines: airlines,
+                    );
+                  },
+                  childCount: flightToShow.length,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 60),
+                  child: Text('Flight information is subject to changes. Please be reminded to check with your airlines for the latest flight details', style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic)),
+                ),
+              ),
+            ],
           ),
-          if (isLoading)
-            SliverFillRemaining(
-              child: Center(child: CircularProgressIndicator()),
-            )
-          else
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final flightEntry = flightToShow[index];
-                final flight = flightEntry.flight;
-
-                final flightNumbers = flight.flight.map((f) => f.no).toList();
-                final airlines = flight.flight.map((f) => f.airline).toList();
-
-                return FlightsTile(
-                  isArrival: flightEntry.isArrival,
-                  date: flightEntry.date,
-                  time: flight.time,
-                  status: getDisplayStatus(flight.status),
-                  destination: (flight.destination?.isNotEmpty ?? false) ? flight.destination! : [],
-                  origin: (flight.origin?.isNotEmpty ?? false) ? flight.origin! : [],
-                  terminal: flight.terminal ?? '',
-                  aisle: flight.aisle ?? '',
-                  gate: flight.gate ?? '',
-                  baggage: flight.baggage ?? '',
-                  hall: flight.hall ?? '',
-                  stand: flight.stand ?? '',
-                  flightNumbers: flightNumbers,
-                  airlines: airlines,
-                );
-              },
-              childCount: flightToShow.length,
+          if (isSearching)
+            Positioned.fill(
+              top: kToolbarHeight + MediaQuery.of(context).padding.top + 80,
+              child: Container(
+                color: Colors.white,
+                child: _searchListView(),
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 60),
-              child: Text('Flight information is subject to changes. Please be reminded to check with your airlines for the latest flight details', style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic)),
-            ),
-          ),
-        ],
+        ]
       ),
-      
     );
   }
 
-  Widget _searchListView(){
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.80,
-      width: MediaQuery.sizeOf(context).width,
-      child: ListView.builder(
-        itemCount: searchItems.length,
-        itemBuilder: (context, index){
-          final flight = searchItems[index];
-          final flightNumbers = flight.flight.flight.map((e) => e.no).toList();
-          return ListTile(
-            title: Text(flightNumbers.join(", ")),
-          );
-        }),
+  // dropdown search menu
+  Widget _searchListView() {
+    return ListView.builder(
+      itemCount: queryResults.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(queryResults[index]),
+        );
+      },
     );
   }
 }
