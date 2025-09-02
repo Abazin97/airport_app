@@ -209,28 +209,18 @@ class _FlightsPageState extends State<FlightsPage> {
   }
 
   // dropdown menu filter
-  List<String> displayAirlines(String query, List<FlightEntry> flights) {
-  if (query.isEmpty) return [];
+  List<String> displayQuery(String query, List<FlightEntry> flights){
+    if (query.isEmpty) return [];    
+    return flights.expand((el) => el.flight.flight).where((e){
+      final no = e.no.toLowerCase().replaceAll(' ', '');
+      final airline = e.airline.toLowerCase();
+      final airlineName = (Database.airlineCodes[e.airline] ?? '').toLowerCase();
 
-  return flights
-      .expand((el) => el.flight.flight)
-      .where((f) {
-        final no = f.no.toLowerCase().replaceAll(' ', '');
-        final airline = f.airline.toLowerCase();
-        final airlineName = (Database.airlineCodes[f.airline] ?? '').toLowerCase();
-        final lowerQuery = query.toLowerCase();
-
-        return no.contains(lowerQuery) ||
-            airline.contains(lowerQuery) ||
-            airlineName.contains(lowerQuery);
-      })
-      .map((f) {
-        final airlineName = Database.airlineCodes[f.airline] ?? '';
-        return "${f.no} (${f.airline} – $airlineName)";  
-        // например: "DL123 (DAL – Delta Air Lines)"
-      })
-      .toList();
-}
+      return no.contains(query) ||
+      airline == query ||
+      airlineName.contains(query);
+    }).map((e) => e.no).toList();
+  }
 
 
 
@@ -328,7 +318,7 @@ class _FlightsPageState extends State<FlightsPage> {
                                             isSearching = value.isNotEmpty;
                                             _searchQuery = value;
                                             searchItems = searchFlight(value);
-                                            queryResults = displayAirlines(_searchQuery, searchItems);
+                                            queryResults = displayQuery(_searchQuery, searchItems);
                                           });                                   
                                         },
                                         onSubmitted: (value) {
