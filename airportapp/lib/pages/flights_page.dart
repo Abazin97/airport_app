@@ -210,7 +210,7 @@ class _FlightsPageState extends State<FlightsPage> {
 
   // dropdown menu filter
   List<String> displayQuery(String query, List<FlightEntry> flights){
-    if (query.isEmpty) return [];    
+    if (query.isEmpty) return [];   
     return flights.expand((el) => el.flight.flight).where((e){
       final no = e.no.toLowerCase().replaceAll(' ', '');
       final airline = e.airline.toLowerCase();
@@ -221,8 +221,6 @@ class _FlightsPageState extends State<FlightsPage> {
       airlineName.contains(query);
     }).map((e) => e.no).toList();
   }
-
-
 
 
   List<FlightEntry> searchFlight(String query) { 

@@ -419,6 +419,7 @@ class Database {
     "YNT": "Yantai",
     "CGQ": "Changchun",
     "KWE": "Guiyang",
+    "NKG": "Nanjing",
     "WUH": "Wuhan",
     "DLC": "Dalian",
     "XIY": "Xian/Xianyang",
