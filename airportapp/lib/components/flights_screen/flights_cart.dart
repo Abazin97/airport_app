@@ -182,7 +182,7 @@ class FlightsCart extends StatelessWidget {
                                                 Text(time, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]))
                                               ],
                                             ),
-                                            SizedBox(width: 90),
+                                            SizedBox(width: 70),
                                             Column(
                                               children: [
                                                 Text(isArrival ? 'Baggage Reclaim' : 'Gate', style: TextStyle(color: Colors.blue[900])),

@@ -1,5 +1,7 @@
 import 'package:airportapp/components/home_screen/cell_item.dart';
+import 'package:airportapp/components/nav_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Cell extends StatelessWidget {
@@ -15,12 +17,16 @@ class Cell extends StatelessWidget {
           final _url = Uri.parse(item.link!);
           await launchUrl(_url, mode: LaunchMode.inAppWebView);
         }else if(item.screen != null){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => item.screen!,
-            ),
-          );
+          if (item.index == 5){
+            Provider.of<NavProvider>(context, listen: false).pageIndex = item.index!;
+          }else{
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => item.screen!,
+              ),
+            );
+          }
         }
       },
       child: Column(
@@ -33,8 +39,11 @@ class Cell extends StatelessWidget {
               color: Colors.indigo[700],
               borderRadius: BorderRadius.circular(8)
             ),
+            clipBehavior: Clip.hardEdge,
             child: Center(
-              child: Image.asset(item.image),
+              child: Image.asset(
+                item.image,
+                fit: BoxFit.contain),
             ),
           ),
           const SizedBox(height: 15),

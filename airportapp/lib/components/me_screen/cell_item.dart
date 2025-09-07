@@ -11,9 +11,9 @@ class CellItem {
 
   static List<CellItem> getCellList() {
     return [
-      CellItem(name: 'World of Ice Cream', image: 'lib/images/world_of_icecream.jpg', link: 'https://hkairportshop.com/eshop_en/icecream25'),
-      CellItem(name: 'HKairportShop.com', image: 'lib/images/early_summer_delights.jpg', link: 'https://hkairportshop.com/eshop_en/summerdelights25'),
-      CellItem(name: 'Luxury Concierge', image: 'lib/images/luxury_concierge.jpg', link: 'https://hkairportshop.com/concierge')
+      CellItem(name: 'World of Ice Cream', image: 'lib/assets/world_of_icecream.jpg', link: 'https://hkairportshop.com/eshop_en/icecream25'),
+      CellItem(name: 'HKairportShop.com', image: 'lib/assets/early_summer_delights.jpg', link: 'https://hkairportshop.com/eshop_en/summerdelights25'),
+      CellItem(name: 'Luxury Concierge', image: 'lib/assets/luxury_concierge.jpg', link: 'https://hkairportshop.com/concierge')
     ];
   }
 }

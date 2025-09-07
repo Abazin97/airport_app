@@ -1,4 +1,3 @@
-import 'package:airportapp/components/auth_layout.dart';
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:airportapp/services/auth_service.dart';

@@ -13,7 +13,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class FlightsPage extends StatefulWidget {
-  const FlightsPage({super.key});
+  final bool autofocus;
+  const FlightsPage({super.key, this.autofocus = false});
 
   @override
   State<FlightsPage> createState() => _FlightsPageState();
@@ -210,16 +211,35 @@ class _FlightsPageState extends State<FlightsPage> {
 
   // dropdown menu filter
   List<String> displayQuery(String query, List<FlightEntry> flights){
-    if (query.isEmpty) return [];   
-    return flights.expand((el) => el.flight.flight).where((e){
-      final no = e.no.toLowerCase().replaceAll(' ', '');
-      final airline = e.airline.toLowerCase();
-      final airlineName = (Database.airlineCodes[e.airline] ?? '').toLowerCase();
+    List<String> queryData = [];
 
-      return no.contains(query) ||
-      airline == query ||
-      airlineName.contains(query);
-    }).map((e) => e.no).toList();
+    return flights.expand((e) {
+      if (e.flight.destination?.any((d) => d.contains(query)) ?? false){
+        queryData.addAll(e.flight.destination!.where((d) => d.contains(query.toLowerCase())));
+      }
+      if (e.flight.origin?.any((o) => o.contains(query)) ?? false){
+        queryData.addAll(e.flight.origin!.where((d) => d.contains(query.toLowerCase())));
+      }
+      final matchingFlights = e.flight.flight.where((e){
+        final no = e.no.toLowerCase().replaceAll(' ', '');
+        final airline = e.airline.toLowerCase();
+        final airlineName = (Database.airlineCodes[e.airline] ?? '').toLowerCase();
+        return no.contains(query.toLowerCase()) ||
+        airline == query ||
+        airlineName.contains(query);
+      });
+      return queryData;
+    }).toList();
+    // return flights.expand((el) => el.flight.flight).where((e){
+    //   final no = e.no.toLowerCase().replaceAll(' ', '');
+    //   final airline = e.airline.toLowerCase();
+    //   final airlineName = (Database.airlineCodes[e.airline] ?? '').toLowerCase();
+
+    //   return no.contains(query) ||
+    //   airline == query ||
+    //   airlineName.contains(query);
+    // }).map((e) => e.no).toList();
+    
   }
 
 
@@ -255,7 +275,7 @@ class _FlightsPageState extends State<FlightsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[600],
+      backgroundColor: Colors.blue[800],
       body: Stack(
         children: [
           CustomScrollView(
@@ -264,10 +284,10 @@ class _FlightsPageState extends State<FlightsPage> {
               : const BouncingScrollPhysics(),
             slivers: [
               SliverAppBar(
-                pinned: true,
+                //pinned: true,
                 floating: true,
                 expandedHeight: 400,
-                backgroundColor: Colors.blue[600],
+                backgroundColor: Colors.blue[800],
                 leading: IconButton(
                     onPressed: () {
                       Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
@@ -290,7 +310,7 @@ class _FlightsPageState extends State<FlightsPage> {
                     ),
                   ),
                 centerTitle: true,
-                toolbarHeight: 50, 
+                toolbarHeight: 50,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Padding(
                     padding: EdgeInsets.only(top: kToolbarHeight + MediaQuery.of(context).padding.top),
@@ -311,6 +331,7 @@ class _FlightsPageState extends State<FlightsPage> {
                                   children: [
                                     Expanded(
                                       child: TextField(
+                                        autofocus: widget.autofocus,
                                         onChanged: (value) {
                                           setState(() {
                                             isSearching = value.isNotEmpty;

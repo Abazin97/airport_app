@@ -18,7 +18,7 @@ class Mcdonalds extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Image.asset('lib/images/mcdonalds-shop-front.jpg'),
+          Image.asset('lib/assets/mcdonalds-shop-front.jpg'),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -32,7 +32,7 @@ class Mcdonalds extends StatelessWidget {
               children: [
                 
                 ExpansionTile(
-                  title: Text('Near Check-in Aisle F, Departures..', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  title: Text('Near Check-in Aisle F, Departures Level(L8)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   children: [
                     GestureDetector(
                       onTap: () {},
@@ -40,7 +40,12 @@ class Mcdonalds extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Icon(Icons.map_outlined, color: Colors.grey[500]),
-                          Text('Near Check-in Aisle F, Departures\nLevel (L8), Terminal 1\n(Non-Restricted Area)', style: TextStyle(fontSize: 16)),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text('Near Check-in Aisle F, Departures Level (L8), Terminal 1\n(Non-Restricted Area)', style: TextStyle(fontSize: 16)),
+                            ),
+                          ),
                           Icon(Icons.location_on_outlined, color: Colors.blue[800],),
                         ],
                       ),
@@ -72,6 +77,7 @@ class Mcdonalds extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(Icons.more_time, color: Colors.grey[500]),
+                          SizedBox(width: 20),
                           Row(
                             children: [
                               Text('Open now', style: TextStyle(fontSize: 16, color: Colors.red)),
@@ -92,7 +98,12 @@ class Mcdonalds extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Icon(Icons.map_outlined, color: Colors.grey[500]),
-                          Text('Near Gate 11, Departures Level (L6)\nTerminal 1\n(Restricted Area)', style: TextStyle(fontSize: 16)),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text('Near Gate 11, Departures Level (L6)\nTerminal 1\n(Restricted Area)', style: TextStyle(fontSize: 16)),
+                            ),
+                          ),
                           Icon(Icons.location_on_outlined, color: Colors.blue[800],),
                         ],
                       ),
@@ -124,6 +135,7 @@ class Mcdonalds extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(Icons.more_time, color: Colors.grey[500]),
+                          SizedBox(width: 20),
                           Row(
                             children: [
                               Text('Open now', style: TextStyle(fontSize: 16, color: Colors.red)),

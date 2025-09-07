@@ -23,7 +23,7 @@ class BottomNavBar extends StatelessWidget {
                   text: 'HOME',
                   index: 0,
                   icon: Icons.home, 
-                  active: currentIndex == 0,
+                  active: currentIndex == 0 || currentIndex == 4 || currentIndex == 5
                 ),
                 BottomNavWid(
                   text: 'FLIGHTS',

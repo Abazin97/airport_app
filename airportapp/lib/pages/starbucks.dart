@@ -21,7 +21,7 @@ class Starbucks extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Image.asset('lib/images/starbucks-shop-front.jpg'),
+          Image.asset('lib/assets/starbucks-shop-front.jpg'),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

@@ -23,7 +23,9 @@ class _ReconnectTagsState extends State<ReconnectTags>{
     super.initState();
     _tapRecognizer = TapGestureRecognizer()
     ..onTap = () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalStatement()));
+      Navigator.push(context, MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => PersonalStatement()));
     };
   }
 
@@ -111,7 +113,9 @@ class _ReconnectTagsState extends State<ReconnectTags>{
                 Text('By clicking "Confirm", i have read and agreed to the following Terms & Conditions:'),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TermsConditions1()));
+                    Navigator.push(context, MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => TermsConditions1()));
                   },
                   child: Text(
                     '-Use of MyTAG Series', 
@@ -120,7 +124,9 @@ class _ReconnectTagsState extends State<ReconnectTags>{
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TermsConditions2()));
+                    Navigator.push(context, MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => TermsConditions2()));
                   },
                   child: Text(
                     '-Use of the Baggage Arrival Notice Service', 
@@ -139,7 +145,6 @@ class _ReconnectTagsState extends State<ReconnectTags>{
                     ]
                   ),
                 )
-                
               ]
             )
           )

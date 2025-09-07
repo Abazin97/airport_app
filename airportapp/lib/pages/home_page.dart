@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       });
     }
     catch(e){
-      debugPrint(e as String);
+      debugPrint(e.toString());
     }
   }
 
@@ -114,12 +114,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[600],
+      backgroundColor: Colors.blue[800],
       appBar: AppBar(
         leading: null,
         actions: [Container()],
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue[600],
+        backgroundColor: Colors.blue[800],
         elevation: 0,
         title: Padding(
           padding: const EdgeInsets.only(top: 15),
@@ -163,6 +163,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                           context, 
                           MaterialPageRoute(
+                            fullscreenDialog: true,
                             builder: (context) => TrackMyBag()
                           )
                         );
@@ -179,12 +180,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (context){
                     return IconButton(
                       onPressed: (){
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(
-                            builder: (context) => InboxPage()
-                          )
-                        );
+                        Provider.of<NavProvider>(context, listen: false).pageIndex = 4;
                       }, 
                       icon: Icon(
                         Icons.mail_outline,
@@ -222,36 +218,34 @@ class _HomePageState extends State<HomePage> {
                 //search bar
                 children: [
                   Flexible(
-                    child: InkWell(
-                      onTap: () {
-                        context.read<NavProvider>().pageIndex = 1;
-                      },
-                      child: Container(
-                        height: 50,
-                        padding: EdgeInsets.all(12),
-                        margin: const EdgeInsets.symmetric(horizontal: 25),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: 'e.g. Airport, Flight no., Airline or Time',
-                                  hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                                  border: InputBorder.none,
-                                  isCollapsed: true,
-                                ),
+                    child: Container(
+                      height: 50,
+                      padding: EdgeInsets.all(12),
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              onTap: () {
+                                context.read<NavProvider>().pageIndex = 1;
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'e.g. Airport, Flight no., Airline or Time',
+                                hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                border: InputBorder.none,
+                                isCollapsed: true,
                               ),
                             ),
-                            Icon(
-                              Icons.search,
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
+                          ),
+                          Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -318,8 +312,8 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Container(
                               margin: const EdgeInsets.only(right: 40),
-                              height: 150,
-                              width: 370,
+                              height: 140,
+                              width: 320,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.grey[200],
@@ -364,7 +358,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(top: 70, left: 15),
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  child: Text('Explore HKIA', 
+                  child: Text('Top picks for you', 
                     style: TextStyle(
                       color: Colors.white, 
                       fontWeight: FontWeight.bold,

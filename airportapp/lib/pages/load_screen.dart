@@ -45,7 +45,7 @@ class _LoadScreenState extends State<LoadScreen> with SingleTickerProviderStateM
               child: Column(
                 children: [
                   SizedBox(height: 150),
-                  Image.asset('lib/images/airport_logo.png'),
+                  Image.asset('lib/assets/airport_logo.png'),
                   Text(
                     'Experience your way',
                     style: TextStyle(
@@ -67,14 +67,14 @@ class _LoadScreenState extends State<LoadScreen> with SingleTickerProviderStateM
               child: Row(
                   children: [
                     Image.asset(
-                      'lib/images/idc.png',
+                      'lib/assets/idc.png',
                       fit: BoxFit.cover,
                       width: 190,
                       height: 75,
                     ),
                     SizedBox(width: 50),
                     Image.asset(
-                      'lib/images/award.png',
+                      'lib/assets/award.png',
                       fit: BoxFit.cover,
                       width: 100,
                       height: 100,

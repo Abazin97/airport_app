@@ -22,20 +22,20 @@ class CalendarCell extends StatelessWidget {
         height: 60,
         width: 50,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.yellow : Colors.blue[600],
+          color: isSelected ? Colors.yellow : Colors.blue[800],
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if(isSelected && index == 1)
-              Text('(Today)', style: TextStyle(color: Colors.blue[600], fontSize: 13)),
+              Text('(Today)', style: TextStyle(color: Colors.blue[900], fontSize: 13)),
             Text(
               day,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.blue[600] : Colors.white,
+                color: isSelected ? Colors.blue[900] : Colors.white,
               ),
             ),
             const SizedBox(height: 3),
@@ -43,7 +43,7 @@ class CalendarCell extends StatelessWidget {
               weekday,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.blue[600] : Colors.white,
+                color: isSelected ? Colors.blue[900] : Colors.white,
               ),
             ),
           ],

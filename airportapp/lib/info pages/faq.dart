@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Faq extends StatelessWidget {
   Faq({super.key});
@@ -84,8 +85,9 @@ class Faq extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: (){
-
+            onPressed: ()async{
+              final urlPreview = 'https://www.hongkongairport.com/apps/contentPage?pageId=local_transport_faq';
+              await SharePlus.instance.share(ShareParams(text: 'I would like to share "FAQ" with you.\n\nClick here for details: $urlPreview', subject: 'I would like to share "FAQ" with you.'));
             }, 
             icon: Icon(Icons.share, 
             color: Colors.white,))
@@ -93,7 +95,7 @@ class Faq extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Image.asset('lib/images/section-banner-airport-authority.jpg'),
+          Image.asset('lib/assets/section-banner-airport-authority.jpg'),
           Padding(
             padding: const EdgeInsets.only(top: 40, left: 25, right: 25, bottom: 40),
             child: Text('If you are looking for information on transport in and around Hong Kong, please feel free to contact the appropriate service providers. Their contact details are as follows.', style: TextStyle(fontSize: 18),),

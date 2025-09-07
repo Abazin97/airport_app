@@ -60,7 +60,7 @@ class TrackMyBag extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Image.asset('lib/images/MyTAG_Series.png'),
+          Image.asset('lib/assets/MyTAG_Series.png'),
           Padding(
             padding: const EdgeInsets.only(top: 40, left: 25, right: 25, bottom: 40),
             child: Text('MyTAG Series', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -96,7 +96,7 @@ class TrackMyBag extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
                 child: Column(
                   children: [
-                    Image.asset('lib/images/mytag.png', fit: BoxFit.contain),
+                    Image.asset('lib/assets/mytag.png', fit: BoxFit.contain),
                     Padding(
                       padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
                       child: Row(

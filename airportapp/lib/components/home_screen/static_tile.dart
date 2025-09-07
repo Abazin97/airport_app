@@ -15,7 +15,7 @@ class StaticTile extends StatelessWidget{
       child: Container(
         margin: const EdgeInsets.only(right: 10, left: 10),
         height: 300,
-        width: 300,
+        width: 270,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
