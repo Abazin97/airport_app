@@ -57,6 +57,9 @@ class _ShopPageState extends State<ShopPage> {
                       children: [
                         Expanded(
                           child: TextField(
+                            onTap: () {
+                              context.read<NavProvider>().pageIndex = 6;
+                            },
                             onChanged: (value) {
                               setState(() {
                   
@@ -125,7 +128,7 @@ class _ShopPageState extends State<ShopPage> {
   Widget shopTile(String name, IconData icon){
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ShopListPage()));
+        Provider.of<NavProvider>(context, listen: false).pageIndex = 6;
       },
       child: Container(
         width: 160,

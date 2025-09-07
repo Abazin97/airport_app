@@ -20,7 +20,7 @@ class CellItem {
     return [
       CellItem(name: 'Service\nBooking', image: 'lib/assets/cell1.png', link: 'https://www.hkairportbooking.com'),
       CellItem(name: 'Valet Parking', image: 'lib/assets/cell2.png', screen: TransportToFrom(), index: 5),
-      CellItem(name: 'Car park', image: 'lib/assets/cell3.png', screen: TransportToFrom()),
+      CellItem(name: 'Car park', image: 'lib/assets/cell3.png', screen: TransportToFrom(), index: 2),
       CellItem(name: 'My Tag', image: 'lib/assets/cell4.png', screen: TrackMyBag()),
       CellItem(name: 'HKairport\nShop', image: 'lib/assets/cell5.png', link: 'https://hkairport.com'),
       CellItem(name: 'Food Pre\nOrdering', image: 'lib/assets/cell6.png', link: 'https://mobile.hongkongairportfood.com'),

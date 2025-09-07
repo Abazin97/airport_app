@@ -1,8 +1,7 @@
 import 'package:airportapp/components/nav_provider.dart';
-import 'package:airportapp/pages/home_screen.dart';
-import 'package:airportapp/pages/shop_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 
 class ShopListPage extends StatefulWidget {
   const ShopListPage({super.key});
@@ -20,10 +19,6 @@ class _ShopListPageState extends State<ShopListPage> {
         leading: IconButton(
           onPressed: () {
             Provider.of<NavProvider>(context, listen: false).pageIndex = 2;
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
           },
           icon: Icon(
             Icons.arrow_back_ios_outlined,
@@ -57,6 +52,7 @@ class _ShopListPageState extends State<ShopListPage> {
                       children: [
                         Expanded(
                           child: TextField(
+                            autofocus: true,
                             onChanged: (value) {
                               setState(() {
                   

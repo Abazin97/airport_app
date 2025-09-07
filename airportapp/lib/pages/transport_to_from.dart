@@ -22,15 +22,15 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class TransportToFrom extends StatefulWidget {
-  
-  const TransportToFrom({super.key});
+  final int? pageIndex;
+  const TransportToFrom({super.key, this.pageIndex});
 
   @override
   State<TransportToFrom> createState() => _TransportToFromState();
 }
 
 class _TransportToFromState extends State<TransportToFrom> {
-  int selectedIndex = 0;
+  int selectedIndex = 3;
   late List<Widget> pages;
   final List<Widget> infoPages = [
     const AirportExpress(),
@@ -46,6 +46,9 @@ class _TransportToFromState extends State<TransportToFrom> {
 
   @override
   void initState(){
+    if (widget.pageIndex == 2){
+      selectedIndex = widget.pageIndex!;
+    }
     pages = [
       toFrom(),
       connection(),
@@ -72,10 +75,16 @@ class _TransportToFromState extends State<TransportToFrom> {
         ),
         leading: IconButton(
           onPressed: () {
-            Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
+            if (widget.pageIndex == 2){
+              Navigator.pop(context);
+            }else{
+              Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
+            }
           },
           icon: Icon(
-            Icons.arrow_back_ios_outlined,
+            widget.pageIndex == 2
+            ? Icons.close
+            : Icons.arrow_back_ios_outlined,
             color: Colors.white,
           )
         ),

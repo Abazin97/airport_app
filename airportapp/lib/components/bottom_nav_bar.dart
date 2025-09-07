@@ -35,7 +35,7 @@ class BottomNavBar extends StatelessWidget {
                   text: 'SHOP & DINE',
                   index: 2,
                   icon: Icons.shopping_bag_outlined, 
-                  active: currentIndex == 2,
+                  active: currentIndex == 2 || currentIndex == 6,
                 ),
                 BottomNavWid(
                   text: 'ME',

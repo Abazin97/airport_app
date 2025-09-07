@@ -4,6 +4,7 @@ import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/pages/flights_page.dart';
 import 'package:airportapp/pages/home_page.dart';
 import 'package:airportapp/pages/inbox_page.dart';
+import 'package:airportapp/pages/shop_list_page.dart';
 import 'package:airportapp/pages/shop_page.dart';
 import 'package:airportapp/pages/transport_to_from.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,8 @@ class HomeScreen extends StatelessWidget {
     const ShopPage(),
     const AuthLayout(),
     const InboxPage(),
-    const TransportToFrom(),
+    const TransportToFrom(pageIndex: 5),
+    const ShopListPage(),
   ];
 
   @override

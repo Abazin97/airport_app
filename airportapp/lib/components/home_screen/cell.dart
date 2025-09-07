@@ -1,5 +1,6 @@
 import 'package:airportapp/components/home_screen/cell_item.dart';
 import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/pages/transport_to_from.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,12 +21,7 @@ class Cell extends StatelessWidget {
           if (item.index == 5){
             Provider.of<NavProvider>(context, listen: false).pageIndex = item.index!;
           }else{
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => item.screen!,
-              ),
-            );
+            Navigator.push(context, MaterialPageRoute(fullscreenDialog: true, builder: (context) => TransportToFrom(pageIndex: item.index,)));
           }
         }
       },
