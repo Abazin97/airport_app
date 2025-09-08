@@ -1,6 +1,5 @@
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
-import 'package:airportapp/pages/shop_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

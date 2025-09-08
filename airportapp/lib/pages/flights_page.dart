@@ -417,7 +417,7 @@ class _FlightsPageState extends State<FlightsPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 90,
+                          height: 80,
                           child: ListView.builder(
                             itemCount: Database.tileLinksFlights.length,
                             scrollDirection: Axis.horizontal,
@@ -430,14 +430,14 @@ class _FlightsPageState extends State<FlightsPage> {
                                 child: Container(
                                   margin: const EdgeInsets.only(right: 10, left: 10),
                                   height: 100,
-                                  width: 150,
+                                  width: 180,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(color: Colors.white, width: 3),
                                   ),
                                   child: Image.asset(
                                     Database.imageHome[index],
-                                    fit: BoxFit.contain,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               );

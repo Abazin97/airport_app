@@ -1,5 +1,6 @@
 import 'package:airportapp/components/home_screen/cell_item.dart';
 import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/pages/track_my_bag.dart';
 import 'package:airportapp/pages/transport_to_from.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +21,10 @@ class Cell extends StatelessWidget {
         }else if(item.screen != null){
           if (item.index == 5){
             Provider.of<NavProvider>(context, listen: false).pageIndex = item.index!;
-          }else{
+          }else if (item.index == 2){
             Navigator.push(context, MaterialPageRoute(fullscreenDialog: true, builder: (context) => TransportToFrom(pageIndex: item.index,)));
+          }else{
+            Navigator.push(context, MaterialPageRoute(fullscreenDialog: true, builder: (context) => TrackMyBag()));
           }
         }
       },

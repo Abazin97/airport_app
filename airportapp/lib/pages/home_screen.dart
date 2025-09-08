@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
     const ShopPage(),
     const AuthLayout(),
     const InboxPage(),
-    const TransportToFrom(pageIndex: 5),
+    const TransportToFrom(),
     const ShopListPage(),
   ];
 

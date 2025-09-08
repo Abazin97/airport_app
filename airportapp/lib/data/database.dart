@@ -20,25 +20,28 @@ class Database {
   static List<String> imageHome = [
     'lib/assets/world_of_icecream.jpg',
     'lib/assets/early_summer_delights.jpg',
-    'lib/assets/baggage-porter-service.jpg',
+    'lib/assets/ae.png',
     'lib/assets/meet&assist.png',
     'lib/assets/vintage_buggy.jpg',
+    'lib/assets/cityflyer.jpg'
   ];
 
   static List<String> tileLinksHome = [
     'https://hkairportshop.com/eshop_en/icecream25',
     'https://hkairportshop.com/eshop_en/summerdelights25',
-    'https://www.hkairportbooking.com/en/ppg00015.html',
+    'https://www.hkairportbooking.com/en/wct00001.html',
     'https://www.hkairportbooking.com/en/ppg00016.html',
     'https://www.hkairportbooking.com/en/ppg00013.html',
+    'https://www.hkairportbooking.com/en/ctf00001.html'
   ];
 
   static List<String> tileNames = [
     'World of Ice Cream',
     'HKairportShop.com',
-    'Porter Service',
+    'Airport Express',
     'Meet and Assist with Add-on Services',
     'Airport Vintage Buggy Service',
+    'Round Trip Ticket'
   ];
 
   static const Map<String, String> airlineCodes = {

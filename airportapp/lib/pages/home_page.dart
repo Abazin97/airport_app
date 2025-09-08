@@ -11,6 +11,7 @@ import 'package:airportapp/models/weather_model.dart';
 import 'package:airportapp/pages/track_my_bag.dart';
 import 'package:airportapp/services/weather_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  late Timer _timer;
 
 
   //get weather info via API
@@ -87,24 +89,32 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _fetchWeather();
     Future.delayed(Duration(seconds: 1),() {
-      Timer.periodic(Duration(seconds: 4), (Timer timer) {
+      _timer = Timer.periodic(Duration(seconds: 4), (Timer timer) {
         if (_currentPage < Database.imageHome.length - 1) {
-          _currentPage++;
-        } else {
-          _currentPage = 0;
-        }
-
-        _pageController.animateToPage(
-          _currentPage,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.linear,
-        );
-      });
+            _currentPage++;
+          } else {
+            _currentPage = 0;
+          }
+          if (mounted && _pageController.hasClients){
+            _pageController.animateToPage(
+              _currentPage,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.linear,
+            );
+          }
+        });
     });
+  }
+
+  void stopAutoScroll(){
+    if(_timer.isActive){
+      _timer.cancel();
+    }
   }
 
   @override
   void dispose() {
+    _timer.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -296,60 +306,68 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(top: 20, left: 15),
                 child: SizedBox(
                   height: 190,
-                  child: PageView.builder(
-                    itemCount: Database.imageHome.length,
-                    scrollDirection: Axis.horizontal,
-                    controller: _pageController,
-                    itemBuilder: (context, index){
-                      return GestureDetector(
-                        onTap: () async {
-                          final _url = Uri.parse(Database.tileLinksHome[index]);
-                          await launchUrl(_url, mode: LaunchMode.inAppWebView);
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 40),
-                              height: 140,
-                              width: 320,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.grey[200],
-                              ),
-                              clipBehavior: Clip.hardEdge,
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.asset(
-                                    Database.imageHome[index],
-                                    fit: BoxFit.fill,
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Container(
-                                      height: 30,
-                                      width: 60,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.black.withValues(alpha: 0.4)),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text('${index+1}/5', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                                          Icon(Icons.rectangle_rounded, color: Colors.white)
-                                        ],
-                                      ),
+                  child: NotificationListener<UserScrollNotification>(
+                    onNotification: (notification) {
+                      if(notification.direction != ScrollDirection.idle){
+                        stopAutoScroll();
+                      }
+                      return false;
+                    },
+                    child: PageView.builder(
+                      itemCount: Database.imageHome.length,
+                      scrollDirection: Axis.horizontal,
+                      controller: _pageController,
+                      itemBuilder: (context, index){
+                        return GestureDetector(
+                          onTap: () async {
+                            final _url = Uri.parse(Database.tileLinksHome[index]);
+                            await launchUrl(_url, mode: LaunchMode.inAppWebView);
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(right: 40),
+                                height: 140,
+                                width: 320,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.grey[200],
+                                ),
+                                clipBehavior: Clip.hardEdge,
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    Image.asset(
+                                      Database.imageHome[index],
+                                      fit: BoxFit.cover,
                                     ),
-                                  )
-                                ]
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                        height: 30,
+                                        width: 60,
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.black.withValues(alpha: 0.4)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text('${index+1}/6', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                                            Icon(Icons.rectangle_rounded, color: Colors.white)
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ]
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 15),
-                            Text(Database.tileNames[index], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),)
-                          ],
-                        ),
-                      );
-                    }
+                              SizedBox(height: 15),
+                              Text(Database.tileNames[index], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),)
+                            ],
+                          ),
+                        );
+                      }
+                    ),
                   ),
                 ),
               ),
