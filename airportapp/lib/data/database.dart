@@ -1,3 +1,10 @@
+import 'package:airportapp/pages/beauty_you.dart';
+import 'package:airportapp/pages/mcdonalds.dart';
+import 'package:airportapp/pages/men_wah_bing_teng.dart';
+import 'package:airportapp/pages/seven_eleven.dart';
+import 'package:airportapp/pages/starbucks.dart';
+import 'package:flutter/widgets.dart';
+
 class Database {
   static List<String> imageFlights = [
     'lib/assets/pocket_wifi.jpg',
@@ -42,6 +49,51 @@ class Database {
     'Meet and Assist with Add-on Services',
     'Airport Vintage Buggy Service',
     'Round Trip Ticket'
+  ];
+
+  static List<String> tileLinksShop = [
+    'https://hkairportshop.com/eshop_en?srsltid=AfmBOoq7u7TdLB4y1CzpTcLfNka4Sa11NmLOq1BK0ttRG0ezxUCWvpNw',
+    'https://www.hongkongairport.com/en/shop-dine/highlights-promotions/hkia-dollar',
+    'https://hkairportshop.com/concierge_en?srsltid=AfmBOoo9IYXsOPulQ04Abo-1hdm940xDQDeuUcL1LICJRYrP3HzfKrmS',
+    'https://www.hongkongairport.com/en/shop-dine/highlights-promotions/halal'
+  ];
+
+  static List<String> imageShop = [
+    'lib/assets/autumn_sale.jpg',
+    'lib/assets/hkia-dollar-en.jpg',
+    'lib/assets/concierge.png',
+    'lib/assets/halal-detail.jpg'
+  ];
+
+  static List<String> tileNamesShop = [
+    'HKairportShop.com',
+    'HKIA Dollar',
+    'Luxury Concierge',
+    'Discover Halal Options at HKIA'
+  ];
+
+  static List<Widget> tileWidgetList = [
+    BeautyAndYou(),
+    Mcdonalds(),
+    Starbucks(),
+    MenWahBingTeng(),
+    SevenEleven()
+  ];
+
+  static List<String> smallTileNamesShop = [
+    'Beaty&You by The Shilla Duty Free',
+    'McDonalds',
+    'STARBUCKS',
+    'Men Wah Bing Teng',
+    '7-ELEVEN'
+  ];
+
+  static List<String> smallTileImageShop = [
+    'lib/assets/beauty.jpg',
+    'lib/assets/mcdonalds-shop-front.jpg',
+    'lib/assets/starbucks-shop-front.jpg',
+    'lib/assets/men_wah_bing_teng-shop-front.jpg',
+    'lib/assets/seven-eleven-shop-front-photo.jpg'
   ];
 
   static const Map<String, String> airlineCodes = {

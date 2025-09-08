@@ -10,7 +10,7 @@ class StaticTile extends StatelessWidget{
   Widget build(BuildContext context){
     return GestureDetector(
       onTap: () {
-        Navigator.push((context), MaterialPageRoute(builder: (_) => item.screen));
+        Navigator.push((context), MaterialPageRoute(fullscreenDialog: true, builder: (_) => item.screen));
       },
       child: Container(
         margin: const EdgeInsets.only(right: 10, left: 10),

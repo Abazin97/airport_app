@@ -78,7 +78,7 @@ class _ShopListPageState extends State<ShopListPage> {
                 IconButton(
                   onPressed: () {},
                   icon: Icon(
-                    Icons.document_scanner,
+                    Icons.filter_list,
                     color: Colors.white,
                   ),
                 ),

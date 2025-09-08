@@ -1,7 +1,9 @@
 import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/data/database.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -84,7 +86,7 @@ class _ShopPageState extends State<ShopPage> {
                 IconButton(
                   onPressed: () {},
                   icon: Icon(
-                    Icons.document_scanner,
+                    Icons.filter_list,
                     color: Colors.white,
                   ),
                 ),
@@ -100,22 +102,162 @@ class _ShopPageState extends State<ShopPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('What are you looking for?', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    shopTile('Shop', Icons.shopping_bag_outlined),
-                    shopTile('Dine', Icons.dining_outlined),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      shopTile('Shop', Icons.shopping_bag_outlined),
+                      shopTile('Dine', Icons.dining_outlined),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     shopTile('HKairport\nRewards', Icons.card_giftcard_rounded),
                     shopTile('My Favourites', Icons.bookmark_outline)
                   ],
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 40, bottom: 20),
+                  child: Text('Highlights & Promotions', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                ),
+                SizedBox(
+                  height: 180,
+                  child: ListView.builder(
+                    itemCount: Database.tileNamesShop.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index){
+                      return GestureDetector(
+                        onTap: () async{
+                          final _url = Uri.parse(Database.tileLinksShop[index]);
+                          await launchUrl(_url, mode: LaunchMode.inAppWebView);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              height: 140,
+                              width: 270,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.grey[200],
+                              ),
+                              clipBehavior: Clip.hardEdge,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.asset(
+                                    Database.imageShop[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ]
+                              ),
+                            ),
+                            SizedBox(height: 15),
+                            Text(Database.tileNamesShop[index], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                          ],
+                        ),
+                      );
+                    }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 50, bottom: 20),
+                  child: Text('You may also like', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                ),
+                SizedBox(
+                  height: 210,
+                  child: ListView.builder(
+                    itemCount: Database.tileNamesShop.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index){
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (builder) => Database.tileWidgetList[index]));
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              height: 140,
+                              width: 140,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.grey[200],
+                              ),
+                              clipBehavior: Clip.hardEdge,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.asset(
+                                    Database.smallTileImageShop[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ]
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            SizedBox(
+                              width: 120,
+                              child: Column(
+                                children: [
+                                  Text(Database.smallTileNamesShop[index], textAlign: TextAlign.start, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 80, bottom: 20),
+                  child: Text('Explore the exclusive shop & dine options near you now!', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 60, right: 60, bottom: 80),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          'Please turn on Bluetooth and Location Services',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          overlayColor: Colors.blue[900],
+                          minimumSize: Size(double.infinity, 40),
+                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              'Refresh',
+                              style: TextStyle(
+                                color: Colors.blue[900],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Icon(
+                              Icons.refresh,
+                              color: Colors.blue[900],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
               ],
             ),
           )
@@ -160,7 +302,7 @@ class _ShopPageState extends State<ShopPage> {
                 child: Row(
                   children: [
                     Icon(icon, color: Colors.blue[900],),
-                    Text(name),
+                    Text(name, style: TextStyle(fontWeight: FontWeight.bold),),
                   ],
                 ),
               ))
