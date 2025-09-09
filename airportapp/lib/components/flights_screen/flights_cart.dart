@@ -88,7 +88,7 @@ class FlightsCart extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: SizedBox(
-                      height: 350,
+                      height: 370,
                       child: Column(
                         children: [
                           Expanded(
@@ -104,7 +104,7 @@ class FlightsCart extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            flex: 10,
+                            flex: 13,
                             child: Container(
                               width: double.infinity,
                               color: Colors.white,

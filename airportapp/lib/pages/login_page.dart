@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                             ),
-                            Image.asset('lib/images/login_asset.png')
+                            Image.asset('lib/assets/login_asset.png')
                           ],
                         ),
                       ),

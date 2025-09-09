@@ -41,6 +41,7 @@ class _FlightsPageState extends State<FlightsPage> {
   List<FlightEntry> _filteredFlights = [];
   List<String> queryResults = [];
   final dio = Dio();
+  final TextEditingController _controller = TextEditingController();
   String selected = 'All';
   String _searchQuery = "";
   int selectedIndex = 1;
@@ -210,36 +211,69 @@ class _FlightsPageState extends State<FlightsPage> {
   }
 
   // dropdown menu filter
-  List<String> displayQuery(String query, List<FlightEntry> flights){
-    List<String> queryData = [];
+    List<String> displayQuery(String query, List<FlightEntry> flights) {
+      final q = query.toLowerCase();
+      final List<String> results = [];
 
-    return flights.expand((e) {
-      if (e.flight.destination?.any((d) => d.contains(query)) ?? false){
-        queryData.addAll(e.flight.destination!.where((d) => d.contains(query.toLowerCase())));
-      }
-      if (e.flight.origin?.any((o) => o.contains(query)) ?? false){
-        queryData.addAll(e.flight.origin!.where((d) => d.contains(query.toLowerCase())));
-      }
-      final matchingFlights = e.flight.flight.where((e){
-        final no = e.no.toLowerCase().replaceAll(' ', '');
-        final airline = e.airline.toLowerCase();
-        final airlineName = (Database.airlineCodes[e.airline] ?? '').toLowerCase();
-        return no.contains(query.toLowerCase()) ||
-        airline == query ||
-        airlineName.contains(query);
+      Database.airportCodes.forEach((code, name) {
+        if (code.toLowerCase().contains(q) || name.toLowerCase().contains(q)) {
+          results.add(name);
+        }
       });
-      return queryData;
-    }).toList();
-    // return flights.expand((el) => el.flight.flight).where((e){
-    //   final no = e.no.toLowerCase().replaceAll(' ', '');
-    //   final airline = e.airline.toLowerCase();
-    //   final airlineName = (Database.airlineCodes[e.airline] ?? '').toLowerCase();
 
-    //   return no.contains(query) ||
-    //   airline == query ||
-    //   airlineName.contains(query);
-    // }).map((e) => e.no).toList();
-    
+      Database.airlineCodes.forEach((code, name) {
+        if (code.toLowerCase().contains(q) || name.toLowerCase().contains(q)) {
+          results.add(name);
+        }
+      });
+
+      for (final entry in flights) {
+        // destionation
+        // if (entry.flight.destination != null) {
+        //   for (final d in entry.flight.destination!) {
+        //     final code = d.toUpperCase();
+        //     final name = (Database.airportCodes[code] ?? "").toLowerCase();
+
+        //     if (code.toLowerCase().contains(q) || name.contains(q)) {
+        //       final display = Database.airportCodes[code] != null
+        //           ? "${Database.airportCodes[code]}"
+        //           : code;
+        //       results.add(display);
+        //     }
+        //   }
+        // }
+
+        // // origin
+        // if (entry.flight.origin != null) {
+        //   for (final o in entry.flight.origin!) {
+        //     final code = o.toUpperCase();
+        //     final name = (Database.airportCodes[code] ?? "").toLowerCase();
+
+        //     if (code.toLowerCase().contains(q) || name.contains(q)) {
+        //       final display = Database.airportCodes[code] != null
+        //           ? "${Database.airportCodes[code]}"
+        //           : code;
+        //       results.add(display);
+        //     }
+        //   }
+        // }
+
+        // flight nums
+        for (final f in entry.flight.flight) {
+          final no = f.no.toLowerCase().replaceAll(' ', '');
+          final airline = f.airline.toLowerCase();
+          final airlineName = (Database.airlineCodes[f.airline] ?? '').toLowerCase();
+
+          final prefix = no.length >= 2 ? no.substring(0, 2) : no;
+
+          if (prefix.startsWith(q) || airline.startsWith(q) || airlineName.contains(q)) {
+            results.add(f.no);
+          }
+        }
+      }
+
+
+    return results.toSet().toList();
   }
 
 
@@ -284,7 +318,7 @@ class _FlightsPageState extends State<FlightsPage> {
               : const BouncingScrollPhysics(),
             slivers: [
               SliverAppBar(
-                //pinned: true,
+                pinned: true,
                 floating: true,
                 expandedHeight: 400,
                 backgroundColor: Colors.blue[800],
@@ -331,13 +365,15 @@ class _FlightsPageState extends State<FlightsPage> {
                                   children: [
                                     Expanded(
                                       child: TextField(
+                                        controller: _controller,
                                         autofocus: widget.autofocus,
                                         onChanged: (value) {
                                           setState(() {
                                             isSearching = value.isNotEmpty;
                                             _searchQuery = value;
+                                            queryResults = displayQuery(_searchQuery, _flights);
                                             searchItems = searchFlight(value);
-                                            queryResults = displayQuery(_searchQuery, searchItems);
+                                            
                                           });                                   
                                         },
                                         onSubmitted: (value) {
@@ -509,8 +545,21 @@ class _FlightsPageState extends State<FlightsPage> {
     return ListView.builder(
       itemCount: queryResults.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(queryResults[index]),
+        final suggestion = queryResults[index];
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              _controller.text = suggestion;
+              _searchQuery = suggestion;
+              queryResults = displayQuery(_searchQuery, _flights);
+              searchItems = searchFlight(_searchQuery);
+
+              isSearching = false;
+            });
+          },
+          child: ListTile(
+            title: Text(suggestion),
+          ),
         );
       },
     );
