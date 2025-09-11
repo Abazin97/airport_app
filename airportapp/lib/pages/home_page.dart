@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:airportapp/components/home_screen/cell.dart';
 import 'package:airportapp/components/home_screen/cell_item.dart';
-import 'package:airportapp/components/home_screen/custom_drawer.dart';
+import 'package:airportapp/pages/custom_drawer.dart';
 import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
 import 'package:airportapp/components/nav_provider.dart';
@@ -240,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                           Expanded(
                             child: TextField(
                               onTap: () {
-                                context.read<NavProvider>().pageIndex = 1;
+                                context.read<NavProvider>().openWithSearchFocus();
                               },
                               decoration: InputDecoration(
                                 hintText: 'e.g. Airport, Flight no., Airline or Time',

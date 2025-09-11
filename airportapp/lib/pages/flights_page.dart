@@ -76,6 +76,9 @@ class _FlightsPageState extends State<FlightsPage> {
   void initState() {
     fetchData(dateStr);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((callback){
+      context.read<NavProvider>().resetAutoFocus();
+    });
   }
 
   List<FlightEntry> get flightToShow {
@@ -200,16 +203,6 @@ class _FlightsPageState extends State<FlightsPage> {
     return status;
   }
 
-  List<String> displayAnother(String query){
-    if (query.isEmpty) return [];
-    return Database.airlineCodes.entries
-      .where((entry) =>
-          entry.key.toLowerCase().contains(query.toLowerCase()) ||
-          entry.value.toLowerCase().contains(query.toLowerCase()))
-      .map((entry) => "${entry.key}: ${entry.value}")
-      .toList();
-  }
-
   // dropdown menu filter
     List<String> displayQuery(String query, List<FlightEntry> flights) {
       final q = query.toLowerCase();
@@ -228,36 +221,6 @@ class _FlightsPageState extends State<FlightsPage> {
       });
 
       for (final entry in flights) {
-        // destionation
-        // if (entry.flight.destination != null) {
-        //   for (final d in entry.flight.destination!) {
-        //     final code = d.toUpperCase();
-        //     final name = (Database.airportCodes[code] ?? "").toLowerCase();
-
-        //     if (code.toLowerCase().contains(q) || name.contains(q)) {
-        //       final display = Database.airportCodes[code] != null
-        //           ? "${Database.airportCodes[code]}"
-        //           : code;
-        //       results.add(display);
-        //     }
-        //   }
-        // }
-
-        // // origin
-        // if (entry.flight.origin != null) {
-        //   for (final o in entry.flight.origin!) {
-        //     final code = o.toUpperCase();
-        //     final name = (Database.airportCodes[code] ?? "").toLowerCase();
-
-        //     if (code.toLowerCase().contains(q) || name.contains(q)) {
-        //       final display = Database.airportCodes[code] != null
-        //           ? "${Database.airportCodes[code]}"
-        //           : code;
-        //       results.add(display);
-        //     }
-        //   }
-        // }
-
         // flight nums
         for (final f in entry.flight.flight) {
           final no = f.no.toLowerCase().replaceAll(' ', '');
