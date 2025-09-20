@@ -3,11 +3,23 @@ import 'package:flutter/material.dart';
 class NavProvider extends ChangeNotifier{
   int _pageIndex = 0;
   bool autofocus = false;
+  bool isDrawer = false;
 
   int get pageIndex => _pageIndex;
 
   set pageIndex(int newIndex){
     _pageIndex = newIndex;
+    notifyListeners();
+  }
+
+  void setDrawer(){
+    pageIndex = 0;
+    isDrawer = true;
+    notifyListeners();
+  }
+
+  void resetDrawer(){
+    isDrawer = false;
     notifyListeners();
   }
 

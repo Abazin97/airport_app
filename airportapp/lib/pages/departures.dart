@@ -22,8 +22,10 @@ class Departures extends StatelessWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
-            //Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
+            //Navigator.pop(context);
+            //context.read<NavProvider>().setDrawer();
+            Provider.of<NavProvider>(context, listen: false).pageIndex = 7;
+
           },
           icon: Icon(
             Icons.arrow_back_ios,

@@ -18,17 +18,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool isDrawer;
+  const HomePage({super.key, this.isDrawer = false});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
+  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  late Timer _timer;
+  Timer? _timer;
 
 
   //get weather info via API
@@ -89,7 +90,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _fetchWeather();
     Future.delayed(Duration(seconds: 1),() {
-      _timer = Timer.periodic(Duration(seconds: 4), (Timer timer) {
+      if (!mounted) return;
+      _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
         if (_currentPage < Database.imageHome.length - 1) {
             _currentPage++;
           } else {
@@ -106,15 +108,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+
+
   void stopAutoScroll(){
-    if(_timer.isActive){
-      _timer.cancel();
-    }
+    _timer?.cancel();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -203,7 +205,8 @@ class _HomePageState extends State<HomePage> {
                   builder: (context){
                     return IconButton(
                       onPressed: (){
-                        Scaffold.of(context).openEndDrawer();
+                        Provider.of<NavProvider>(context, listen: false).pageIndex = 7;
+                        //Scaffold.of(context).openEndDrawer();
                       }, 
                       icon: Icon(
                         Icons.menu,
@@ -218,7 +221,7 @@ class _HomePageState extends State<HomePage> {
         )
       ), 
       //right panel
-      endDrawer: CustomDrawer(),
+      //endDrawer: CustomDrawer(),
       body: ListView(
         children: [
           Column(

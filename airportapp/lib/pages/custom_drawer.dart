@@ -30,7 +30,9 @@ class CustomDrawer extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Provider.of<NavProvider>(context, listen: false).pageIndex = 0;
+                      //Navigator.pop(context);
+                      //context.read<NavProvider>().setDrawer();
                     },
                     icon: const Icon(
                       Icons.arrow_back_ios,
@@ -63,13 +65,15 @@ class CustomDrawer extends StatelessWidget {
                       Text('Passenger Guide', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       Divider(),
                       SizedBox(height: 20),
-                      PageLink(context, 'Departures', Icons.flight_takeoff, 7, Departures()),
+                      PageLink(context, 'Departures', Icons.flight_takeoff, 8),
                       SizedBox(height: 30),
-                      // PageLink(name: 'Arrivals', icon: Icons.flight_land_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Flight Token', icon: Icons.sensor_occupied_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'HKIA Tips', icon: Icons.upcoming_outlined,),
+                      PageLink(context, 'Arrivals', Icons.flight_land_outlined, 9),
+                      SizedBox(height: 30),
+                      PageLink(context, 'Transfer / Transit', Icons.transfer_within_a_station, 10),
+                      SizedBox(height: 30),
+                      PageLink(context, 'Flight Token', Icons.upcoming_outlined, 11),
+                      SizedBox(height: 30),
+                      PageLink(context, 'HKIA Tips', Icons.upcoming_outlined, 11),
                       // Divider(),
                       // SizedBox(height: 40),
                       // Text('Explore Airport Services', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
@@ -113,11 +117,11 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget PageLink(BuildContext context, String name, IconData icon, int index, Widget screen){
+  Widget PageLink(BuildContext context, String name, IconData icon, int index){
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(RightSlideRoute(page: const Departures()));
-        //context.read<NavProvider>().pageIndex = 7;
+        Provider.of<NavProvider>(context, listen: false).pageIndex = index;
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => Departures()));
       },
       child: Row(
         children: [
@@ -139,7 +143,7 @@ class RightSlideRoute<T> extends PageRouteBuilder<T> {
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(1.0, 0.0); // справа
+          const begin = Offset(1.0, 0.0);
           const end = Offset.zero;
           const curve = Curves.easeInOut;
 

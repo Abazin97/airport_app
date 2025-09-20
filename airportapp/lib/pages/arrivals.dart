@@ -1,4 +1,6 @@
+import 'package:airportapp/components/nav_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Arrivals extends StatelessWidget {
@@ -19,7 +21,7 @@ class Arrivals extends StatelessWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Provider.of<NavProvider>(context, listen: false).pageIndex = 7;
           },
           icon: Icon(
             Icons.arrow_back_ios,
