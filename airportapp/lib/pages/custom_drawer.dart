@@ -1,8 +1,8 @@
 import 'package:airportapp/components/nav_provider.dart';
-import 'package:airportapp/pages/departures.dart';
-import 'package:airportapp/pages/home_screen.dart';
+import 'package:airportapp/pages/track_my_bag.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -65,47 +65,48 @@ class CustomDrawer extends StatelessWidget {
                       Text('Passenger Guide', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       Divider(),
                       SizedBox(height: 20),
-                      PageLink(context, 'Departures', Icons.flight_takeoff, 8),
+                      pageLink(context, 'Departures', Icons.flight_takeoff,index: 8),
                       SizedBox(height: 30),
-                      PageLink(context, 'Arrivals', Icons.flight_land_outlined, 9),
+                      pageLink(context, 'Arrivals', Icons.flight_land_outlined,index: 9),
                       SizedBox(height: 30),
-                      PageLink(context, 'Transfer / Transit', Icons.transfer_within_a_station, 10),
+                      pageLink(context, 'Transfer / Transit', Icons.transfer_within_a_station,index: 10),
                       SizedBox(height: 30),
-                      PageLink(context, 'Flight Token', Icons.upcoming_outlined, 11),
+                      pageLink(context, 'Flight Token', Icons.sensor_occupied_outlined, link: 'https://www.hongkongairport.com/en/passenger-guide/flight-token.page'),
                       SizedBox(height: 30),
-                      PageLink(context, 'HKIA Tips', Icons.upcoming_outlined, 11),
-                      // Divider(),
-                      // SizedBox(height: 40),
-                      // Text('Explore Airport Services', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                      // Divider(),
-                      // SizedBox(height: 20),
-                      // PageLink(name: 'My Favourites', icon: Icons.bookmarks_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Art & Culture', icon: Icons.brush_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Transport To & From Airport', icon: Icons.airport_shuttle_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Parking', icon: Icons.local_parking_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Valet Parking', icon: Icons.local_parking_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Mainland & Macao Connection', icon: Icons.directions_bus_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Stay Connected @ HKIA', icon: Icons.wifi_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'MyTAG and Baggage Arrival Notice', icon: Icons.bookmark_outline,),
-                      // SizedBox(height: 20),
-                      // Divider(),
-                      // SizedBox(height: 40),
-                      // Text('About My HKG', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                      // Divider(),
-                      // SizedBox(height: 20),
-                      // PageLink(name: 'Setting', icon: Icons.settings_outlined,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'Contact Us', icon: Icons.mail_outline,),
-                      // SizedBox(height: 30),
-                      // PageLink(name: 'About My HKG', icon: Icons.info_outline,),
-                      // SizedBox(height: 60),
+                      pageLink(context, 'HKIA Tips', Icons.upcoming_outlined,index: 11),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40, bottom: 10),
+                        child: Text('Explore Airport Services', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                      Divider(),
+                      pageLink(context, 'My Favourites', Icons.bookmarks_outlined, index: 12),
+                      SizedBox(height: 30),
+                      pageLink(context, 'Art & Culture', Icons.brush_outlined, index: 13),
+                      SizedBox(height: 30),
+                      pageLink(context, 'Transport To & From Airport', Icons.airport_shuttle_outlined, index: 5),
+                      SizedBox(height: 30),
+                      pageLink(context, 'Parking', Icons.local_parking_outlined, index: 5),
+                      SizedBox(height: 30),
+                      pageLink(context, 'Valet Parking', Icons.local_parking_outlined, index: 5),
+                      SizedBox(height: 30),
+                      pageLink(context, 'Mainland & Macao Connection', Icons.directions_bus_outlined, index: 5),
+                      SizedBox(height: 30),
+                      pageLink(context, 'Stay Connected @ HKIA', Icons.wifi_outlined, ),
+                      SizedBox(height: 30),
+                      pageLink(context, 'MyTAG and Baggage Arrival Notice', Icons.bookmark_outline, link: 'page'),
+                      SizedBox(height: 20),
+                      Divider(),
+                      SizedBox(height: 40),
+                      Text('About My HKG', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      Divider(),
+                      SizedBox(height: 20),
+                      pageLink(context, 'Setting', Icons.settings_outlined, index: 14),
+                      SizedBox(height: 30),
+                      pageLink(context, 'Contact Us', Icons.mail_outline, index: 15),
+                      SizedBox(height: 30),
+                      pageLink(context, 'About My HKG', Icons.info_outline, index: 16),
+                      SizedBox(height: 60),
                     ],
                   ),
                 )
@@ -117,11 +118,19 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget PageLink(BuildContext context, String name, IconData icon, int index){
+  Widget pageLink(BuildContext context, String name, IconData icon,{int? index, String? link}){
     return GestureDetector(
-      onTap: () {
-        Provider.of<NavProvider>(context, listen: false).pageIndex = index;
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => Departures()));
+      onTap: () async{
+        if (link != null){
+          if(link == 'page'){
+            Navigator.push(context, MaterialPageRoute(fullscreenDialog: true, builder: (context) => TrackMyBag()));
+          }else{
+            final _url = Uri.parse(link);
+            await launchUrl(_url, mode: LaunchMode.inAppWebView);
+          }
+        }else if(index != null){
+          Provider.of<NavProvider>(context, listen: false).pageIndex = index;
+        }
       },
       child: Row(
         children: [
@@ -133,26 +142,3 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 }
-
-class RightSlideRoute<T> extends PageRouteBuilder<T> {
-  final Widget page;
-
-  RightSlideRoute({required this.page})
-    : super(
-        transitionDuration: const Duration(milliseconds: 300),
-        reverseTransitionDuration: const Duration(milliseconds: 300),
-        pageBuilder: (context, animation, secondaryAnimation) => page,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.easeInOut;
-
-          final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          final offsetAnimation = animation.drive(tween);
-
-          return SlideTransition(position: offsetAnimation, child: child);
-        },
-      );
-}
-
-

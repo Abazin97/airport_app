@@ -381,13 +381,13 @@ class Database {
     "SIA": "lib/assets/airline_logos/wmosia.png",
     "SEJ": "lib/assets/airline_logos/wmosej.png",
     "CQH": "lib/assets/airline_logos/wmocqh.png",
-    "SJX": "lib/assets/airline_logos/wmasjx.png",
+    "SJX": "lib/assets/airline_logos/starlux.png",
     "SWR": "lib/assets/airline_logos/wmoswr.png",
     "TWB": "lib/assets/airline_logos/wmotwb.png",
     "AIQ": "lib/assets/airline_logos/wmoaiq.png",
     "THA": "lib/assets/airline_logos/wmotha.png",
     "TLM": "lib/assets/airline_logos/wmotlm.png",
-    "TBA": "lib/assets/airline_logos/wmotba.png",
+    "TBA": "lib/assets/airline_logos/wmotba1.png",
     "THY": "lib/assets/airline_logos/wmothy.png",
     "UAL": "lib/assets/airline_logos/wmoual.png",
     "CUH": "lib/assets/airline_logos/wmocuh.png",
@@ -432,6 +432,7 @@ class Database {
     "BKK": "Bangkok/BKK",
     "DMK": "Bangkok/DMK",
     "HKT": "Phuket",
+    "USM": "Samui",
     "CNX": "Chiang Mai",
     "JNB": "Johannesburg",
     "DOH": "Doha",
@@ -474,14 +475,25 @@ class Database {
     "NGB": "Ningbo",
     "URC": "Urumqi",
     "WNZ": "Wenzhou",
+    "TXN": "Huangshan",
     "SYX": "Sanya",
     "CZX": "Changzhou",
     "YNT": "Yantai",
+    "CKG": "Chongqing",
+    "DYG": "Zhangjiajie",
+    "LHW": "Lanzhou/ZGC",
     "CGQ": "Changchun",
     "KWE": "Guiyang",
     "NKG": "Nanjing",
+    "WUX": "Wuxi",
+    "TSN": "Tianjin",
+    "TNA": "Jinan",
+    "LXA": "Lhasa",
+    "CGO": "Zhengzhou",
+    "DSN": "Ordos",
     "WUH": "Wuhan",
     "DLC": "Dalian",
+    "KMG": "Kunming",
     "XIY": "Xian/Xianyang",
     "HGH": "Hangzhou",
     "MFM": "Macau",
@@ -490,6 +502,7 @@ class Database {
     "LGK": "Langkawi",
     "DAC": "Dhaka",
     "PNH": "Phnom Penh",
+    "KTI": "Krong Ta Khmau",
     "CRK": "Clark",
     "CEB": "Cebu",
     "MNL": "Manila",
@@ -506,6 +519,7 @@ class Database {
     "NRT": "Tokyo/NRT",
     "HND": "Tokyo/HND",
     "KIX": "Osaka/Kansai",
+    "KMQ": "Komatsu",
     "CTS": "Sapporo/CTS",
     "FUK": "Fukuoka",
     "ISG": "Ishigaki",
@@ -525,73 +539,136 @@ class Database {
     "SPN": "Saipan",
     "POM": "Port Moresby",
   };
+
+  static const Map<String, String> cityTimeZones = {
+    "Amsterdam": "Europe/Amsterdam",
+    "Barcelona": "Europe/Madrid",
+    "Brussel": "Europe/Brussels",
+    "Berlin": "Europe/Berlin",
+    "Frankfurt": "Europe/Berlin",
+    "Munich": "Europe/Berlin",
+    "Helsinki": "Europe/Helsinki",
+    "London/LHR": "Europe/London",
+    "Manchester": "Europe/London",
+    "Milan/MXP": "Europe/Rome",
+    "Paris/CDG": "Europe/Paris",
+    "Moscow/SVO": "Europe/Moscow",
+    "Roma/FCO": "Europe/Rome",
+    "Madrid": "Europe/Madrid",
+    "Zurich": "Europe/Zurich",
+    "Vancouver": "America/Vancouver",
+    "Toronto": "America/Toronto",
+    "Boston": "America/New_York",
+    "Chicago": "America/Chicago",
+    "Dallas FT.Worth": "America/Chicago",
+    "Los Angeles": "America/Los_Angeles",
+    "New York/JFK": "America/New_York",
+    "San Francisco": "America/Los_Angeles",
+    "Adelaide": "Australia/Adelaide",
+    "Auckland": "Pacific/Auckland",
+    "Christchurch": "Pacific/Auckland",
+    "Sydney": "Australia/Sydney",
+    "Perth": "Australia/Perth",
+    "Melbourne": "Australia/Melbourne",
+    "Brisbane": "Australia/Brisbane",
+    "Cairns": "Australia/Brisbane",
+    "Bangkok/BKK": "Asia/Bangkok",
+    "Bangkok/DMK": "Asia/Bangkok",
+    "Phuket": "Asia/Bangkok",
+    "Chiang Mai": "Asia/Bangkok",
+    "Johannesburg": "Africa/Johannesburg",
+    "Doha": "Asia/Qatar",
+    "Dubai": "Asia/Dubai",
+    "Abu Dhabi": "Asia/Dubai",
+    "Tel Aviv": "Asia/Jerusalem",
+    "Colombo": "Asia/Colombo",
+    "Delhi": "Asia/Kolkata",
+    "Iloilo": "Asia/Manila",
+    "Subang": "Asia/Kuala_Lumpur",
+    "Daegu": "Asia/Seoul",
+    "Bengaluru": "Asia/Kolkata",
+    "Chennai": "Asia/Kolkata",
+    "Mumbai": "Asia/Kolkata",
+    "Denpasar": "Asia/Makassar",
+    "Jakarta": "Asia/Jakarta",
+    "Surabaya": "Asia/Jakarta",
+    "Singapore": "Asia/Singapore",
+    "Nadi": "Pacific/Fiji",
+    "Male": "Indian/Maldives",
+    "Ulaan Baatar/ULN": "Asia/Ulaanbaatar",
+    "Kathmandu": "Asia/Kathmandu",
+    "Vientiane": "Asia/Vientiane",
+    "Taipei": "Asia/Taipei",
+    "Kaohsiung": "Asia/Taipei",
+    "Taichung": "Asia/Taipei",
+    "Beijing/PEK": "Asia/Shanghai",
+    "Beijing/PKX": "Asia/Shanghai",
+    "Shanghai/PVG": "Asia/Shanghai",
+    "Shanghai/SHA": "Asia/Shanghai",
+    "Guangzhou": "Asia/Shanghai",
+    "Yichang": "Asia/Shanghai",
+    "Chengdu Tianfu": "Asia/Shanghai",
+    "Hong Kong": "Asia/Shanghai",
+    "Fuzhou": "Asia/Shanghai",
+    "Xuzhou": "Asia/Shanghai",
+    "Zhoushan": "Asia/Shanghai",
+    "Dunhuang": "Asia/Shanghai",
+    "Haikou": "Asia/Shanghai",
+    "Xiamen": "Asia/Shanghai",
+    "Ningbo": "Asia/Shanghai",
+    "Urumqi": "Asia/Urumqi",
+    "Wenzhou": "Asia/Shanghai",
+    "Huangshan": "Asia/Shanghai",
+    "Sanya": "Asia/Shanghai",
+    "Changzhou": "Asia/Shanghai",
+    "Yantai": "Asia/Shanghai",
+    "Changchun": "Asia/Shanghai",
+    "Guiyang": "Asia/Shanghai",
+    "Nanjing": "Asia/Shanghai",
+    "Wuhan": "Asia/Shanghai",
+    "Dalian": "Asia/Shanghai",
+    "Xian/Xianyang": "Asia/Shanghai",
+    "Hangzhou": "Asia/Shanghai",
+    "Macau": "Asia/Macau",
+    "Kuala Lumpur": "Asia/Kuala_Lumpur",
+    "Kota Kinabalu": "Asia/Kuching",
+    "Langkawi": "Asia/Kuala_Lumpur",
+    "Dhaka": "Asia/Dhaka",
+    "Phnom Penh": "Asia/Phnom_Penh",
+    "Clark": "Asia/Manila",
+    "Cebu": "Asia/Manila",
+    "Manila": "Asia/Manila",
+    "Penang": "Asia/Kuala_Lumpur",
+    "Hanoi": "Asia/Ho_Chi_Minh",
+    "Da Nang": "Asia/Ho_Chi_Minh",
+    "Ho Chi Minh": "Asia/Ho_Chi_Minh",
+    "Nha Trang": "Asia/Ho_Chi_Minh",
+    "Phu Quoc Island": "Asia/Ho_Chi_Minh",
+    "Seoul/ICN": "Asia/Seoul",
+    "Cheongju": "Asia/Seoul",
+    "Busan": "Asia/Seoul",
+    "Jeju": "Asia/Seoul",
+    "Tokyo/NRT": "Asia/Tokyo",
+    "Tokyo/HND": "Asia/Tokyo",
+    "Osaka/Kansai": "Asia/Tokyo",
+    "Komatsu": "Asia/Tokyo",
+    "Sapporo/CTS": "Asia/Tokyo",
+    "Fukuoka": "Asia/Tokyo",
+    "Ishigaki": "Asia/Tokyo",
+    "Hiroshima": "Asia/Tokyo",
+    "Okinawa": "Asia/Tokyo",
+    "Nagoya": "Asia/Tokyo",
+    "Sendai": "Asia/Tokyo",
+    "Shimojishima": "Asia/Tokyo",
+    "Shizuoka": "Asia/Tokyo",
+    "Takamatsu": "Asia/Tokyo",
+    "Tokushima": "Asia/Tokyo",
+    "Yonago": "Asia/Tokyo",
+    "Yokota Air Base": "Asia/Tokyo",
+    "B S Begawan/BWN": "Asia/Brunei",
+    "Addis Ababa": "Africa/Addis_Ababa",
+    "Koror/ROR": "Pacific/Palau",
+    "Saipan": "Pacific/Saipan",
+    "Port Moresby": "Pacific/Port_Moresby",
+  };
 }
-
-/* class MainCategory{
-  List<DayLight> allData;
-
-  MainCategory({required this.allData});
-  
-  factory MainCategory.fromJson(List<Map<String, Object>> json){
-    return MainCategory(allData: json.map((e) => DayLight.fromJson(e)).toList());
-  }
-}
-
-class DayLight{
-  String? date;
-  List<Flight>? list;
-
-  DayLight({this.date, this.list});
-
-  DayLight.fromJson(Map<String, Object> json){
-    date = json['date'] as String;
-    if(json['list'] != null){
-      list = <Flight>[];
-      (json['list'] as List).forEach((e) {
-        list!.add(Flight.fromJson(e));
-      });
-    }
-  }
-}
-
-class Flight{
-  String? time;
-  String? status;
-  String? statusCode;
-  String? terminal;
-  String? aisle;
-  String? gate;
-  List<String>? dest;
-  List<FlightData>? flight;
-
-  Flight({this.time, this.status, this.statusCode, this.terminal, this.aisle, this.gate, this.dest, this.flight});
-
-  Flight.fromJson(Map<String, dynamic> json){
-    time = json['time'];
-    status = json['status'];
-    statusCode = json['statusCode'];
-    terminal = json['terminal'];
-    aisle = json['aisle'];
-    gate = json['gate'];
-    if(json['flight'] != null){
-      flight = <FlightData>[];
-      (json['flight'] as List).forEach((e) {
-        flight!.add(FlightData.fromJson(e));
-      });
-    }
-    if (json['destination'] != null) {
-      dest = List<String>.from(json['destination']);
-    }
-  }
-}
-
-class FlightData{
-  String? flightNumber;
-  String? airlineCode;
-
-  FlightData({this.flightNumber, this.airlineCode});
-  FlightData.fromJson(Map<String, dynamic> json){
-    flightNumber = json['no'];
-    airlineCode = json['airline'];
-  }
-} */
