@@ -44,6 +44,7 @@ class FlightsTile extends StatelessWidget {
         Navigator.push(
           context, 
           MaterialPageRoute(
+            fullscreenDialog: true,
             builder: (context) => FlightsCart(
               isArrival: isArrival,
               date: date,
@@ -166,7 +167,7 @@ class FlightsTile extends StatelessWidget {
                                       ? (Database.airportCodes[destination?[1]] ?? destination![1])
                                       : (Database.airportCodes[destination?[0]] ?? destination![0]))
                                   : "--"),
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           isArrival
@@ -199,7 +200,9 @@ class FlightsTile extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           status,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: status == 'Cancelled' 
+                          ? Colors.redAccent
+                          : Colors.black),
                         ),
                       ],
                     ),

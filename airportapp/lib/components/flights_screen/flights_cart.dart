@@ -1,5 +1,7 @@
 import 'package:airportapp/data/database.dart';
+import 'package:airportapp/models/weather_model.dart';
 import 'package:airportapp/pages/weather_page.dart';
+import 'package:airportapp/services/weather_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -45,26 +47,83 @@ class FlightsCart extends StatefulWidget {
 }
 
 class _FlightsCartState extends State<FlightsCart> {
+  String tempToday = '';
+  String cityName = '';
   String cityTime = '';
   String hkTime = '';
   String timeDiffStr = '';
   late tz.TZDateTime cityDateTime;
   late tz.TZDateTime hkDateTime;
+  final _weatherService = WeatherService(apikey: 'db0ae1107e1964b2e9cdb5a192714471');
+  Weather? _weather;
+  bool temperatureIsExist = false;
+  IconData? tempTodayIcon;
+
+  Map<String, IconData> iconsMap = {
+   'cloud': Icons.cloud_outlined,
+   'rainy': Icons.cloudy_snowing,
+   'thunderstorm': Icons.thunderstorm_outlined,
+   'sunny': Icons.wb_sunny_outlined,
+  };
+
+  void _fetchWeather()async{
+    try{
+      final weather = await _weatherService.getWeather(cityName);
+      setState(() {
+        _weather = weather;
+        tempTodayIcon = iconsMap[getWeatherCondition(_weather?.mainCondition)];
+        tempToday = temperatureIsExist ? ' ${_weather!.temperature.round()}°C' : ' -';
+      });
+    }
+    catch(e){
+      debugPrint(e.toString());
+    }
+  }
+
+  //set weather condition icon
+  String getWeatherCondition(String? mainCondition){
+    if (mainCondition != null) {
+      temperatureIsExist = true;
+    }else{
+      return '';
+    }
+
+    switch(mainCondition.toLowerCase()){
+      case 'clouds':
+      case 'mist':
+      case 'smoke':
+      case 'haze':
+      case 'dust':
+      case 'fog':
+        return 'cloud';
+      case 'rain':
+      case 'drizzle':
+      case 'shower rain':
+        return 'rainy';
+      case 'thunderstorm':
+        return 'thunderstorm';
+      case 'clear':
+        return 'sunny';
+      default: return '-';
+    } 
+  }
 
   Future<void> getTime() async {
     tzdata.initializeTimeZones();
     String tzName;
     if (widget.isArrival == false) {
-      final airportCode = Database.airportCodes[widget.destination![0]];
-      tzName = Database.cityTimeZones[airportCode] ?? 'UTC';
+      final city = Database.airportCodes[widget.destination![0]] ?? '';
+      tzName = Database.cityTimeZones[city] ?? 'UTC';
+
       final hkLocation = tz.getLocation('Asia/Hong_Kong');
       hkDateTime = tz.TZDateTime.now(hkLocation);
 
       final location = tz.getLocation(tzName);
       cityDateTime = tz.TZDateTime.now(location);
     } else if (widget.isArrival == true) {
-      final airportCode = Database.airportCodes[widget.origin![0]];
-      tzName = Database.cityTimeZones[airportCode] ?? 'UTC';
+      final city = Database.airportCodes[widget.origin![0]] ?? '';
+      tzName = Database.cityTimeZones[city] ?? 'UTC';
+
       final hkLocation = tz.getLocation(tzName);
       hkDateTime = tz.TZDateTime.now(hkLocation);
 
@@ -73,12 +132,6 @@ class _FlightsCartState extends State<FlightsCart> {
     } else {
       tzName = 'UTC';
     }
-
-    // final hkLocation = tz.getLocation('Asia/Hong_Kong');
-    // hkDateTime = tz.TZDateTime.now(hkLocation);
-
-    // final location = tz.getLocation(tzName);
-    // cityDateTime = tz.TZDateTime.now(location);
 
     hkTime = DateFormat('HH:mm').format(hkDateTime);
     cityTime = DateFormat('HH:mm').format(cityDateTime);
@@ -107,8 +160,14 @@ class _FlightsCartState extends State<FlightsCart> {
 
   @override
   void initState(){
+    cityName = widget.isArrival 
+      ? 'Hong Kong'
+      : ((widget.destination!.length > 1)
+        ? (Database.airportCodes[widget.destination?[1]] ?? widget.destination![1])
+        : (Database.airportCodes[widget.destination?[0]] ?? widget.destination![0]));
     super.initState();
     getTime();
+    _fetchWeather();
   }
 
   @override
@@ -161,7 +220,7 @@ class _FlightsCartState extends State<FlightsCart> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: SizedBox(
-                      height: 370,
+                      height: 400,
                       child: Column(
                         children: [
                           Expanded(
@@ -301,19 +360,18 @@ class _FlightsCartState extends State<FlightsCart> {
                     ),
                   ),
                   SizedBox(height: 30),
-                  Text('Travel Tips of ${widget.isArrival 
-                    ? 'Hong Kong'
-                    : ((widget.destination!.length > 1)
-                      ? (Database.airportCodes[widget.destination?[1]] ?? widget.destination![1])
-                      : (Database.airportCodes[widget.destination?[0]] ?? widget.destination![0]))}', 
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: Text('Travel Tips of $cityName', 
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 100),
                     child: SizedBox(height: 150,child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
                         timeWidget(cityTime),
-                        weatherWidget('location')
+                        weatherWidget(cityName)
                       ],
                     )),
                   ),
@@ -354,7 +412,7 @@ class _FlightsCartState extends State<FlightsCart> {
 
   Widget weatherWidget(String location){
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherPage())),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherPage(city: location, tempToday: tempToday, tempTodayIcon: tempTodayIcon))),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -375,13 +433,17 @@ class _FlightsCartState extends State<FlightsCart> {
               padding: const EdgeInsets.only(top: 10),
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text('Today', style: TextStyle(color: Colors.blue[900], fontWeight: FontWeight.bold),),
-                Icon(Icons.cloud_outlined, color: Colors.blue[900], size: 20,)
+                Icon(tempTodayIcon, color: Colors.blue[900], size: 20,),
               ],),
             ),
-            Text('°C', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.blue[900])),
+            Text(tempToday, style: TextStyle(color: Colors.blue[900], fontSize: 20, fontWeight: FontWeight.bold)),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text('Tomorrow'),
                 Icon(Icons.thermostat_auto, color: Colors.blue[900], size: 20,)
+            ],),
+            Row(children: [
+              Text(''),
+              Text('')
             ],)
           ]),
         ),

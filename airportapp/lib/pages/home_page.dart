@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:airportapp/components/home_screen/cell.dart';
 import 'package:airportapp/components/home_screen/cell_item.dart';
-import 'package:airportapp/pages/custom_drawer.dart';
 import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
 import 'package:airportapp/components/nav_provider.dart';
@@ -26,7 +24,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
   int _currentPage = 0;
   Timer? _timer;
@@ -44,7 +41,7 @@ class _HomePageState extends State<HomePage> {
    'sunny': Icons.sunny,
   };
 
-  _fetchWeather()async{
+  void _fetchWeather()async{
     try{
       final weather = await _weatherService.getWeather('Hong Kong');
       setState(() {
@@ -59,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   //set weather condition icon
   String getWeatherCondition(String? mainCondition){
     if (mainCondition != null) {
-      temperatureIsExist == true;
+      temperatureIsExist = true;
     }else{
       return '';
     }
@@ -107,8 +104,6 @@ class _HomePageState extends State<HomePage> {
         });
     });
   }
-
-
 
   void stopAutoScroll(){
     _timer?.cancel();
@@ -163,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Icon(iconsMap[getWeatherCondition(_weather?.mainCondition)], color: Colors.white, size: 14,),
-                      Text(temperatureIsExist ? ' -' : '  ${_weather?.temperature.round()}°C', style: TextStyle(color: Colors.white, fontSize: 16))
+                      Text(temperatureIsExist ? '  ${_weather?.temperature.round()}°C' : ' -', style: TextStyle(color: Colors.white, fontSize: 16))
                     ],
                   ),
                 ),
