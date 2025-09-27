@@ -5,11 +5,16 @@ class WeatherPage extends StatelessWidget {
   final String city;
   final String tempToday;
   final IconData? tempTodayIcon;
+  final String speed;
+  final String humidity;
+
   WeatherPage({
     super.key, 
     required this.city, 
     required this.tempToday,
-    required this.tempTodayIcon
+    required this.tempTodayIcon,
+    required this.speed,
+    required this.humidity,
   });
 
   final DateTime today = DateTime.now();
@@ -63,12 +68,12 @@ class WeatherPage extends StatelessWidget {
               Row(children: [
                 Row(children: [
                   Icon(Icons.water_drop_outlined, color: Colors.white,),
-                  Text('-', style: TextStyle(color: Colors.white))
+                  Text('$humidity%', style: TextStyle(color: Colors.white))
                 ],),
                 SizedBox(width: 40),
                 Row(children: [
                   Icon(Icons.air, color: Colors.white,),
-                  Text('-', style: TextStyle(color: Colors.white),)
+                  Text('$speed km/h', style: TextStyle(color: Colors.white),)
                 ],)
               ],)
             ],

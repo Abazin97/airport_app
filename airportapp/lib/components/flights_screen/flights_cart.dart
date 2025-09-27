@@ -47,6 +47,8 @@ class FlightsCart extends StatefulWidget {
 }
 
 class _FlightsCartState extends State<FlightsCart> {
+  String speed = '';
+  String humidity = '';
   String tempToday = '';
   String cityName = '';
   String cityTime = '';
@@ -72,7 +74,9 @@ class _FlightsCartState extends State<FlightsCart> {
       setState(() {
         _weather = weather;
         tempTodayIcon = iconsMap[getWeatherCondition(_weather?.mainCondition)];
-        tempToday = temperatureIsExist ? ' ${_weather!.temperature.round()}°C' : ' -';
+        tempToday = temperatureIsExist ? '${_weather!.temperature.round()}°C' : ' -';
+        speed = temperatureIsExist ? '${(_weather!.speed * 3.686).round()}' : '-';
+        humidity = temperatureIsExist ? '${_weather!.humidity}' : '-';
       });
     }
     catch(e){
@@ -87,7 +91,6 @@ class _FlightsCartState extends State<FlightsCart> {
     }else{
       return '';
     }
-
     switch(mainCondition.toLowerCase()){
       case 'clouds':
       case 'mist':
@@ -412,7 +415,7 @@ class _FlightsCartState extends State<FlightsCart> {
 
   Widget weatherWidget(String location){
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherPage(city: location, tempToday: tempToday, tempTodayIcon: tempTodayIcon))),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherPage(city: location, tempToday: tempToday, tempTodayIcon: tempTodayIcon, speed: speed, humidity: humidity,))),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
