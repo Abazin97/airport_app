@@ -166,8 +166,8 @@ class _FlightsCartState extends State<FlightsCart> {
     cityName = widget.isArrival 
       ? 'Hong Kong'
       : ((widget.destination!.length > 1)
-        ? (Database.airportCodes[widget.destination?[1]] ?? widget.destination![1])
-        : (Database.airportCodes[widget.destination?[0]] ?? widget.destination![0]));
+        ? (Database.airportToCity[widget.destination?[1]] ?? widget.destination![1])
+        : (Database.airportToCity[widget.destination?[0]] ?? widget.destination![0]));
     super.initState();
     getTime();
     _fetchWeather();
@@ -404,7 +404,7 @@ class _FlightsCartState extends State<FlightsCart> {
               child: Text(time, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
             ),
             Text('$timeDiffStr ${widget.isArrival
-            ? Database.airportCodes[widget.origin?[0]]
+            ? Database.airportToCity[widget.origin?[0]]
             : 'Hong Kong'}'
             )
           ],),

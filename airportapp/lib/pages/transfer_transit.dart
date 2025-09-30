@@ -24,15 +24,15 @@ class TransferTransit extends StatelessWidget {
             Provider.of<NavProvider>(context, listen: false).pageIndex = 7;
           },
           icon: Icon(
-            Icons.close_outlined,
+            Icons.arrow_back_ios,
             color: Colors.white,
           )
         ),
         actions: [
           IconButton(
             onPressed: () async{
-              final urlPreview = 'https://www.hongkongairport.com/apps/contentPage?pageId=local_transport_traffic_condition';
-              await SharePlus.instance.share(ShareParams(text: 'I would like to share "Traffic Conditions To and From Airport" with you. \n\nClick here for details: $urlPreview', subject: 'I would like to share "Traffic Conditions To and From Airport" with you.'));
+              final urlPreview = 'https://www.hongkongairport.com/apps/contentPage?pageId=guide_transit';
+              await SharePlus.instance.share(ShareParams(text: 'I would like to share "Transfer / Transit" with you. \n\nClick here for details: $urlPreview', subject: 'I would like to share "Transfer / Transit" with you.'));
             }, 
             icon: Icon(
               Icons.share, 
