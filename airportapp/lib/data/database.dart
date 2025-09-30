@@ -96,6 +96,34 @@ class Database {
     'lib/assets/seven-eleven-shop-front-photo.jpg'
   ];
 
+
+  // all events assets
+  static const List<String> allEventsImage = [
+    'lib/assets/ink.jpg',
+    'lib/assets/flights.jpg',
+    'lib/assets/reminiscence.jpg',
+    'lib/assets/motion.jpg',
+    'lib/assets/live.jpg',
+  ];
+
+  static const List<String> allEventsName = [
+    'Ink & City, Calligraphy in Life',
+    'Reminiscence in the Air',
+    'Flow of Flights',
+    'Art in Motion',
+    'HKIA Live'
+  ];
+
+  static const List<String> allEventsDescription = [
+    '30 August to 20 October 2025 •\nTerminal 1',
+    '25 July to 8 November 2025 • Terminal 1',
+    '23 September to 8 November 2025 •\nTerminal 3',
+    '25 July to 8 November 2025 • Terminal 2',
+    '26 July to 2 August 2025 • Terminal 1'
+  ];
+
+
+  // maps for flight schedule
   static const Map<String, String> airlineCodes = {
     "AAL": "American Airlines",
     "AFL": "Aeroflot",

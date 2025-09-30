@@ -16,8 +16,8 @@ class Cell extends StatelessWidget {
     return GestureDetector(
       onTap: () async{
         if(item.link != null){
-          final _url = Uri.parse(item.link!);
-          await launchUrl(_url, mode: LaunchMode.inAppWebView);
+          final url = Uri.parse(item.link!);
+          await launchUrl(url, mode: LaunchMode.inAppWebView);
         }else if(item.screen != null){
           if (item.index == 5){
             Provider.of<NavProvider>(context, listen: false).pageIndex = item.index!;

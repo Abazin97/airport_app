@@ -423,8 +423,8 @@ class _FlightsPageState extends State<FlightsPage> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
-                                  final _url = Uri.parse(Database.tileLinksFlights[index]);
-                                  await launchUrl(_url, mode: LaunchMode.inAppWebView);
+                                  final url = Uri.parse(Database.tileLinksFlights[index]);
+                                  await launchUrl(url, mode: LaunchMode.inAppWebView);
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(right: 10, left: 10),

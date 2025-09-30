@@ -1,4 +1,5 @@
 import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/pages/departures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -40,7 +41,13 @@ class TransferTransit extends StatelessWidget {
             )
           ),
         ],
-      )
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(children: [
+          Departures.pageButton('Procedures', Icons.connecting_airports, context),
+        ],),
+      ),
     );
   }
 }

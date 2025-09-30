@@ -2,6 +2,7 @@ import 'package:airportapp/components/auth_layout.dart';
 import 'package:airportapp/components/bottom_nav_bar.dart';
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/info%20pages/about.dart';
+import 'package:airportapp/pages/all_events.dart';
 import 'package:airportapp/pages/arrivals.dart';
 import 'package:airportapp/pages/art_culture.dart';
 import 'package:airportapp/pages/contact_us.dart';
@@ -48,6 +49,7 @@ class HomeScreen extends StatelessWidget {
     const Settings(),// 14
     const ContactUs(), //15
     const About(),// 16
+    const AllEvents()// 17
   ];
 
   @override

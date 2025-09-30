@@ -10,8 +10,8 @@ class Cell extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: ()async {
-        final _url = Uri.parse(item.link!);
-        await launchUrl(_url, mode: LaunchMode.inAppWebView);
+        final url = Uri.parse(item.link!);
+        await launchUrl(url, mode: LaunchMode.inAppWebView);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

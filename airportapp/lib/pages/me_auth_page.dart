@@ -22,7 +22,7 @@ class _MeAuthPageState extends State<MeAuthPage> {
       try {
         await authService.value.signOut();
       } on FirebaseAuthException catch (e) {
-        print(e.message);
+        debugPrint(e.message);
       }
     }
     return Scaffold(

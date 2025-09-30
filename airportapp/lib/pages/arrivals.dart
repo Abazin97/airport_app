@@ -1,4 +1,5 @@
 import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/pages/departures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -40,7 +41,18 @@ class Arrivals extends StatelessWidget {
             )
           ),
         ],
-      )
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+        child: Column(children: [
+          Departures.pageButton('Immigration', Icons.contact_page_outlined, context),
+          Departures.pageButton('HKIA Courtesy Channel', Icons.transfer_within_a_station, context),
+          Departures.pageButton('Baggage Reclaim', Icons.luggage_outlined, context),
+          Departures.pageButton('Customs and excise', Icons.person_outline, context),
+          Departures.pageButton('Meet and Greet', Icons.group_outlined, context),
+          Departures.pageButton('Visa & Tourist Information', Icons.info_outline, context),
+        ],),
+      ),
     );
   }
 }

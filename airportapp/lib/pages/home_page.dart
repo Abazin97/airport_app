@@ -318,8 +318,8 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index){
                         return GestureDetector(
                           onTap: () async {
-                            final _url = Uri.parse(Database.tileLinksHome[index]);
-                            await launchUrl(_url, mode: LaunchMode.inAppWebView);
+                            final url = Uri.parse(Database.tileLinksHome[index]);
+                            await launchUrl(url, mode: LaunchMode.inAppWebView);
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

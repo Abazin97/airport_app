@@ -42,7 +42,7 @@ class Departures extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 12, right: 12),
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Column(children: [
           pageButton('Check In / Departures', Icons.group_outlined, context),
           pageButton('Immigration', Icons.contact_page_outlined, context),
@@ -56,7 +56,7 @@ class Departures extends StatelessWidget {
     );
   }
 
-  Widget pageButton(String text, IconData icon, BuildContext context){
+  static Widget pageButton(String text, IconData icon, BuildContext context){
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: GestureDetector(
@@ -83,7 +83,7 @@ class Departures extends StatelessWidget {
                 Icon(icon, color: Colors.blue[900],),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
+                    padding: const EdgeInsets.only(left: 5, right: 20),
                     child: Text(text, style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
                 )

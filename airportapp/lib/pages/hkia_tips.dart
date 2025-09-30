@@ -23,11 +23,14 @@ class HkiaTips extends StatelessWidget {
             Provider.of<NavProvider>(context, listen: false).pageIndex = 7;
           },
           icon: Icon(
-            Icons.close_outlined,
+            Icons.arrow_back_ios,
             color: Colors.white,
           )
         )
-      )
+      ),
+      body: ListView(children: [
+        
+      ],),
     );
   }
 }

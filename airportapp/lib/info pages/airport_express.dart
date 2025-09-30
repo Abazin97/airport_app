@@ -64,8 +64,8 @@ class AirportExpress extends StatelessWidget {
                       TextSpan(text: 'MTR Mobile', style: TextStyle(color: Colors.blue[900], decoration: TextDecoration.underline, fontSize: 16),
                       recognizer: TapGestureRecognizer()
                       ..onTap = ()async{
-                        final _url = Uri.parse('https://www.mtr.com.hk/mtrmobile/en/');
-                        await launchUrl(_url, mode: LaunchMode.externalApplication);
+                        final url1 = Uri.parse('https://www.mtr.com.hk/mtrmobile/en/');
+                        await launchUrl(url1, mode: LaunchMode.externalApplication);
                       }),
                       const TextSpan(text: '" app to keep track of the real-time update of the train schedules.', style: TextStyle(color: Colors.black, fontSize: 16))
                     ])
@@ -95,8 +95,8 @@ class AirportExpress extends StatelessWidget {
                     TextSpan(text: 'here', style: TextStyle(color: Colors.blue[900], decoration: TextDecoration.underline, fontSize: 16),
                     recognizer: TapGestureRecognizer()
                     ..onTap = ()async{
-                      final _url2 = Uri.parse('https://www.mtr.com.hk/en/customer/services/complom_checkin.html');
-                      await launchUrl(_url2, mode: LaunchMode.externalApplication);
+                      final url2 = Uri.parse('https://www.mtr.com.hk/en/customer/services/complom_checkin.html');
+                      await launchUrl(url2, mode: LaunchMode.externalApplication);
                     }),
                     TextSpan(text: ' for service details.', style: TextStyle(fontSize: 16, color: Colors.black))
                   ])),
@@ -108,8 +108,8 @@ class AirportExpress extends StatelessWidget {
                     TextSpan(text: 'here', style: TextStyle(color: Colors.blue[900], decoration: TextDecoration.underline, fontSize: 16),
                     recognizer: TapGestureRecognizer()
                     ..onTap = ()async{
-                      final _url2 = Uri.parse('https://www.mtr.com.hk/en/customer/jp/index.php?sid=47&eid=55');
-                      await launchUrl(_url2, mode: LaunchMode.externalApplication);
+                      final url2 = Uri.parse('https://www.mtr.com.hk/en/customer/jp/index.php?sid=47&eid=55');
+                      await launchUrl(url2, mode: LaunchMode.externalApplication);
                     }),
                     TextSpan(text: ' for route details.', style: TextStyle(fontSize: 16, color: Colors.black))
                   ])),
