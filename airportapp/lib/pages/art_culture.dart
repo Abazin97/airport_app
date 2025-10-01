@@ -1,5 +1,8 @@
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/data/database.dart';
+import 'package:airportapp/info%20pages/art_in_motion.dart';
+import 'package:airportapp/info%20pages/flow_of_flight.dart';
+import 'package:airportapp/info%20pages/hkia_live.dart';
 import 'package:airportapp/info%20pages/ink_city.dart';
 import 'package:airportapp/info%20pages/reminiscence.dart';
 import 'package:airportapp/pages/all_events.dart';
@@ -11,6 +14,9 @@ class ArtCulture extends StatelessWidget {
   static const List<Widget> links = [
       InkCity(),
       Reminiscence(),
+      FlowOfFlight(),
+      ArtInMotion(),
+      HkiaLive()
     ];
   @override
   Widget build(BuildContext context) {

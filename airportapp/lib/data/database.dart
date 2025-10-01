@@ -100,8 +100,8 @@ class Database {
   // all events assets
   static const List<String> allEventsImage = [
     'lib/assets/ink.jpg',
-    'lib/assets/flights.jpg',
     'lib/assets/reminiscence.jpg',
+    'lib/assets/flights.jpg',
     'lib/assets/motion.jpg',
     'lib/assets/live.jpg',
   ];
