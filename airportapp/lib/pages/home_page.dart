@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 250,
                   child: ListView.builder(
-                    itemCount: Database.tileLinksHome.length,
+                    itemCount: StaticTileItem.getTileList().length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       final items2 = StaticTileItem.getTileList();

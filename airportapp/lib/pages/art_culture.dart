@@ -1,12 +1,17 @@
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/data/database.dart';
+import 'package:airportapp/info%20pages/ink_city.dart';
+import 'package:airportapp/info%20pages/reminiscence.dart';
 import 'package:airportapp/pages/all_events.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ArtCulture extends StatelessWidget {
   const ArtCulture({super.key});
-
+  static const List<Widget> links = [
+      InkCity(),
+      Reminiscence(),
+    ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +58,7 @@ class ArtCulture extends StatelessWidget {
               itemBuilder: (context, index){
                 return Padding(
                   padding: const EdgeInsets.only(right: 20),
-                  child: tile(index),
+                  child: tile(context,index),
                 );
               }
             ),
@@ -62,15 +67,15 @@ class ArtCulture extends StatelessWidget {
       ],),
     );
   }
-  static Widget tile(index){
+  static Widget tile(BuildContext context,index){
     return Center(
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => links[index]));},
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 270,
+              width: 300,
               child: Container(
                 height: 140,
                 decoration: BoxDecoration(
@@ -98,6 +103,5 @@ class ArtCulture extends StatelessWidget {
         ),
       ),
     );
-
   }
 }

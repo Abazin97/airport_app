@@ -35,7 +35,7 @@ class AllEvents extends StatelessWidget {
         itemBuilder: (context, index){
           return Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: ArtCulture.tile(index),
+            child: ArtCulture.tile(context,index),
           );
         }
       ),
