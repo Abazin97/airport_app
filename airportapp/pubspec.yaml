@@ -47,6 +47,8 @@ dependencies:
   flutter_launcher_icons: any
   share_plus: ^11.1.0
   timezone: ^0.10.1
+  connectivity_plus: ^6.1.1
+  internet_connection_checker: ^3.0.1
 
 dev_dependencies:
   analyzer: '7.5.3'
