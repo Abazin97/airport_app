@@ -16,7 +16,6 @@ void main() async{
       ChangeNotifierProvider(
         create: (context) => NavProvider(),
       ),
-      
     ],
     child: MyApp()
   ));

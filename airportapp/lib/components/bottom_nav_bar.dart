@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:airportapp/components/bottom_nav_wid.dart';
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -16,7 +14,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  bool isConnectedInternet = false;
+  bool isConnectedInternet = true;
 
   StreamSubscription? _internetConnectionStreamSubscription;
 
@@ -45,6 +43,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
       }
     );
   }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _internetConnectionStreamSubscription?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<NavProvider>(

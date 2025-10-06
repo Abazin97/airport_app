@@ -41,26 +41,28 @@ class Departures extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-        child: Column(children: [
-          pageButton('Check In / Departures', Icons.group_outlined, context),
-          pageButton('Immigration', Icons.contact_page_outlined, context),
-          pageButton('HKIA Courtesy Channel', Icons.transfer_within_a_station, context),
-          pageButton('Baggage Regulations', Icons.luggage_outlined, context),
-          pageButton('Airport Security', Icons.security, context),
-          pageButton('Tips for Passengers to Gate 201-230 (With APM operation)', Icons.route_outlined, context),
-          pageButton('Tips for Passengers to Gate 201-230 (During non-APM operation)', Icons.route_outlined, context)
-        ],),
+      body: ListView(
+        children: [Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          child: Column(children: [
+            pageButton('Check In / Departures', Icons.group_outlined, context, 18),
+            pageButton('Immigration', Icons.contact_page_outlined, context, 19),
+            pageButton('HKIA Courtesy Channel', Icons.transfer_within_a_station, context, 20),
+            pageButton('Baggage Regulations', Icons.luggage_outlined, context, 21),
+            pageButton('Airport Security', Icons.security, context, 22),
+            pageButton('Tips for Passengers to Gate 201-230 (With APM operation)', Icons.route_outlined, context, 23),
+            pageButton('Tips for Passengers to Gate 201-230 (During non-APM operation)', Icons.route_outlined, context, 24)
+          ],),
+        ),]
       ),
     );
   }
 
-  static Widget pageButton(String text, IconData icon, BuildContext context){
+  static Widget pageButton(String text, IconData icon, BuildContext context, int index){
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: GestureDetector(
-        onTap: () => Provider.of<NavProvider>(context, listen: false).pageIndex = 7,
+        onTap: () => Provider.of<NavProvider>(context, listen: false).pageIndex = index,
         child: Container(
           width: double.infinity,
           height: 60,

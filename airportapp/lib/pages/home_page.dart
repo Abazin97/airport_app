@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
   void _fetchWeather()async{
     try{
       final weather = await _weatherService.getWeather('Hong Kong');
+      if(!mounted) return;
       setState(() {
         _weather = weather;
       });

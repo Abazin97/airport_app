@@ -2,6 +2,18 @@ import 'package:airportapp/components/auth_layout.dart';
 import 'package:airportapp/components/bottom_nav_bar.dart';
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/info%20pages/about.dart';
+import 'package:airportapp/info%20pages/airport_security.dart';
+import 'package:airportapp/info%20pages/baggage_reclaim.dart';
+import 'package:airportapp/info%20pages/baggage_regulations.dart';
+import 'package:airportapp/info%20pages/checkin_departures.dart';
+import 'package:airportapp/info%20pages/courtesy_channel.dart';
+import 'package:airportapp/info%20pages/customs_excise.dart';
+import 'package:airportapp/info%20pages/immigration1.dart';
+import 'package:airportapp/info%20pages/immigration2.dart';
+import 'package:airportapp/info%20pages/meet_greet.dart';
+import 'package:airportapp/info%20pages/tips1.dart';
+import 'package:airportapp/info%20pages/tips2.dart';
+import 'package:airportapp/info%20pages/visa_tourist_info.dart';
 import 'package:airportapp/pages/all_events.dart';
 import 'package:airportapp/pages/arrivals.dart';
 import 'package:airportapp/pages/art_culture.dart';
@@ -16,7 +28,7 @@ import 'package:airportapp/pages/my_favourites.dart';
 import 'package:airportapp/pages/settings.dart';
 import 'package:airportapp/pages/shop_list_page.dart';
 import 'package:airportapp/pages/shop_page.dart';
-import 'package:airportapp/pages/transfer_transit.dart';
+import 'package:airportapp/info%20pages/transfer_transit.dart';
 import 'package:airportapp/pages/transport_to_from.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +61,19 @@ class HomeScreen extends StatelessWidget {
     const Settings(),// 14
     const ContactUs(), //15
     const About(),// 16
-    const AllEvents()// 17
+    const AllEvents(),// 17
+    const CheckinDepartures(),// 18
+    const Immigration1(),// 19
+    const CourtesyChannel(),// 20
+    const BaggageRegulations(),// 21
+    const AirportSecurity(),// 22
+    const Tips1(),// 23
+    const Tips2(),// 24
+    const BaggageReclaim(),// 25
+    const CustomsExcise(),// 26
+    const MeetGreet(),// 27
+    const VisaTouristInfo(),// 28
+    const Immigration2(),// 29
   ];
 
   @override
@@ -70,7 +94,19 @@ class HomeScreen extends StatelessWidget {
                 homeScreenNotifier.pageIndex == 13 ||
                 homeScreenNotifier.pageIndex == 14 ||
                 homeScreenNotifier.pageIndex == 15 ||
-                homeScreenNotifier.pageIndex == 16){
+                homeScreenNotifier.pageIndex == 16 ||
+                homeScreenNotifier.pageIndex == 18 ||
+                homeScreenNotifier.pageIndex == 19 ||
+                homeScreenNotifier.pageIndex == 20 ||
+                homeScreenNotifier.pageIndex == 21 ||
+                homeScreenNotifier.pageIndex == 22 ||
+                homeScreenNotifier.pageIndex == 23 ||
+                homeScreenNotifier.pageIndex == 24 ||
+                homeScreenNotifier.pageIndex == 25 ||
+                homeScreenNotifier.pageIndex == 26 ||
+                homeScreenNotifier.pageIndex == 27 ||
+                homeScreenNotifier.pageIndex == 28 ||
+                homeScreenNotifier.pageIndex == 29){
                 final slideIn = Tween<Offset>(
                 begin: const Offset(1.0, 0.0),
                 end: Offset.zero,
