@@ -1,10 +1,10 @@
 import 'package:airportapp/components/nav_provider.dart';
 import 'package:airportapp/data/database.dart';
-import 'package:airportapp/info%20pages/art_in_motion.dart';
-import 'package:airportapp/info%20pages/flow_of_flight.dart';
-import 'package:airportapp/info%20pages/hkia_live.dart';
-import 'package:airportapp/info%20pages/ink_city.dart';
-import 'package:airportapp/info%20pages/reminiscence.dart';
+import 'package:airportapp/info_pages/art_in_motion.dart';
+import 'package:airportapp/info_pages/flow_of_flight.dart';
+import 'package:airportapp/info_pages/hkia_live.dart';
+import 'package:airportapp/info_pages/ink_city.dart';
+import 'package:airportapp/info_pages/reminiscence.dart';
 import 'package:airportapp/pages/all_events.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

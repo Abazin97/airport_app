@@ -322,7 +322,7 @@ class _FlightsPageState extends State<FlightsPage> {
                                 margin: const EdgeInsets.symmetric(horizontal: 25),
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
                                   children: [
