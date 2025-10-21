@@ -33,7 +33,7 @@ class About extends StatelessWidget {
           IconButton(
             onPressed: () async{
               final urlPreview = 'https://www.hongkongairport.com/apps/contentPage?pageId=about_my_hkg';
-              await SharePlus.instance.share(ShareParams(text: 'I would like to share "Transfer / Transit" with you. \n\nClick here for details: $urlPreview', subject: 'I would like to share "Traffic Conditions To and From Airport" with you.'));
+              await SharePlus.instance.share(ShareParams(text: 'I would like to share "About My HKG" with you. \n\nClick here for details: $urlPreview', subject: 'I would like to share "Traffic Conditions To and From Airport" with you.'));
             }, 
             icon: Icon(
               Icons.share, 
