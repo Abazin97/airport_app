@@ -1,6 +1,4 @@
 import 'package:airportapp/pages/change_pass.dart';
-import 'package:airportapp/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyProfile extends StatefulWidget {

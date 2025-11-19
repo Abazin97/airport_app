@@ -39,6 +39,7 @@ class AuthNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
+  @override
   void dispose(){
     notifyListeners();
   }

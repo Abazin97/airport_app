@@ -1,6 +1,5 @@
 import 'package:airportapp/pages/reset_password.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
-import 'package:airportapp/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
