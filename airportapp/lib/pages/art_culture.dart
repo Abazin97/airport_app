@@ -1,4 +1,4 @@
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/data/database.dart';
 import 'package:airportapp/info_pages/art_in_motion.dart';
 import 'package:airportapp/info_pages/flow_of_flight.dart';

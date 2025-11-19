@@ -1,4 +1,4 @@
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/data/database.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:flutter/material.dart';

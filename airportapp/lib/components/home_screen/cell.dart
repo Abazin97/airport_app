@@ -1,5 +1,5 @@
 import 'package:airportapp/components/home_screen/cell_item.dart';
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/pages/track_my_bag.dart';
 import 'package:airportapp/pages/transport_to_from.dart';
 import 'package:flutter/material.dart';

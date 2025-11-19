@@ -1,10 +1,9 @@
 import 'package:airportapp/components/me_screen/cell.dart';
 import 'package:airportapp/components/me_screen/cell_item.dart';
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/auth_notifier.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:airportapp/pages/my_profile.dart';
-import 'package:airportapp/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,9 +19,10 @@ class _MeAuthPageState extends State<MeAuthPage> {
   Widget build(BuildContext context) {
     void logout()async{
       try {
-        await authService.value.signOut();
-      } on FirebaseAuthException catch (e) {
-        debugPrint(e.message);
+        final authNotifier = context.read<AuthNotifier>();
+        await authNotifier.logout();
+      } on Exception catch (e) {
+        debugPrint(e.toString());
       }
     }
     return Scaffold(

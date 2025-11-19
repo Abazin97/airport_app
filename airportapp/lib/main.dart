@@ -1,20 +1,33 @@
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
+import 'package:airportapp/providers/auth_notifier.dart';
+import 'package:airportapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:airportapp/pages/load_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+
+
+final authService = AuthService();
+final authNotifier = AuthNotifier(authService);
 
 void main() async{
-  //debugPaintSizeEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
         create: (context) => NavProvider(),
+      ),
+      Provider(create: (_) => AuthService()),
+      ChangeNotifierProvider(
+        create: (context) {
+          final authService = context.read<AuthService>();
+          final notifier = AuthNotifier(authService);
+          notifier.init();
+          return notifier;
+        },
       ),
     ],
     child: MyApp()

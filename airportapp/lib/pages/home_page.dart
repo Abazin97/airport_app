@@ -3,7 +3,7 @@ import 'package:airportapp/components/home_screen/cell.dart';
 import 'package:airportapp/components/home_screen/cell_item.dart';
 import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/data/database.dart';
 import 'package:airportapp/models/weather_model.dart';
 import 'package:airportapp/pages/track_my_bag.dart';

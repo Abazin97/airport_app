@@ -1,6 +1,7 @@
-import 'package:airportapp/components/auth_layout.dart';
+import 'package:airportapp/layout/auth_layout.dart';
 import 'package:airportapp/components/bottom_nav_bar.dart';
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/auth_notifier.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/info_pages/about.dart';
 import 'package:airportapp/info_pages/airport_security.dart';
 import 'package:airportapp/info_pages/baggage_reclaim.dart';
@@ -47,7 +48,10 @@ class HomeScreen extends StatelessWidget {
       return FlightsPage(autofocus: nav.autofocus);// 1
     }),
     const ShopPage(),// 2
-    const AuthLayout(),// 3
+    Builder(builder:(context){
+      final auth = context.watch<AuthNotifier>();
+      return AuthLayout(authNotifier: auth);
+    }),// 3
     const InboxPage(),// 4
     const TransportToFrom(),// 5
     const ShopListPage(),// 6

@@ -1,7 +1,9 @@
 import 'package:airportapp/pages/reset_password.dart';
+import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -31,11 +33,14 @@ class _LoginPageState extends State<LoginPage> {
 
   void signIn()async{
     try {
-      await authService.value.signIn(
-        login: controllerLogin.text, 
-        password: controllerPassCode.text,
-        verificationId: verificationId,
-        smsCode: controllerPassCode.text,  
+      final authNotifier = context.read<AuthNotifier>();
+      await authNotifier.login(
+        controllerLogin.text,
+        controllerPassCode.text
+        // login: controllerLogin.text, 
+        // password: controllerPassCode.text,
+        // verificationId: verificationId,
+        // smsCode: controllerPassCode.text,
       );
       popPage();
     }on FirebaseAuthException catch (e) {
@@ -46,19 +51,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void sendCode()async{
-    await authService.value.sendOtp(
-      phoneNumber: controllerLogin.text, 
-      onCodeSent: (verId){
-        setState(() {
-          verificationId = verId;
-          showOtpField = true;
-        });
-      }, 
-      onError: (e) => debugPrint(e.toString()),
-      onTimeout: (verId) {
-        verificationId = verId;
-      },
-    );
+    // await authService.value.sendOtp(
+    //   phoneNumber: controllerLogin.text, 
+    //   onCodeSent: (verId){
+    //     setState(() {
+    //       verificationId = verId;
+    //       showOtpField = true;
+    //     });
+    //   }, 
+    //   onError: (e) => debugPrint(e.toString()),
+    //   onTimeout: (verId) {
+    //     verificationId = verId;
+    //   },
+    // );
   }
 
   void popPage(){

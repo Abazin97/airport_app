@@ -1,6 +1,7 @@
-import 'package:airportapp/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -31,45 +32,54 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
 
-  void signIn()async{
-    await authService.value.signIn(
-      login: "+1${phoneController.text}",
-      verificationId: verificationId,
-      smsCode: otpController.text
+  void signUp()async{
+    final authNotifier = context.read<AuthNotifier>();
+    try {
+      await authNotifier.register(
+      controllerEmail.text,
+      controllerPassword.text
+      // login: "+1${phoneController.text}",
+      // verificationId: verificationId,
+      // smsCode: otpController.text
     );
+    } on GrpcError catch (e) {
+      debugPrint(e.message);
+    }
+    if (!mounted) return;
+    popPage();
   }
 
   void linkEmailPass()async{
-    try {
-      final user = authService.value.firebaseAuth.currentUser;
-      if(user != null){
-        final emailCred = EmailAuthProvider.credential(
-          email: controllerEmail.text, 
-          password: controllerPassword.text
-        );
-        await user.linkWithCredential(emailCred);
-        if (!mounted) return;
-        popPage();
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
+    // try {
+    //   final user = authService.value.firebaseAuth.currentUser;
+    //   if(user != null){
+    //     final emailCred = EmailAuthProvider.credential(
+    //       email: controllerEmail.text, 
+    //       password: controllerPassword.text
+    //     );
+    //     await user.linkWithCredential(emailCred);
+    //     if (!mounted) return;
+    //     popPage();
+    //   }
+    // } catch (e) {
+    //   debugPrint(e.toString());
+    // }
   }
 
   void sendCode()async{
-    await authService.value.sendOtp(
-      phoneNumber: "+1${phoneController.text}", 
-      onCodeSent: (verId){
-        setState(() {
-          verificationId = verId;
-          showOtpField = true;
-        });
-      }, 
-      onError: (e) => debugPrint(e.toString()),
-      onTimeout: (verId) {
-        verificationId = verId;
-      },
-    );
+    // await authService.value.sendOtp(
+    //   phoneNumber: "+1${phoneController.text}", 
+    //   onCodeSent: (verId){
+    //     setState(() {
+    //       verificationId = verId;
+    //       showOtpField = true;
+    //     });
+    //   }, 
+    //   onError: (e) => debugPrint(e.toString()),
+    //   onTimeout: (verId) {
+    //     verificationId = verId;
+    //   },
+    // );
   }
 
   void popPage(){
@@ -161,7 +171,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         if (showOtpField)
                           ElevatedButton(
                             onPressed: (){
-                              signIn();
+                              //signIn();
                             }, 
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, minimumSize: Size(double.infinity, 60), shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
                             child: Text('Verify', style: TextStyle(color: Colors.white),)
@@ -205,7 +215,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ElevatedButton(
                   onPressed: () {
                     if (formKeyEmail.currentState!.validate()){
-                      linkEmailPass();
+                      signUp();
                     }
                   }, 
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, minimumSize: Size(double.infinity, 60), shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero)), child: Text('Sign Up', style: TextStyle(color: Colors.white))),

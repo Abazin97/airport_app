@@ -1,4 +1,4 @@
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:airportapp/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +14,7 @@ class ChangePass extends StatefulWidget {
 }
 
 class _ChangePassState extends State<ChangePass> {
-  User? user = authService.value.currentUser;
+  //User? user = authService.value.currentUser;
   TextEditingController controllerCurrentPass = TextEditingController();
   TextEditingController controllerNewPass = TextEditingController();
   final formKey1 = GlobalKey<FormState>();
@@ -29,20 +29,20 @@ class _ChangePassState extends State<ChangePass> {
   }
 
   void updatePassword()async{
-    final email = user?.email;
-    if (email == null){
-      throw Exception("Email not found");
-    }
-    try {
-      await authService.value.resetPasswordFromCurrent(
-        currentPassword: controllerCurrentPass.text, 
-        newPassword: controllerNewPass.text, 
-        email: email
-      );
-      popPage();
-    } catch (e) {
-      showSnackBar();
-    }
+    // final email = user?.email;
+    // if (email == null){
+    //   throw Exception("Email not found");
+    // }
+    // try {
+    //   await authService.value.resetPasswordFromCurrent(
+    //     currentPassword: controllerCurrentPass.text, 
+    //     newPassword: controllerNewPass.text, 
+    //     email: email
+    //   );
+    //   popPage();
+    // } catch (e) {
+    //   showSnackBar();
+    // }
   }
 
   void showSnackBar(){

@@ -1,4 +1,4 @@
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/info_pages/airport_express.dart';
 import 'package:airportapp/info_pages/announcement.dart';
 import 'package:airportapp/info_pages/faq.dart';

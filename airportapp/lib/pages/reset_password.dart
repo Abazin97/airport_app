@@ -29,18 +29,18 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   void resetPassword()async{
-    try {
-      await authService.value.resetPassword(email: controllerEmail.text);
-      showSnackBar();
-      setState(() {
-        errorMsg = '';
-        isLoading = false;
-      });
-    }on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMsg = e.message ?? 'This is not working';
-      });
-    }
+    // try {
+    //   await authService.value.resetPassword(email: controllerEmail.text);
+    //   showSnackBar();
+    //   setState(() {
+    //     errorMsg = '';
+    //     isLoading = false;
+    //   });
+    // }on FirebaseAuthException catch (e) {
+    //   setState(() {
+    //     errorMsg = e.message ?? 'This is not working';
+    //   });
+    // }
   }
 
   void showSnackBar(){

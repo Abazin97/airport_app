@@ -1,119 +1,61 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fixnum/fixnum.dart' show Int64;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grpc/grpc.dart';
+import '../gen/auth.pbgrpc.dart';
 
-
-ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 
 class AuthService {
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final _storage = const FlutterSecureStorage();
 
-  User? get currentUser => firebaseAuth.currentUser;
+  late final ClientChannel _channel;
+  late final AuthClient _client;
 
-  Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
-
-  Future<UserCredential?> signIn({
-    required String login,
-    String? password,
-    String? smsCode,
-    String? verificationId,
-  }) async {
-    final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-
-    if (emailRegex.hasMatch(login)) {
-      if (password == null || password.isEmpty) {
-        throw FirebaseAuthException(
-          code: "missing-password",
-          message: "Enter password for email auth",
-        );
-      }
-      return await firebaseAuth.signInWithEmailAndPassword(
-        email: login,
-        password: password,
-      );
-    } else {
-      if (verificationId == null || smsCode == null) {
-        throw FirebaseAuthException(
-          code: "missing-sms-code",
-          message: "Out of verificationId or smsCode for phone auth",
-        );
-      }
-
-      final credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: smsCode,
-      );
-      return await firebaseAuth.signInWithCredential(credential);
-    }
-  }
-
-
-  Future<void> sendOtp({
-    required String phoneNumber,
-    required Function(String verificationId) onCodeSent,
-    required Function(FirebaseAuthException error) onError,
-    required Function(String verificationId) onTimeout,
-  }) async {
-    await firebaseAuth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (_){},
-      verificationFailed: (e) {
-        onError(e);
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        onCodeSent(verificationId);
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        onTimeout(verificationId);
-      },
+  AuthService({
+    String host = 'localhost',
+    int port = 44084,
+    bool useTls = false,
+  }) {
+    _channel = ClientChannel(
+      host,
+      port: port,
+      options: ChannelOptions(
+        credentials:
+            useTls ? const ChannelCredentials.secure() : const ChannelCredentials.insecure(),
+      ),
     );
-  }
-  
-
-  Future<UserCredential> createAccount({
-    required String email,
-    required String password,
-  })async {
-    return await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);  
+    _client = AuthClient(_channel);
   }
 
-
-  Future<void> signOut()async {
-    await firebaseAuth.signOut();
+  Future<int> register(String email, String password) async {
+    final response = await _client.register(
+      RegisterRequest(email: email, password: password),
+    );
+    return response.userId.toInt();
   }
 
-
-  Future<void> resetPassword({
-    required String email,
-  }) async {
-    await firebaseAuth.sendPasswordResetEmail(email: email);
+  Future<void> login(String email, String password, {int appId = 1}) async {
+    final response = await _client.login(
+      LoginRequest(email: email, password: password, appId: appId),
+    );
+    await _storage.write(key: 'jwt', value: response.token);
   }
 
+  Future<bool> isAdmin(int userId) async {
+    final token = await _storage.read(key: 'jwt');
+    if (token == null) throw Exception("Unauthorized");
 
-  Future<void> updateUsername({
-    required String username,
-  })async{
-    await currentUser!.updateDisplayName(username);
+    final response = await _client.isAdmin(
+      IsAdminRequest(userId: Int64(userId)),
+      options: CallOptions(metadata: {
+        'authorization': 'Bearer $token',
+      }),
+    );
+    return response.isAdmin;
   }
 
+  Future<String?> getToken() async => _storage.read(key: 'jwt');
 
-  Future<void> deleteAccount({
-    required String email,
-    required String password,
-  })async{
-    AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
-    await currentUser!.reauthenticateWithCredential(credential);
-    await currentUser!.delete();
-    await firebaseAuth.signOut();
-  }
+  Future<void> logout() async => _storage.delete(key: 'jwt');
 
-
-  Future<void> resetPasswordFromCurrent({
-    required String currentPassword,
-    required String newPassword,
-    required String email,
-  })async{
-    AuthCredential credential = EmailAuthProvider.credential(email: email, password: currentPassword);
-    await currentUser!.reauthenticateWithCredential(credential);
-    await currentUser!.updatePassword(newPassword);
-  }
+  Future<void> dispose() async => _channel.shutdown();
 }

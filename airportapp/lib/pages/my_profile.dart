@@ -11,7 +11,7 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  User? user = authService.value.currentUser;
+  //User? user = authService.value.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,10 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(height: 10),
                   Divider(),
                   Text('Email Address', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(user?.email ?? ''),
+                  //Text(user?.email ?? ''),
                   Divider(),
                   Text('Mobile Number', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(user?.phoneNumber ?? ''),
+                  //Text(user?.phoneNumber ?? ''),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

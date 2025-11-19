@@ -1,5 +1,5 @@
 import 'package:airportapp/components/bottom_nav_bar.dart';
-import 'package:airportapp/components/nav_provider.dart';
+import 'package:airportapp/providers/nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
