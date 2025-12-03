@@ -23,12 +23,12 @@ class AuthNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> register(String email, String password)async{
-    await _authService.register(email, password);
+  Future<void> register(String title, String birthDate, String name, String lastName, String email, String password, String phone)async{
+    await _authService.register(title, birthDate, name, lastName, email, password, phone);
   }
 
-  Future<void> login(String email, String password) async{
-    await _authService.login(email, password);
+  Future<void> login(String email, String password, String phone) async{
+    await _authService.login(email, password, phone);
     _isLoggedIn = true;
     notifyListeners();
   }
@@ -39,8 +39,8 @@ class AuthNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  @override
-  void dispose(){
-    notifyListeners();
-  }
+  // @override
+  // void dispose(){
+  //   notifyListeners();
+  // }
 }

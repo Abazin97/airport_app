@@ -11,6 +11,10 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -28,6 +32,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   void dispose(){
     controllerEmail.dispose();
     controllerPassword.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 
@@ -36,8 +41,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final authNotifier = context.read<AuthNotifier>();
     try {
       await authNotifier.register(
+      titleController.text,
+      birthDateController.text,
+      nameController.text,
+      lastNameController.text,
       controllerEmail.text,
-      controllerPassword.text
+      controllerPassword.text,
+      phoneController.text,
       // login: "+1${phoneController.text}",
       // verificationId: verificationId,
       // smsCode: otpController.text
@@ -176,6 +186,53 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, minimumSize: Size(double.infinity, 60), shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
                             child: Text('Verify', style: TextStyle(color: Colors.white),)
                           ),
+                        Text('Title', style: TextStyle(color: Colors.teal)),
+                        TextFormField(
+                          controller: titleController,
+                          decoration: InputDecoration(border: OutlineInputBorder()),
+                          validator: (String? value) {
+                            if (value == null || value.trim().isEmpty){
+                              return 'This is a required field.';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        Text('First Name', style: TextStyle(color: Colors.teal)),
+                        TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(border: OutlineInputBorder()),
+                          validator: (String? value) {
+                            if (value == null || value.trim().isEmpty){
+                              return 'This is a required field.';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        Text('Last Name', style: TextStyle(color: Colors.teal)),
+                        TextFormField(
+                          controller: lastNameController,
+                          decoration: InputDecoration(border: OutlineInputBorder()),
+                          validator: (String? value) {
+                            if (value == null || value.trim().isEmpty){
+                              return 'This is a required field.';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        Text('Birthday', style: TextStyle(color: Colors.teal)),
+                        TextFormField(
+                          controller: birthDateController,
+                          decoration: InputDecoration(border: OutlineInputBorder()),
+                          validator: (String? value) {
+                            if (value == null || value.trim().isEmpty){
+                              return 'This is a required field.';
+                            }
+                            return null;
+                          },
+                        ),
                         SizedBox(height: 20),
                         Text('Email Address', style: TextStyle(color: Colors.teal)),
                         TextFormField(

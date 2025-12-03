@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from auth.proto.
+// Generated from sso.proto.
 
 // @dart = 3.3
 
@@ -16,9 +16,9 @@ import 'dart:core' as $core;
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'auth.pb.dart' as $0;
+import 'sso.pb.dart' as $0;
 
-export 'auth.pb.dart';
+export 'sso.pb.dart';
 
 @$pb.GrpcServiceName('auth.Auth')
 class AuthClient extends $grpc.Client {
@@ -53,6 +53,27 @@ class AuthClient extends $grpc.Client {
     return $createUnaryCall(_$isAdmin, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.LogoutResponse> logout(
+    $0.LogoutRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$logout, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.RequestOTPResponse> requestOTP(
+    $0.RequestOTPRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$requestOTP, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.VerifyOTPResponse> verifyOTP(
+    $0.VerifyOTPRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$verifyOTP, request, options: options);
+  }
+
   // method descriptors
 
   static final _$register =
@@ -69,6 +90,21 @@ class AuthClient extends $grpc.Client {
           '/auth.Auth/IsAdmin',
           ($0.IsAdminRequest value) => value.writeToBuffer(),
           $0.IsAdminResponse.fromBuffer);
+  static final _$logout =
+      $grpc.ClientMethod<$0.LogoutRequest, $0.LogoutResponse>(
+          '/auth.Auth/Logout',
+          ($0.LogoutRequest value) => value.writeToBuffer(),
+          $0.LogoutResponse.fromBuffer);
+  static final _$requestOTP =
+      $grpc.ClientMethod<$0.RequestOTPRequest, $0.RequestOTPResponse>(
+          '/auth.Auth/RequestOTP',
+          ($0.RequestOTPRequest value) => value.writeToBuffer(),
+          $0.RequestOTPResponse.fromBuffer);
+  static final _$verifyOTP =
+      $grpc.ClientMethod<$0.VerifyOTPRequest, $0.VerifyOTPResponse>(
+          '/auth.Auth/VerifyOTP',
+          ($0.VerifyOTPRequest value) => value.writeToBuffer(),
+          $0.VerifyOTPResponse.fromBuffer);
 }
 
 @$pb.GrpcServiceName('auth.Auth')
@@ -97,6 +133,27 @@ abstract class AuthServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.IsAdminRequest.fromBuffer(value),
         ($0.IsAdminResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.LogoutRequest, $0.LogoutResponse>(
+        'Logout',
+        logout_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.LogoutRequest.fromBuffer(value),
+        ($0.LogoutResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RequestOTPRequest, $0.RequestOTPResponse>(
+        'RequestOTP',
+        requestOTP_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.RequestOTPRequest.fromBuffer(value),
+        ($0.RequestOTPResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.VerifyOTPRequest, $0.VerifyOTPResponse>(
+        'VerifyOTP',
+        verifyOTP_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.VerifyOTPRequest.fromBuffer(value),
+        ($0.VerifyOTPResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.RegisterResponse> register_Pre($grpc.ServiceCall $call,
@@ -122,4 +179,28 @@ abstract class AuthServiceBase extends $grpc.Service {
 
   $async.Future<$0.IsAdminResponse> isAdmin(
       $grpc.ServiceCall call, $0.IsAdminRequest request);
+
+  $async.Future<$0.LogoutResponse> logout_Pre(
+      $grpc.ServiceCall $call, $async.Future<$0.LogoutRequest> $request) async {
+    return logout($call, await $request);
+  }
+
+  $async.Future<$0.LogoutResponse> logout(
+      $grpc.ServiceCall call, $0.LogoutRequest request);
+
+  $async.Future<$0.RequestOTPResponse> requestOTP_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.RequestOTPRequest> $request) async {
+    return requestOTP($call, await $request);
+  }
+
+  $async.Future<$0.RequestOTPResponse> requestOTP(
+      $grpc.ServiceCall call, $0.RequestOTPRequest request);
+
+  $async.Future<$0.VerifyOTPResponse> verifyOTP_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.VerifyOTPRequest> $request) async {
+    return verifyOTP($call, await $request);
+  }
+
+  $async.Future<$0.VerifyOTPResponse> verifyOTP(
+      $grpc.ServiceCall call, $0.VerifyOTPRequest request);
 }

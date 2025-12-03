@@ -1,7 +1,7 @@
 import 'package:fixnum/fixnum.dart' show Int64;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grpc/grpc.dart';
-import '../gen/auth.pbgrpc.dart';
+import '../gen/sso.pbgrpc.dart';
 
 
 class AuthService {
@@ -26,16 +26,16 @@ class AuthService {
     _client = AuthClient(_channel);
   }
 
-  Future<int> register(String email, String password) async {
+  Future<int> register(String title, String birthDate, String name, String lastName, String email, String password, String phone) async {
     final response = await _client.register(
-      RegisterRequest(email: email, password: password),
+      RegisterRequest(title: title, birthDate: birthDate, name: name, lastName: lastName, email: email, password: password, phone: phone),
     );
     return response.userId.toInt();
   }
 
-  Future<void> login(String email, String password, {int appId = 1}) async {
+  Future<void> login(String email, String password, String phone, {int appId = 1}) async {
     final response = await _client.login(
-      LoginRequest(email: email, password: password, appId: appId),
+      LoginRequest(email: email, password: password, phone: phone, appId: appId),
     );
     await _storage.write(key: 'jwt', value: response.token);
   }

@@ -15,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController controllerLogin = TextEditingController();
   TextEditingController controllerPassCode = TextEditingController();
+  TextEditingController controllerPhone = TextEditingController();
   final formKeyPhone = GlobalKey<FormState>();
   final formKeyLogin = GlobalKey<FormState>();
   String verificationId = "";
@@ -27,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   void dispose(){
     controllerLogin.dispose();
     controllerPassCode.dispose();
+    controllerPhone.dispose();
     super.dispose();
   }
 
@@ -35,7 +37,8 @@ class _LoginPageState extends State<LoginPage> {
       final authNotifier = context.read<AuthNotifier>();
       await authNotifier.login(
         controllerLogin.text,
-        controllerPassCode.text
+        controllerPassCode.text,
+        controllerPhone.text,
         // login: controllerLogin.text, 
         // password: controllerPassCode.text,
         // verificationId: verificationId,

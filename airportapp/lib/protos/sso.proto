@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "github.com/Abazin97/sso/gen/go/sso";
+
+service Auth{
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    rpc Login (LoginRequest) returns (LoginResponse);
+    rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
+    rpc Logout (LogoutRequest) returns (LogoutResponse);
+    rpc RequestOTP(RequestOTPRequest) returns (RequestOTPResponse);
+    rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
+}
+
+message RequestOTPRequest{
+  string phone = 1;
+}
+
+message RequestOTPResponse{
+  string sid = 1;
+}
+
+message VerifyOTPRequest{
+  string phone = 1;
+  string code = 2;
+}
+
+message VerifyOTPResponse{
+  bool success = 1;
+}
+
+message IsAdminRequest {
+  int64 user_id = 1; // User ID to validate.
+}
+
+message IsAdminResponse {
+  bool is_admin = 1;  // Indicates whether the user is an admin.
+}
+
+message RegisterRequest {
+  string email = 1; // Email of the user to register.
+  string password = 2; // Password of the user to register.
+  string phone = 3; // Phone of the user to register.
+  string birth_date = 4; // Birth date of the user.
+  string title = 5; // Mr/Mrs title of the user.
+  string name = 6;
+  string last_name = 7;
+}
+
+message RegisterResponse {
+  int64 user_id = 1; // User ID of the registered user.
+}
+
+message LoginRequest {
+  string email = 1; // Email of the user to login.
+  string password = 2; // Password of the user to login.
+  string phone = 3; // Phone of the user to login.
+  int32 app_id = 4; // ID of the app to login to.
+}
+
+message LoginResponse {
+  string token = 1; // Auth token of the logged in user.
+}
+
+message LogoutRequest {
+  string token = 1; // Auth token of the user to logout.
+}
+
+message LogoutResponse {
+  bool success = 1; // Indicates whether the logout was successful.
+}
