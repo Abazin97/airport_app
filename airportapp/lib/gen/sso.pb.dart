@@ -785,6 +785,150 @@ class LogoutResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
+class ChangePassRequest extends $pb.GeneratedMessage {
+  factory ChangePassRequest({
+    $core.String? email,
+    $core.String? phone,
+    $core.String? oldPassword,
+    $core.String? newPassword,
+  }) {
+    final result = create();
+    if (email != null) result.email = email;
+    if (phone != null) result.phone = phone;
+    if (oldPassword != null) result.oldPassword = oldPassword;
+    if (newPassword != null) result.newPassword = newPassword;
+    return result;
+  }
+
+  ChangePassRequest._();
+
+  factory ChangePassRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ChangePassRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ChangePassRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'email')
+    ..aOS(2, _omitFieldNames ? '' : 'phone')
+    ..aOS(3, _omitFieldNames ? '' : 'oldPassword')
+    ..aOS(4, _omitFieldNames ? '' : 'newPassword')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ChangePassRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ChangePassRequest copyWith(void Function(ChangePassRequest) updates) =>
+      super.copyWith((message) => updates(message as ChangePassRequest))
+          as ChangePassRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ChangePassRequest create() => ChangePassRequest._();
+  @$core.override
+  ChangePassRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ChangePassRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ChangePassRequest>(create);
+  static ChangePassRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get email => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set email($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasEmail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEmail() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get phone => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set phone($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPhone() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPhone() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get oldPassword => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set oldPassword($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOldPassword() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOldPassword() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get newPassword => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set newPassword($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasNewPassword() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearNewPassword() => $_clearField(4);
+}
+
+class ChangePassResponse extends $pb.GeneratedMessage {
+  factory ChangePassResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  ChangePassResponse._();
+
+  factory ChangePassResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ChangePassResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ChangePassResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ChangePassResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ChangePassResponse copyWith(void Function(ChangePassResponse) updates) =>
+      super.copyWith((message) => updates(message as ChangePassResponse))
+          as ChangePassResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ChangePassResponse create() => ChangePassResponse._();
+  @$core.override
+  ChangePassResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ChangePassResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ChangePassResponse>(create);
+  static ChangePassResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

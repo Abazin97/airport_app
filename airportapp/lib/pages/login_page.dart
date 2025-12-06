@@ -1,6 +1,5 @@
 import 'package:airportapp/pages/reset_password.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,23 +32,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void signIn()async{
-    try {
-      final authNotifier = context.read<AuthNotifier>();
-      await authNotifier.login(
-        controllerLogin.text,
-        controllerPassCode.text,
-        controllerPhone.text,
-        // login: controllerLogin.text, 
-        // password: controllerPassCode.text,
-        // verificationId: verificationId,
-        // smsCode: controllerPassCode.text,
-      );
-      popPage();
-    }on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMsg = e.message ?? 'This is not working';
-      });
-    }
+    final authNotifier = context.read<AuthNotifier>();
+    await authNotifier.login(
+      controllerLogin.text,
+      controllerPassCode.text
+    );
+    popPage();
   }
 
   void sendCode()async{

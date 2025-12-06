@@ -27,8 +27,8 @@ class AuthNotifier extends ChangeNotifier{
     await _authService.register(title, birthDate, name, lastName, email, password, phone);
   }
 
-  Future<void> login(String email, String password, String phone) async{
-    await _authService.login(email, password, phone);
+  Future<void> login(String email, String password,) async{
+    await _authService.login(email, password,);
     _isLoggedIn = true;
     notifyListeners();
   }
@@ -36,6 +36,11 @@ class AuthNotifier extends ChangeNotifier{
   Future<void> logout() async{
     await _authService.logout();
     _isLoggedIn = false;
+    notifyListeners();
+  }
+
+  Future<void> changePassword(String email, String phone, String oldPassword, String newPassword) async {
+    await _authService.changePassword(email, phone, oldPassword, newPassword);
     notifyListeners();
   }
 

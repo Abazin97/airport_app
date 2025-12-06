@@ -33,9 +33,9 @@ class AuthService {
     return response.userId.toInt();
   }
 
-  Future<void> login(String email, String password, String phone, {int appId = 1}) async {
+  Future<void> login(String email, String password, {int appId = 1}) async {
     final response = await _client.login(
-      LoginRequest(email: email, password: password, phone: phone, appId: appId),
+      LoginRequest(email: email, password: password, appId: appId),
     );
     await _storage.write(key: 'jwt', value: response.token);
   }
@@ -51,6 +51,13 @@ class AuthService {
       }),
     );
     return response.isAdmin;
+  }
+
+  Future<void> changePassword(String email, String phone, String oldPassword, String newPassword) async {
+
+    await _client.changePassword(
+      ChangePassRequest(email: email, phone:phone, oldPassword: oldPassword, newPassword: newPassword),
+    );
   }
 
   Future<String?> getToken() async => _storage.read(key: 'jwt');

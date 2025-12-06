@@ -9,6 +9,7 @@ service Auth{
     rpc Login (LoginRequest) returns (LoginResponse);
     rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
     rpc Logout (LogoutRequest) returns (LogoutResponse);
+    rpc ChangePassword(ChangePassRequest) returns (ChangePassResponse);
     rpc RequestOTP(RequestOTPRequest) returns (RequestOTPResponse);
     rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
 }
@@ -69,4 +70,15 @@ message LogoutRequest {
 
 message LogoutResponse {
   bool success = 1; // Indicates whether the logout was successful.
+}
+
+message ChangePassRequest {
+  string email = 1;
+  string phone = 2;
+  string old_password = 3; // Current password of the user
+  string new_password = 4; // New password of the user
+}
+
+message ChangePassResponse {
+  bool success = 1;
 }

@@ -1,4 +1,6 @@
+import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -10,6 +12,8 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPhone = TextEditingController();
+  TextEditingController controllerOldPass = TextEditingController();
+  TextEditingController controllerNewPass = TextEditingController();
   final formKeyEmail = GlobalKey<FormState>();
   final formKeyPhone = GlobalKey<FormState>();
   final formKeyVerify = GlobalKey<FormState>();
@@ -27,18 +31,10 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   void resetPassword()async{
-    // try {
-    //   await authService.value.resetPassword(email: controllerEmail.text);
-    //   showSnackBar();
-    //   setState(() {
-    //     errorMsg = '';
-    //     isLoading = false;
-    //   });
-    // }on FirebaseAuthException catch (e) {
-    //   setState(() {
-    //     errorMsg = e.message ?? 'This is not working';
-    //   });
-    // }
+    final authNotifier = context.read<AuthNotifier>();
+    await authNotifier.changePassword(controllerEmail.text, controllerPhone.text, controllerOldPass.text, controllerNewPass.text);
+    //showSnackBar();
+    popPage();
   }
 
   void showSnackBar(){
@@ -51,6 +47,12 @@ class _ResetPasswordState extends State<ResetPassword> {
         margin: EdgeInsets.only(top: 20, left: 20, right: 20),
       )
     );
+  }
+
+  void popPage(){
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -67,11 +69,11 @@ class _ResetPasswordState extends State<ResetPassword> {
       body: ListView(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height + 40,
             child: Column(
               children: [
                 Expanded(
-                  flex: 3,
+                  flex: 5,
                   child: Column(
                     children: [
                       Padding(
@@ -135,16 +137,43 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   Text('Email Address', style: TextStyle(color: Colors.teal[600])),
                                   Form(
                                     key: formKeyEmail,
-                                    child: TextFormField(
-                                      controller: controllerEmail,
-                                      decoration: InputDecoration(border: OutlineInputBorder()),
-                                      validator: (String? value){
-                                        if (value == null || value.trim().isEmpty){
-                                          return 'The email address is either invalid or does not exist.\nPlease try again.';
-                                        }
-                                        return null;
-                                      },
-                                    )
+                                    child: Column(
+                                      children: [
+                                        TextFormField(
+                                          controller: controllerEmail,
+                                          decoration: InputDecoration(border: OutlineInputBorder()),
+                                          validator: (String? value){
+                                            if (value == null || value.trim().isEmpty){
+                                              return 'The email address is either invalid or does not exist.\nPlease try again.';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(height: 20),
+                                        TextFormField(
+                                          controller: controllerOldPass,
+                                          decoration: InputDecoration(border: OutlineInputBorder()),
+                                          validator: (String? value){
+                                            if (value == null || value.trim().isEmpty){
+                                              return 'The email address is either invalid or does not exist.\nPlease try again.';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(height: 20),
+                                        TextFormField(
+                                          controller: controllerNewPass,
+                                          decoration: InputDecoration(border: OutlineInputBorder()),
+                                          validator: (String? value){
+                                            if (value == null || value.trim().isEmpty){
+                                              return 'The email address is either invalid or does not exist.\nPlease try again.';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    
                                   ),
                                   SizedBox(height: 20),
                                   ElevatedButton(

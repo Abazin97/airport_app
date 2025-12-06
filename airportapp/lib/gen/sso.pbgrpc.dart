@@ -60,6 +60,13 @@ class AuthClient extends $grpc.Client {
     return $createUnaryCall(_$logout, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.ChangePassResponse> changePassword(
+    $0.ChangePassRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$changePassword, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.RequestOTPResponse> requestOTP(
     $0.RequestOTPRequest request, {
     $grpc.CallOptions? options,
@@ -95,6 +102,11 @@ class AuthClient extends $grpc.Client {
           '/auth.Auth/Logout',
           ($0.LogoutRequest value) => value.writeToBuffer(),
           $0.LogoutResponse.fromBuffer);
+  static final _$changePassword =
+      $grpc.ClientMethod<$0.ChangePassRequest, $0.ChangePassResponse>(
+          '/auth.Auth/ChangePassword',
+          ($0.ChangePassRequest value) => value.writeToBuffer(),
+          $0.ChangePassResponse.fromBuffer);
   static final _$requestOTP =
       $grpc.ClientMethod<$0.RequestOTPRequest, $0.RequestOTPResponse>(
           '/auth.Auth/RequestOTP',
@@ -140,6 +152,13 @@ abstract class AuthServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.LogoutRequest.fromBuffer(value),
         ($0.LogoutResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ChangePassRequest, $0.ChangePassResponse>(
+        'ChangePassword',
+        changePassword_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ChangePassRequest.fromBuffer(value),
+        ($0.ChangePassResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.RequestOTPRequest, $0.RequestOTPResponse>(
         'RequestOTP',
         requestOTP_Pre,
@@ -187,6 +206,15 @@ abstract class AuthServiceBase extends $grpc.Service {
 
   $async.Future<$0.LogoutResponse> logout(
       $grpc.ServiceCall call, $0.LogoutRequest request);
+
+  $async.Future<$0.ChangePassResponse> changePassword_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.ChangePassRequest> $request) async {
+    return changePassword($call, await $request);
+  }
+
+  $async.Future<$0.ChangePassResponse> changePassword(
+      $grpc.ServiceCall call, $0.ChangePassRequest request);
 
   $async.Future<$0.RequestOTPResponse> requestOTP_Pre($grpc.ServiceCall $call,
       $async.Future<$0.RequestOTPRequest> $request) async {

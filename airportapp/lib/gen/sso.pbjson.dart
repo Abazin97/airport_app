@@ -172,3 +172,33 @@ const LogoutResponse$json = {
 /// Descriptor for `LogoutResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List logoutResponseDescriptor = $convert
     .base64Decode('Cg5Mb2dvdXRSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZXNz');
+
+@$core.Deprecated('Use changePassRequestDescriptor instead')
+const ChangePassRequest$json = {
+  '1': 'ChangePassRequest',
+  '2': [
+    {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
+    {'1': 'phone', '3': 2, '4': 1, '5': 9, '10': 'phone'},
+    {'1': 'old_password', '3': 3, '4': 1, '5': 9, '10': 'oldPassword'},
+    {'1': 'new_password', '3': 4, '4': 1, '5': 9, '10': 'newPassword'},
+  ],
+};
+
+/// Descriptor for `ChangePassRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List changePassRequestDescriptor = $convert.base64Decode(
+    'ChFDaGFuZ2VQYXNzUmVxdWVzdBIUCgVlbWFpbBgBIAEoCVIFZW1haWwSFAoFcGhvbmUYAiABKA'
+    'lSBXBob25lEiEKDG9sZF9wYXNzd29yZBgDIAEoCVILb2xkUGFzc3dvcmQSIQoMbmV3X3Bhc3N3'
+    'b3JkGAQgASgJUgtuZXdQYXNzd29yZA==');
+
+@$core.Deprecated('Use changePassResponseDescriptor instead')
+const ChangePassResponse$json = {
+  '1': 'ChangePassResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `ChangePassResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List changePassResponseDescriptor =
+    $convert.base64Decode(
+        'ChJDaGFuZ2VQYXNzUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
