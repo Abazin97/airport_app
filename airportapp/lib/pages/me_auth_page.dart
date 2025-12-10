@@ -1,5 +1,6 @@
 import 'package:airportapp/components/me_screen/cell.dart';
 import 'package:airportapp/components/me_screen/cell_item.dart';
+import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
@@ -9,12 +10,29 @@ import 'package:provider/provider.dart';
 
 class MeAuthPage extends StatefulWidget {
   const MeAuthPage({super.key});
+  
 
   @override
   State<MeAuthPage> createState() => _MeAuthPageState();
 }
 
+
 class _MeAuthPageState extends State<MeAuthPage> {
+
+  String? firstName;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+    Future<void> loadUserData() async {
+    firstName = await SharedPref.get<String>("firstName");
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     void logout()async{
@@ -60,7 +78,7 @@ class _MeAuthPageState extends State<MeAuthPage> {
                             children: [
                               Row(
                                 children: [
-                                  Text('Hi danila,', style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Quicksand')),
+                                  Text('Hi $firstName,', style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Quicksand')),
                                   IconButton(
                                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())), 
                                     icon: Icon(Icons.account_circle_outlined, color: Colors.white)

@@ -1,3 +1,4 @@
+import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/pages/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ class _ChangePassState extends State<ChangePass> {
   //User? user = authService.value.currentUser;
   TextEditingController controllerCurrentPass = TextEditingController();
   TextEditingController controllerNewPass = TextEditingController();
+  TextEditingController controllerEmail = TextEditingController();
+  TextEditingController controllerPhone = TextEditingController();
   final formKey1 = GlobalKey<FormState>();
   bool _obscureCurrentPassword = true;
   bool _obscureNewPassword = true;
@@ -23,24 +26,16 @@ class _ChangePassState extends State<ChangePass> {
   void dispose(){
     controllerCurrentPass.dispose();
     controllerNewPass.dispose();
+    controllerEmail.dispose();
+    controllerPhone.dispose();
     super.dispose();
   }
 
   void updatePassword()async{
-    // final email = user?.email;
-    // if (email == null){
-    //   throw Exception("Email not found");
-    // }
-    // try {
-    //   await authService.value.resetPasswordFromCurrent(
-    //     currentPassword: controllerCurrentPass.text, 
-    //     newPassword: controllerNewPass.text, 
-    //     email: email
-    //   );
-    //   popPage();
-    // } catch (e) {
-    //   showSnackBar();
-    // }
+    final authNotifier = context.read<AuthNotifier>();
+    await authNotifier.changePassword(controllerEmail.text, controllerPhone.text, controllerCurrentPass.text, controllerNewPass.text);
+    //showSnackBar();
+    popPage();
   }
 
   void showSnackBar(){

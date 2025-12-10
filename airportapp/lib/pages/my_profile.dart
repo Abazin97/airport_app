@@ -1,3 +1,4 @@
+import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/pages/change_pass.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,22 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  //User? user = authService.value.currentUser;
+
+  String? email;
+  String? phone;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+    Future<void> loadUserData() async {
+    email = await SharedPref.get<String>("email");
+    phone = await SharedPref.get<String>("phone");
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +53,10 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(height: 10),
                   Divider(),
                   Text('Email Address', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  //Text(user?.email ?? ''),
+                  Text(email ?? ''),
                   Divider(),
                   Text('Mobile Number', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  //Text(user?.phoneNumber ?? ''),
+                  Text(phone ?? ''),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

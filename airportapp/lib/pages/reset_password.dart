@@ -31,8 +31,6 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   void resetPassword()async{
-    final authNotifier = context.read<AuthNotifier>();
-    await authNotifier.changePassword(controllerEmail.text, controllerPhone.text, controllerOldPass.text, controllerNewPass.text);
     //showSnackBar();
     popPage();
   }
