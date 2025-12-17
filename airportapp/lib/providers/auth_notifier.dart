@@ -1,17 +1,17 @@
 import 'dart:async';
-
 import 'package:airportapp/services/auth_service.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/widgets.dart';
 
 
 class AuthNotifier extends ChangeNotifier{
   final AuthService _authService;
-  //final _authStateController = StreamController<bool>.broadcast();
 
   bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
 
-  //Stream<bool> get authStateChanges => _authStateController.stream;
+  Int64? uid;
+  Int64? get getUid => uid;
   
   AuthNotifier(this._authService);
 
@@ -19,7 +19,6 @@ class AuthNotifier extends ChangeNotifier{
   Future<void> init()async{
     final token = await _authService.getToken();
     _isLoggedIn = token != null;
-    //_authStateController.add(_isLoggedIn);
     notifyListeners();
   }
 
@@ -39,9 +38,13 @@ class AuthNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> changePassword(String email, String phone, String oldPassword, String newPassword) async {
-    await _authService.changePassword(email, phone, oldPassword, newPassword);
+  Future<void> changePasswordInit(String email, String phone, String oldPassword) async {
+    uid = await _authService.changePasswordInit(email, phone, oldPassword);
     notifyListeners();
+  }
+
+  Future<void> changePasswordConfirm(String code, Int64 uid, String email, String newPassword) async{
+    await _authService.changePasswordConfirm(code, uid, email, newPassword);
   }
 
   // @override

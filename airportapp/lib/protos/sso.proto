@@ -4,14 +4,33 @@ package auth;
 
 option go_package = "github.com/Abazin97/sso/gen/go/sso";
 
-service Auth{
-    rpc Register (RegisterRequest) returns (RegisterResponse);
-    rpc Login (LoginRequest) returns (LoginResponse);
-    rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
-    rpc Logout (LogoutRequest) returns (LogoutResponse);
-    rpc ChangePassword(ChangePassRequest) returns (ChangePassResponse);
-    rpc RequestOTP(RequestOTPRequest) returns (RequestOTPResponse);
-    rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
+// Auth is the authentication service responsible for
+// user registration, login, password changes, OTP handling,
+// and admin checks.
+service Auth {
+  // Register registers a new user.
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+
+  // Login logs in a user and returns an auth token.
+  rpc Login (LoginRequest) returns (LoginResponse);
+
+  // IsAdmin checks whether a user is an admin.
+  rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+
+  // Logout logs out a user and invalidates the auth token.
+  rpc Logout (LogoutRequest) returns (LogoutResponse);
+
+  // ChangePasswordInit initiates a password change request.
+  rpc ChangePasswordInit(ChangePassInitRequest) returns (ChangePassInitResponse);
+
+  // ChangePasswordConfirm confirms a password change using a verification code.
+  rpc ChangePasswordConfirm(ChangePassConfirmRequest) returns (ChangePassConfirmResponse);
+
+  // RequestOTP sends a One-Time Password (OTP) to the user.
+  rpc RequestOTP(RequestOTPRequest) returns (RequestOTPResponse);
+
+  // VerifyOTP verifies the provided One-Time Password (OTP).
+  rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
 }
 
 message RequestOTPRequest{
@@ -36,7 +55,7 @@ message IsAdminRequest {
 }
 
 message IsAdminResponse {
-  bool is_admin = 1;  // Indicates whether the user is an admin.
+  bool is_admin = 1; // Indicates whether the user is an admin.
 }
 
 message RegisterRequest {
@@ -72,13 +91,25 @@ message LogoutResponse {
   bool success = 1; // Indicates whether the logout was successful.
 }
 
-message ChangePassRequest {
+message ChangePassInitRequest {
   string email = 1;
   string phone = 2;
   string old_password = 3; // Current password of the user
-  string new_password = 4; // New password of the user
 }
 
-message ChangePassResponse {
+message ChangePassInitResponse {
+  string code = 1;
+  int64 uid = 2;
+  int64 expiry_time = 3;
+}
+
+message ChangePassConfirmRequest{
+  string code = 1;
+  int64 uid = 2;
+  string email = 3;
+  string new_password = 4;
+}
+
+message ChangePassConfirmResponse{
   bool success = 1;
 }

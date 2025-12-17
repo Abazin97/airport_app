@@ -53,10 +53,18 @@ class AuthService {
     return response.isAdmin;
   }
 
-  Future<void> changePassword(String email, String phone, String oldPassword, String newPassword) async {
+  Future<Int64> changePasswordInit(String email, String phone, String oldPassword) async {
 
-    await _client.changePassword(
-      ChangePassRequest(email: email, phone:phone, oldPassword: oldPassword, newPassword: newPassword),
+    final response = await _client.changePasswordInit(
+      ChangePassInitRequest(email: email, phone:phone, oldPassword: oldPassword),
+    );
+    return response.uid;
+  }
+
+  Future<void> changePasswordConfirm(String code, Int64 uid, String email, String newPassword)async{
+    
+    await _client.changePasswordConfirm(
+      ChangePassConfirmRequest(code: code, uid: uid, email: email, newPassword: newPassword),
     );
   }
 

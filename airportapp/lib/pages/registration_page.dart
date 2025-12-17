@@ -49,11 +49,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controllerEmail.text,
       controllerPassword.text,
       phoneController.text,
-
-      
-      // login: "+1${phoneController.text}",
-      // verificationId: verificationId,
-      // smsCode: otpController.text
     );
     await SharedPref.set<String>("birthDate", birthDateController.text);
     await SharedPref.set<String>("firstName", nameController.text);

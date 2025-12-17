@@ -3,6 +3,7 @@ import 'package:airportapp/components/home_screen/cell.dart';
 import 'package:airportapp/components/home_screen/cell_item.dart';
 import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
+import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/data/database.dart';
 import 'package:airportapp/models/weather_model.dart';
@@ -27,6 +28,8 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   Timer? _timer;
+
+  String? firstName;
 
 
   //get weather info via API
@@ -87,6 +90,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _fetchWeather();
+    loadUserData();
     Future.delayed(Duration(seconds: 1),() {
       if (!mounted) return;
       _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
@@ -110,6 +114,12 @@ class _HomePageState extends State<HomePage> {
     _timer?.cancel();
   }
 
+  Future<void> loadUserData() async {
+    firstName = await SharedPref.get<String>("firstName");
+
+    setState(() {});
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -131,7 +141,9 @@ class _HomePageState extends State<HomePage> {
         title: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Text(
-            'Welcome to My HKG',
+             (firstName == null || firstName!.isEmpty)
+             ? 'Welcome to My HKG' 
+             : 'Hello $firstName',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,

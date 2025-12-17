@@ -20,6 +20,9 @@ import 'sso.pb.dart' as $0;
 
 export 'sso.pb.dart';
 
+/// Auth is the authentication service responsible for
+/// user registration, login, password changes, OTP handling,
+/// and admin checks.
 @$pb.GrpcServiceName('auth.Auth')
 class AuthClient extends $grpc.Client {
   /// The hostname for this service.
@@ -32,6 +35,7 @@ class AuthClient extends $grpc.Client {
 
   AuthClient(super.channel, {super.options, super.interceptors});
 
+  /// Register registers a new user.
   $grpc.ResponseFuture<$0.RegisterResponse> register(
     $0.RegisterRequest request, {
     $grpc.CallOptions? options,
@@ -39,6 +43,7 @@ class AuthClient extends $grpc.Client {
     return $createUnaryCall(_$register, request, options: options);
   }
 
+  /// Login logs in a user and returns an auth token.
   $grpc.ResponseFuture<$0.LoginResponse> login(
     $0.LoginRequest request, {
     $grpc.CallOptions? options,
@@ -46,6 +51,7 @@ class AuthClient extends $grpc.Client {
     return $createUnaryCall(_$login, request, options: options);
   }
 
+  /// IsAdmin checks whether a user is an admin.
   $grpc.ResponseFuture<$0.IsAdminResponse> isAdmin(
     $0.IsAdminRequest request, {
     $grpc.CallOptions? options,
@@ -53,6 +59,7 @@ class AuthClient extends $grpc.Client {
     return $createUnaryCall(_$isAdmin, request, options: options);
   }
 
+  /// Logout logs out a user and invalidates the auth token.
   $grpc.ResponseFuture<$0.LogoutResponse> logout(
     $0.LogoutRequest request, {
     $grpc.CallOptions? options,
@@ -60,13 +67,23 @@ class AuthClient extends $grpc.Client {
     return $createUnaryCall(_$logout, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.ChangePassResponse> changePassword(
-    $0.ChangePassRequest request, {
+  /// ChangePasswordInit initiates a password change request.
+  $grpc.ResponseFuture<$0.ChangePassInitResponse> changePasswordInit(
+    $0.ChangePassInitRequest request, {
     $grpc.CallOptions? options,
   }) {
-    return $createUnaryCall(_$changePassword, request, options: options);
+    return $createUnaryCall(_$changePasswordInit, request, options: options);
   }
 
+  /// ChangePasswordConfirm confirms a password change using a verification code.
+  $grpc.ResponseFuture<$0.ChangePassConfirmResponse> changePasswordConfirm(
+    $0.ChangePassConfirmRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$changePasswordConfirm, request, options: options);
+  }
+
+  /// RequestOTP sends a One-Time Password (OTP) to the user.
   $grpc.ResponseFuture<$0.RequestOTPResponse> requestOTP(
     $0.RequestOTPRequest request, {
     $grpc.CallOptions? options,
@@ -74,6 +91,7 @@ class AuthClient extends $grpc.Client {
     return $createUnaryCall(_$requestOTP, request, options: options);
   }
 
+  /// VerifyOTP verifies the provided One-Time Password (OTP).
   $grpc.ResponseFuture<$0.VerifyOTPResponse> verifyOTP(
     $0.VerifyOTPRequest request, {
     $grpc.CallOptions? options,
@@ -102,11 +120,16 @@ class AuthClient extends $grpc.Client {
           '/auth.Auth/Logout',
           ($0.LogoutRequest value) => value.writeToBuffer(),
           $0.LogoutResponse.fromBuffer);
-  static final _$changePassword =
-      $grpc.ClientMethod<$0.ChangePassRequest, $0.ChangePassResponse>(
-          '/auth.Auth/ChangePassword',
-          ($0.ChangePassRequest value) => value.writeToBuffer(),
-          $0.ChangePassResponse.fromBuffer);
+  static final _$changePasswordInit =
+      $grpc.ClientMethod<$0.ChangePassInitRequest, $0.ChangePassInitResponse>(
+          '/auth.Auth/ChangePasswordInit',
+          ($0.ChangePassInitRequest value) => value.writeToBuffer(),
+          $0.ChangePassInitResponse.fromBuffer);
+  static final _$changePasswordConfirm = $grpc.ClientMethod<
+          $0.ChangePassConfirmRequest, $0.ChangePassConfirmResponse>(
+      '/auth.Auth/ChangePasswordConfirm',
+      ($0.ChangePassConfirmRequest value) => value.writeToBuffer(),
+      $0.ChangePassConfirmResponse.fromBuffer);
   static final _$requestOTP =
       $grpc.ClientMethod<$0.RequestOTPRequest, $0.RequestOTPResponse>(
           '/auth.Auth/RequestOTP',
@@ -152,13 +175,24 @@ abstract class AuthServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.LogoutRequest.fromBuffer(value),
         ($0.LogoutResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.ChangePassRequest, $0.ChangePassResponse>(
-        'ChangePassword',
-        changePassword_Pre,
+    $addMethod($grpc.ServiceMethod<$0.ChangePassInitRequest,
+            $0.ChangePassInitResponse>(
+        'ChangePasswordInit',
+        changePasswordInit_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.ChangePassRequest.fromBuffer(value),
-        ($0.ChangePassResponse value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) =>
+            $0.ChangePassInitRequest.fromBuffer(value),
+        ($0.ChangePassInitResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ChangePassConfirmRequest,
+            $0.ChangePassConfirmResponse>(
+        'ChangePasswordConfirm',
+        changePasswordConfirm_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.ChangePassConfirmRequest.fromBuffer(value),
+        ($0.ChangePassConfirmResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.RequestOTPRequest, $0.RequestOTPResponse>(
         'RequestOTP',
         requestOTP_Pre,
@@ -207,14 +241,23 @@ abstract class AuthServiceBase extends $grpc.Service {
   $async.Future<$0.LogoutResponse> logout(
       $grpc.ServiceCall call, $0.LogoutRequest request);
 
-  $async.Future<$0.ChangePassResponse> changePassword_Pre(
+  $async.Future<$0.ChangePassInitResponse> changePasswordInit_Pre(
       $grpc.ServiceCall $call,
-      $async.Future<$0.ChangePassRequest> $request) async {
-    return changePassword($call, await $request);
+      $async.Future<$0.ChangePassInitRequest> $request) async {
+    return changePasswordInit($call, await $request);
   }
 
-  $async.Future<$0.ChangePassResponse> changePassword(
-      $grpc.ServiceCall call, $0.ChangePassRequest request);
+  $async.Future<$0.ChangePassInitResponse> changePasswordInit(
+      $grpc.ServiceCall call, $0.ChangePassInitRequest request);
+
+  $async.Future<$0.ChangePassConfirmResponse> changePasswordConfirm_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.ChangePassConfirmRequest> $request) async {
+    return changePasswordConfirm($call, await $request);
+  }
+
+  $async.Future<$0.ChangePassConfirmResponse> changePasswordConfirm(
+      $grpc.ServiceCall call, $0.ChangePassConfirmRequest request);
 
   $async.Future<$0.RequestOTPResponse> requestOTP_Pre($grpc.ServiceCall $call,
       $async.Future<$0.RequestOTPRequest> $request) async {

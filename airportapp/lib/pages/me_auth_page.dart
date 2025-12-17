@@ -27,22 +27,24 @@ class _MeAuthPageState extends State<MeAuthPage> {
     loadUserData();
   }
 
-    Future<void> loadUserData() async {
+  Future<void> loadUserData() async {
     firstName = await SharedPref.get<String>("firstName");
 
     setState(() {});
   }
 
-  @override
-  Widget build(BuildContext context) {
-    void logout()async{
+  void logout()async{
       try {
         final authNotifier = context.read<AuthNotifier>();
         await authNotifier.logout();
+        await SharedPref.remove();
       } on Exception catch (e) {
         debugPrint(e.toString());
       }
     }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[800],
