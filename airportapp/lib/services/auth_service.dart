@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart' show Int64;
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grpc/grpc.dart';
 import '../gen/sso.pbgrpc.dart';
@@ -7,23 +8,34 @@ import '../gen/sso.pbgrpc.dart';
 class AuthService {
   final _storage = const FlutterSecureStorage();
 
-  late final ClientChannel _channel;
-  late final AuthClient _client;
+  ClientChannel? _channel;
+  late AuthClient _client;
 
-  AuthService({
+  Future<void> init({
     String host = 'localhost',
     int port = 44084,
-    bool useTls = false,
-  }) {
+    bool useTls = true,
+  }) async {
+    ChannelCredentials credentials;
+
+    if (useTls) {
+      final cert = await rootBundle.load('certs/server.crt');
+
+      credentials = ChannelCredentials.secure(
+        certificates: cert.buffer.asUint8List(),
+        authority: 'localhost',
+      );
+    } else {
+      credentials = ChannelCredentials.insecure();
+    }
+
     _channel = ClientChannel(
       host,
       port: port,
-      options: ChannelOptions(
-        credentials:
-            useTls ? const ChannelCredentials.secure() : const ChannelCredentials.insecure(),
-      ),
+      options: ChannelOptions(credentials: credentials),
     );
-    _client = AuthClient(_channel);
+
+    _client = AuthClient(_channel!);
   }
 
   Future<int> register(String title, String birthDate, String name, String lastName, String email, String password, String phone) async {
@@ -72,5 +84,5 @@ class AuthService {
 
   Future<void> logout() async => _storage.delete(key: 'jwt');
 
-  Future<void> dispose() async => _channel.shutdown();
+  Future<void> dispose() async => _channel?.shutdown();
 }

@@ -10,11 +10,10 @@ final authService = AuthService();
 final authNotifier = AuthNotifier(authService);
 
 void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
   
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await authService.init();
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(

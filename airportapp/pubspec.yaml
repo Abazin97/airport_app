@@ -86,6 +86,7 @@ flutter:
   assets:
    - lib/assets/
    - lib/assets/airline_logos/
+   - certs/server.crt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-assets
