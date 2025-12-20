@@ -6,26 +6,27 @@ import 'package:airportapp/pages/load_screen.dart';
 import 'package:provider/provider.dart';
 
 
-final authService = AuthService();
-final authNotifier = AuthNotifier(authService);
 
 void main() async{
-  
   WidgetsFlutterBinding.ensureInitialized();
-  await authService.init();
+  
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
         create: (context) => NavProvider(),
       ),
-      Provider(create: (_) => AuthService()),
-      ChangeNotifierProvider(
-        create: (context) {
-          final authService = context.read<AuthService>();
-          final notifier = AuthNotifier(authService);
-          notifier.init();
-          return notifier;
+      FutureProvider(
+        create: (_) => AuthService.create(), 
+        initialData: null,
+      ),
+      ChangeNotifierProxyProvider<AuthService?, AuthNotifier?>(
+        create: (_) => null,
+        update: (_, authService, _) {
+          if (authService == null){
+            return null;
+          }
+          return AuthNotifier(authService);
         },
       ),
     ],

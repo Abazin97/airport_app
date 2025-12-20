@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:airportapp/providers/auth_status.dart';
 import 'package:airportapp/services/auth_service.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/widgets.dart';
@@ -7,18 +8,23 @@ import 'package:flutter/widgets.dart';
 class AuthNotifier extends ChangeNotifier{
   final AuthService _authService;
 
-  bool _isLoggedIn = false;
-  bool get isLoggedIn => _isLoggedIn;
 
   Int64? uid;
   Int64? get getUid => uid;
   
-  AuthNotifier(this._authService);
+  AuthNotifier(this._authService){
+    init();
+  }
 
+  AuthStatus _status = AuthStatus.loading;
+  AuthStatus get status => _status;
+  bool get isLoggedIn => _status == AuthStatus.authenticated;
 
   Future<void> init()async{
     final token = await _authService.getToken();
-    _isLoggedIn = token != null;
+    _status = token != null 
+      ? AuthStatus.authenticated 
+      : AuthStatus.unauthenticated;
     notifyListeners();
   }
 
@@ -28,13 +34,13 @@ class AuthNotifier extends ChangeNotifier{
 
   Future<void> login(String email, String password,) async{
     await _authService.login(email, password,);
-    _isLoggedIn = true;
+    _status = AuthStatus.authenticated;
     notifyListeners();
   }
 
   Future<void> logout() async{
     await _authService.logout();
-    _isLoggedIn = false;
+    _status = AuthStatus.unauthenticated;
     notifyListeners();
   }
 

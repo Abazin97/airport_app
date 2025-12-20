@@ -7,7 +7,14 @@ import '../gen/sso.pbgrpc.dart';
 
 class AuthService {
   final _storage = const FlutterSecureStorage();
+  AuthService._();
 
+  static Future<AuthService> create() async{
+    final service = AuthService._();
+    await service.init();
+    return service;
+  }
+  
   ClientChannel? _channel;
   late AuthClient _client;
 

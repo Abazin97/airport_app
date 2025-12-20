@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
     }),
     const ShopPage(),// 2
     Builder(builder:(context){
-      final auth = context.watch<AuthNotifier>();
+      final auth = context.watch<AuthNotifier?>();
       return AuthLayout(authNotifier: auth);
     }),// 3
     const InboxPage(),// 4
