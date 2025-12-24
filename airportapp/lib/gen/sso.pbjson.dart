@@ -14,6 +14,25 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use userDescriptor instead')
+const User$json = {
+  '1': 'User',
+  '2': [
+    {'1': 'title', '3': 1, '4': 1, '5': 9, '10': 'title'},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'last_name', '3': 3, '4': 1, '5': 9, '10': 'lastName'},
+    {'1': 'email', '3': 4, '4': 1, '5': 9, '10': 'email'},
+    {'1': 'phone', '3': 5, '4': 1, '5': 9, '10': 'phone'},
+    {'1': 'birth_date', '3': 6, '4': 1, '5': 9, '10': 'birthDate'},
+  ],
+};
+
+/// Descriptor for `User`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
+    'CgRVc2VyEhQKBXRpdGxlGAEgASgJUgV0aXRsZRISCgRuYW1lGAIgASgJUgRuYW1lEhsKCWxhc3'
+    'RfbmFtZRgDIAEoCVIIbGFzdE5hbWUSFAoFZW1haWwYBCABKAlSBWVtYWlsEhQKBXBob25lGAUg'
+    'ASgJUgVwaG9uZRIdCgpiaXJ0aF9kYXRlGAYgASgJUgliaXJ0aERhdGU=');
+
 @$core.Deprecated('Use requestOTPRequestDescriptor instead')
 const RequestOTPRequest$json = {
   '1': 'RequestOTPRequest',
@@ -142,12 +161,14 @@ const LoginResponse$json = {
   '1': 'LoginResponse',
   '2': [
     {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'user', '3': 2, '4': 1, '5': 11, '6': '.auth.User', '10': 'user'},
   ],
 };
 
 /// Descriptor for `LoginResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List loginResponseDescriptor = $convert
-    .base64Decode('Cg1Mb2dpblJlc3BvbnNlEhQKBXRva2VuGAEgASgJUgV0b2tlbg==');
+final $typed_data.Uint8List loginResponseDescriptor = $convert.base64Decode(
+    'Cg1Mb2dpblJlc3BvbnNlEhQKBXRva2VuGAEgASgJUgV0b2tlbhIeCgR1c2VyGAIgASgLMgouYX'
+    'V0aC5Vc2VyUgR1c2Vy');
 
 @$core.Deprecated('Use logoutRequestDescriptor instead')
 const LogoutRequest$json = {

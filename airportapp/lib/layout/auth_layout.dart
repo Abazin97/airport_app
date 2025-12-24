@@ -14,13 +14,10 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = authNotifier;
 
-    if (auth == null || auth.status == AuthStatus.loading){
+    if (auth == null || auth.status == AuthStatus.loading || auth.status == AuthStatus.unauthenticated){
       return MePage();
     }
-
-    if (!auth.isLoggedIn){
-      return MePage();
-    }
+    
     return MeAuthPage();
   }
 }

@@ -33,6 +33,15 @@ service Auth {
   rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
 }
 
+message User {
+  string title = 1;
+  string name = 2;
+  string last_name = 3;
+  string email = 4;
+  string phone = 5;
+  string birth_date = 6;
+}
+
 message RequestOTPRequest{
   string phone = 1;
 }
@@ -81,6 +90,7 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1; // Auth token of the logged in user.
+  User user = 2; // Credentials of the user.
 }
 
 message LogoutRequest {

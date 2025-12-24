@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:airportapp/gen/sso.pb.dart';
 import 'package:airportapp/providers/auth_status.dart';
 import 'package:airportapp/services/auth_service.dart';
 import 'package:fixnum/fixnum.dart';
@@ -8,12 +9,14 @@ import 'package:flutter/widgets.dart';
 class AuthNotifier extends ChangeNotifier{
   final AuthService _authService;
 
+  User? _user;
+  User? get getUser => _user;
 
   Int64? uid;
   Int64? get getUid => uid;
   
   AuthNotifier(this._authService){
-    init();
+    //init();
   }
 
   AuthStatus _status = AuthStatus.loading;
@@ -21,10 +24,10 @@ class AuthNotifier extends ChangeNotifier{
   bool get isLoggedIn => _status == AuthStatus.authenticated;
 
   Future<void> init()async{
-    final token = await _authService.getToken();
-    _status = token != null 
-      ? AuthStatus.authenticated 
-      : AuthStatus.unauthenticated;
+    //final token = await _authService.getToken();
+    // _status = token != null 
+    //   ? AuthStatus.authenticated 
+    //   : AuthStatus.unauthenticated;
     notifyListeners();
   }
 
@@ -32,10 +35,14 @@ class AuthNotifier extends ChangeNotifier{
     await _authService.register(title, birthDate, name, lastName, email, password, phone);
   }
 
-  Future<void> login(String email, String password,) async{
-    await _authService.login(email, password,);
+  Future<User> login(String email, String password,) async{
+    final user = await _authService.login(email, password,);
+    
+    _user = user;
     _status = AuthStatus.authenticated;
     notifyListeners();
+
+    return user;
   }
 
   Future<void> logout() async{

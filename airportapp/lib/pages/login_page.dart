@@ -1,3 +1,4 @@
+import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/pages/reset_password.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,17 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void signIn()async{
+  Future<void> signIn()async{
     final authNotifier = context.read<AuthNotifier>();
     await authNotifier.login(
       controllerLogin.text,
       controllerPassCode.text
     );
+    await SharedPref.set<String>("birthDate", authNotifier.getUser!.birthDate);
+    await SharedPref.set<String>("firstName", authNotifier.getUser!.name);
+    await SharedPref.set<String>("lastName", authNotifier.getUser!.lastName);
+    await SharedPref.set<String>("email", authNotifier.getUser!.email);
+    await SharedPref.set<String>("phone", authNotifier.getUser!.phone);
     popPage();
   }
 

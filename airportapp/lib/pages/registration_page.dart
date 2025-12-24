@@ -1,4 +1,3 @@
-import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
@@ -50,11 +49,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controllerPassword.text,
       phoneController.text,
     );
-    await SharedPref.set<String>("birthDate", birthDateController.text);
-    await SharedPref.set<String>("firstName", nameController.text);
-    await SharedPref.set<String>("lastName", lastNameController.text);
-    await SharedPref.set<String>("email", controllerEmail.text);
-    await SharedPref.set<String>("phone", phoneController.text);
     } on GrpcError catch (e) {
       debugPrint(e.message);
     }

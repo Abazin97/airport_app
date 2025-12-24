@@ -21,7 +21,7 @@ class AuthService {
   Future<void> init({
     String host = 'localhost',
     int port = 44084,
-    bool useTls = true,
+    bool useTls = false,
   }) async {
     ChannelCredentials credentials;
 
@@ -52,11 +52,13 @@ class AuthService {
     return response.userId.toInt();
   }
 
-  Future<void> login(String email, String password, {int appId = 1}) async {
+  Future<User> login(String email, String password, {int appId = 1}) async {
     final response = await _client.login(
       LoginRequest(email: email, password: password, appId: appId),
     );
+  
     await _storage.write(key: 'jwt', value: response.token);
+    return response.user;
   }
 
   Future<bool> isAdmin(int userId) async {
