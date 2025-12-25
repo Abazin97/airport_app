@@ -1,6 +1,6 @@
-import 'package:airportapp/data/database.dart';
-import 'package:airportapp/models/weather_model.dart';
-import 'package:airportapp/pages/weather_page.dart';
+import 'package:airportapp/data/assets.dart';
+import 'package:airportapp/domain/models/weather_model.dart';
+import 'package:airportapp/ui/pages/weather_page.dart';
 import 'package:airportapp/services/weather_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -115,8 +115,8 @@ class _FlightsCartState extends State<FlightsCart> {
     tzdata.initializeTimeZones();
     String tzName;
     if (widget.isArrival == false) {
-      final city = Database.airportCodes[widget.destination![0]] ?? '';
-      tzName = Database.cityTimeZones[city] ?? 'UTC';
+      final city = Assets.airportCodes[widget.destination![0]] ?? '';
+      tzName = Assets.cityTimeZones[city] ?? 'UTC';
 
       final hkLocation = tz.getLocation('Asia/Hong_Kong');
       hkDateTime = tz.TZDateTime.now(hkLocation);
@@ -124,8 +124,8 @@ class _FlightsCartState extends State<FlightsCart> {
       final location = tz.getLocation(tzName);
       cityDateTime = tz.TZDateTime.now(location);
     } else if (widget.isArrival == true) {
-      final city = Database.airportCodes[widget.origin![0]] ?? '';
-      tzName = Database.cityTimeZones[city] ?? 'UTC';
+      final city = Assets.airportCodes[widget.origin![0]] ?? '';
+      tzName = Assets.cityTimeZones[city] ?? 'UTC';
 
       final hkLocation = tz.getLocation(tzName);
       hkDateTime = tz.TZDateTime.now(hkLocation);
@@ -166,8 +166,8 @@ class _FlightsCartState extends State<FlightsCart> {
     cityName = widget.isArrival 
       ? 'Hong Kong'
       : ((widget.destination!.length > 1)
-        ? (Database.airportToCity[widget.destination?[1]] ?? widget.destination![1])
-        : (Database.airportToCity[widget.destination?[0]] ?? widget.destination![0]));
+        ? (Assets.airportToCity[widget.destination?[1]] ?? widget.destination![1])
+        : (Assets.airportToCity[widget.destination?[0]] ?? widget.destination![0]));
     super.initState();
     getTime();
     _fetchWeather();
@@ -257,8 +257,8 @@ class _FlightsCartState extends State<FlightsCart> {
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index){
                                               final code = widget.airlines[index];
-                                              final airlineName = Database.airlineCodes[code];
-                                              final airlineLogo = Database.airlineLogos[code];
+                                              final airlineName = Assets.airlineCodes[code];
+                                              final airlineLogo = Assets.airlineLogos[code];
                                               final flightNo = widget.flightNumbers[index];
                                               return Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -285,12 +285,12 @@ class _FlightsCartState extends State<FlightsCart> {
                                         Text(
                                           widget.isArrival
                                               ? ((widget.origin?.isNotEmpty == true)
-                                                  ? (Database.airportCodes[widget.origin?[0]] ?? widget.origin![0])
+                                                  ? (Assets.airportCodes[widget.origin?[0]] ?? widget.origin![0])
                                                   : "--")
                                               : ((widget.destination?.isNotEmpty == true)
                                                   ? ((widget.destination!.length > 1)
-                                                      ? (Database.airportCodes[widget.destination?[1]] ?? widget.destination![1])
-                                                      : (Database.airportCodes[widget.destination?[0]] ?? widget.destination![0]))
+                                                      ? (Assets.airportCodes[widget.destination?[1]] ?? widget.destination![1])
+                                                      : (Assets.airportCodes[widget.destination?[0]] ?? widget.destination![0]))
                                                   : "--"),
                                           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]),
                                         ),
@@ -301,8 +301,8 @@ class _FlightsCartState extends State<FlightsCart> {
                                                 Text('via ', style: TextStyle(color: Colors.blue[900], fontSize: 12)),
                                                 Text(
                                                   widget.isArrival
-                                                    ? (Database.airportCodes[widget.origin?[1]] ?? widget.origin![1])
-                                                    : (Database.airportCodes[widget.destination?[0]] ?? widget.destination![0]),
+                                                    ? (Assets.airportCodes[widget.origin?[1]] ?? widget.origin![1])
+                                                    : (Assets.airportCodes[widget.destination?[0]] ?? widget.destination![0]),
                                                   style: TextStyle(color: Colors.blue[900], fontSize: 12),
                                                 )
                                               ],
@@ -404,7 +404,7 @@ class _FlightsCartState extends State<FlightsCart> {
               child: Text(time, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
             ),
             Text('$timeDiffStr ${widget.isArrival
-            ? Database.airportToCity[widget.origin?[0]]
+            ? Assets.airportToCity[widget.origin?[0]]
             : 'Hong Kong'}'
             )
           ],),

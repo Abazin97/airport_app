@@ -213,17 +213,16 @@ final $typed_data.Uint8List changePassInitRequestDescriptor = $convert.base64Dec
 const ChangePassInitResponse$json = {
   '1': 'ChangePassInitResponse',
   '2': [
-    {'1': 'code', '3': 1, '4': 1, '5': 9, '10': 'code'},
+    {'1': 'expiry_time', '3': 1, '4': 1, '5': 9, '10': 'expiryTime'},
     {'1': 'uid', '3': 2, '4': 1, '5': 3, '10': 'uid'},
-    {'1': 'expiry_time', '3': 3, '4': 1, '5': 3, '10': 'expiryTime'},
   ],
 };
 
 /// Descriptor for `ChangePassInitResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List changePassInitResponseDescriptor =
     $convert.base64Decode(
-        'ChZDaGFuZ2VQYXNzSW5pdFJlc3BvbnNlEhIKBGNvZGUYASABKAlSBGNvZGUSEAoDdWlkGAIgAS'
-        'gDUgN1aWQSHwoLZXhwaXJ5X3RpbWUYAyABKANSCmV4cGlyeVRpbWU=');
+        'ChZDaGFuZ2VQYXNzSW5pdFJlc3BvbnNlEh8KC2V4cGlyeV90aW1lGAEgASgJUgpleHBpcnlUaW'
+        '1lEhAKA3VpZBgCIAEoA1IDdWlk');
 
 @$core.Deprecated('Use changePassConfirmRequestDescriptor instead')
 const ChangePassConfirmRequest$json = {

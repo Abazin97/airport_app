@@ -1,6 +1,6 @@
 import 'package:airportapp/providers/nav_provider.dart';
-import 'package:airportapp/data/database.dart';
-import 'package:airportapp/pages/home_screen.dart';
+import 'package:airportapp/data/assets.dart';
+import 'package:airportapp/ui/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -126,12 +126,12 @@ class _ShopPageState extends State<ShopPage> {
                 SizedBox(
                   height: 180,
                   child: ListView.builder(
-                    itemCount: Database.tileNamesShop.length,
+                    itemCount: Assets.tileNamesShop.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index){
                       return GestureDetector(
                         onTap: () async{
-                          final url = Uri.parse(Database.tileLinksShop[index]);
+                          final url = Uri.parse(Assets.tileLinksShop[index]);
                           await launchUrl(url, mode: LaunchMode.inAppWebView);
                         },
                         child: Column(
@@ -150,14 +150,14 @@ class _ShopPageState extends State<ShopPage> {
                                 fit: StackFit.expand,
                                 children: [
                                   Image.asset(
-                                    Database.imageShop[index],
+                                    Assets.imageShop[index],
                                     fit: BoxFit.cover,
                                   ),
                                 ]
                               ),
                             ),
                             SizedBox(height: 15),
-                            Text(Database.tileNamesShop[index], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                            Text(Assets.tileNamesShop[index], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
                           ],
                         ),
                       );
@@ -170,12 +170,12 @@ class _ShopPageState extends State<ShopPage> {
                 SizedBox(
                   height: 210,
                   child: ListView.builder(
-                    itemCount: Database.tileNamesShop.length,
+                    itemCount: Assets.tileNamesShop.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index){
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (builder) => Database.tileWidgetList[index]));
+                          Navigator.push(context, MaterialPageRoute(builder: (builder) => Assets.tileWidgetList[index]));
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +193,7 @@ class _ShopPageState extends State<ShopPage> {
                                 fit: StackFit.expand,
                                 children: [
                                   Image.asset(
-                                    Database.smallTileImageShop[index],
+                                    Assets.smallTileImageShop[index],
                                     fit: BoxFit.cover,
                                   ),
                                 ]
@@ -204,7 +204,7 @@ class _ShopPageState extends State<ShopPage> {
                               width: 120,
                               child: Column(
                                 children: [
-                                  Text(Database.smallTileNamesShop[index], textAlign: TextAlign.start, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
+                                  Text(Assets.smallTileNamesShop[index], textAlign: TextAlign.start, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
                                 ],
                               ),
                             )

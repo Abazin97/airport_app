@@ -1,3 +1,4 @@
+import 'package:airportapp/domain/auth/change_pass_init_result.dart';
 import 'package:fixnum/fixnum.dart' show Int64;
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -74,12 +75,15 @@ class AuthService {
     return response.isAdmin;
   }
 
-  Future<Int64> changePasswordInit(String email, String phone, String oldPassword) async {
+  Future<ChangePasswordInitResult> changePasswordInit(String email, String phone, String oldPassword) async {
 
     final response = await _client.changePasswordInit(
       ChangePassInitRequest(email: email, phone:phone, oldPassword: oldPassword),
     );
-    return response.uid;
+
+    return ChangePasswordInitResult(
+      uid: response.uid, 
+      expiresAt: DateTime.parse(response.expiryTime));
   }
 
   Future<void> changePasswordConfirm(String code, Int64 uid, String email, String newPassword)async{

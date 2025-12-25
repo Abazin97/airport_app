@@ -1,4 +1,4 @@
-import 'package:airportapp/pages/home_screen.dart';
+import 'package:airportapp/ui/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

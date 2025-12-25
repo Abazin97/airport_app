@@ -1,7 +1,7 @@
 import 'package:airportapp/components/form_field.dart';
-import 'package:airportapp/info_pages/personal_statement.dart';
-import 'package:airportapp/info_pages/terms_conditions1.dart';
-import 'package:airportapp/info_pages/terms_conditions2.dart';
+import 'package:airportapp/ui/info_pages/personal_statement.dart';
+import 'package:airportapp/ui/info_pages/terms_conditions1.dart';
+import 'package:airportapp/ui/info_pages/terms_conditions2.dart';
 import 'package:airportapp/utils/validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

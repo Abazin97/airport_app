@@ -1,4 +1,4 @@
-import 'package:airportapp/models/flightInfo.dart';
+import 'package:airportapp/domain/models/flightInfo.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'flightDay.g.dart';

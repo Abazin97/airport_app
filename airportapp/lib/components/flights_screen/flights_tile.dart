@@ -1,5 +1,5 @@
 import 'package:airportapp/components/flights_screen/flights_cart.dart';
-import 'package:airportapp/data/database.dart';
+import 'package:airportapp/data/assets.dart';
 import 'package:flutter/material.dart';
 
 class FlightsTile extends StatelessWidget {
@@ -112,7 +112,7 @@ class FlightsTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.asset(
-                          Database.airlineLogos[airlines[0]] ?? '',
+                          Assets.airlineLogos[airlines[0]] ?? '',
                           height: 32,
                           width: 32,
                         ),
@@ -160,12 +160,12 @@ class FlightsTile extends StatelessWidget {
                         Text(
                           isArrival
                               ? ((origin?.isNotEmpty == true)
-                                  ? (Database.airportCodes[origin?[0]] ?? origin![0])
+                                  ? (Assets.airportCodes[origin?[0]] ?? origin![0])
                                   : "--")
                               : ((destination?.isNotEmpty == true)
                                   ? ((destination!.length > 1)
-                                      ? (Database.airportCodes[destination?[1]] ?? destination![1])
-                                      : (Database.airportCodes[destination?[0]] ?? destination![0]))
+                                      ? (Assets.airportCodes[destination?[1]] ?? destination![1])
+                                      : (Assets.airportCodes[destination?[0]] ?? destination![0]))
                                   : "--"),
                           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -184,8 +184,8 @@ class FlightsTile extends StatelessWidget {
                             Text('Via ', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
                             Text(
                               isArrival
-                                ? (Database.airportCodes[origin?[1]] ?? origin![1])
-                                : (Database.airportCodes[destination?[0]] ?? destination![0])
+                                ? (Assets.airportCodes[origin?[1]] ?? origin![1])
+                                : (Assets.airportCodes[destination?[0]] ?? destination![0])
                             )
                           ],
                         ),

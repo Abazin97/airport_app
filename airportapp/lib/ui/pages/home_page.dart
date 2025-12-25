@@ -5,9 +5,9 @@ import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
 import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/providers/nav_provider.dart';
-import 'package:airportapp/data/database.dart';
-import 'package:airportapp/models/weather_model.dart';
-import 'package:airportapp/pages/track_my_bag.dart';
+import 'package:airportapp/data/assets.dart';
+import 'package:airportapp/domain/models/weather_model.dart';
+import 'package:airportapp/ui/pages/track_my_bag.dart';
 import 'package:airportapp/services/weather_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
     Future.delayed(Duration(seconds: 1),() {
       if (!mounted) return;
       _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
-        if (_currentPage < Database.imageHome.length - 1) {
+        if (_currentPage < Assets.imageHome.length - 1) {
             _currentPage++;
           } else {
             _currentPage = 0;
@@ -325,13 +325,13 @@ class _HomePageState extends State<HomePage> {
                       return false;
                     },
                     child: PageView.builder(
-                      itemCount: Database.imageHome.length,
+                      itemCount: Assets.imageHome.length,
                       scrollDirection: Axis.horizontal,
                       controller: _pageController,
                       itemBuilder: (context, index){
                         return GestureDetector(
                           onTap: () async {
-                            final url = Uri.parse(Database.tileLinksHome[index]);
+                            final url = Uri.parse(Assets.tileLinksHome[index]);
                             await launchUrl(url, mode: LaunchMode.inAppWebView);
                           },
                           child: Column(
@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                                   fit: StackFit.expand,
                                   children: [
                                     Image.asset(
-                                      Database.imageHome[index],
+                                      Assets.imageHome[index],
                                       fit: BoxFit.cover,
                                     ),
                                     Positioned(
@@ -373,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               SizedBox(height: 15),
-                              Text(Database.tileNames[index], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),)
+                              Text(Assets.tileNames[index], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),)
                             ],
                           ),
                         );

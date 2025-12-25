@@ -1,4 +1,4 @@
-import 'package:airportapp/models/flightNumber.dart';
+import 'package:airportapp/domain/models/flightNumber.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'flightInfo.g.dart';

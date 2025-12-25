@@ -1,5 +1,5 @@
 import 'package:airportapp/data/shared_pref.dart';
-import 'package:airportapp/pages/change_pass.dart';
+import 'package:airportapp/ui/pages/change_pass.dart';
 import 'package:flutter/material.dart';
 
 class MyProfile extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/providers/nav_provider.dart';
-import 'package:airportapp/pages/home_screen.dart';
+import 'package:airportapp/ui/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -74,6 +74,7 @@ class _ChangePassState extends State<ChangePass> {
       context: context,
       barrierDismissible: true,
       builder: (context) {
+        final authNotifier = context.read<AuthNotifier>();
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -95,6 +96,25 @@ class _ChangePassState extends State<ChangePass> {
                 Text(
                   'Please enter the code sent to your email.',
                   style: TextStyle(fontSize: 14),
+                ),
+                SizedBox(height: 16),
+                StreamBuilder<Duration>(
+                  stream: authNotifier.remainingStream, 
+                  builder: (context, snapshot) {
+                    final remaining = snapshot.data ?? Duration.zero;
+                    final minutes = remaining.inMinutes.remainder(60).toString().padLeft(2, '0');
+                    final seconds = remaining.inSeconds.remainder(60).toString().padLeft(2, '0');
+                    if (remaining.inSeconds <= 0) {
+                      return Text(
+                        'Code has expired',
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      );
+                    }
+                    return Text(
+                      'Time left: $minutes:$seconds',
+                      style: TextStyle(color: Colors.blue[800], fontWeight: FontWeight.bold),
+                    );
+                  }
                 ),
                 SizedBox(height: 16),
                 TextField(

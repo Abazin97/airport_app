@@ -2,7 +2,7 @@ import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:airportapp/pages/load_screen.dart';
+import 'package:airportapp/ui/pages/load_screen.dart';
 import 'package:provider/provider.dart';
 
 

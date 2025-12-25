@@ -1,10 +1,10 @@
 import 'package:airportapp/components/flights_screen/calendar_cell.dart';
-import 'package:airportapp/data/database.dart';
-import 'package:airportapp/models/flightDay.dart';
+import 'package:airportapp/data/assets.dart';
+import 'package:airportapp/domain/models/flightDay.dart';
 import 'package:airportapp/components/flights_screen/flights_tile.dart';
 import 'package:airportapp/providers/nav_provider.dart';
-import 'package:airportapp/models/flightInfo.dart';
-import 'package:airportapp/pages/home_screen.dart';
+import 'package:airportapp/domain/models/flightInfo.dart';
+import 'package:airportapp/ui/pages/home_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -208,13 +208,13 @@ class _FlightsPageState extends State<FlightsPage> {
       final q = query.toLowerCase();
       final List<String> results = [];
 
-      Database.airportCodes.forEach((code, name) {
+      Assets.airportCodes.forEach((code, name) {
         if (code.toLowerCase().contains(q) || name.toLowerCase().contains(q)) {
           results.add(name);
         }
       });
 
-      Database.airlineCodes.forEach((code, name) {
+      Assets.airlineCodes.forEach((code, name) {
         if (code.toLowerCase().contains(q) || name.toLowerCase().contains(q)) {
           results.add(name);
         }
@@ -225,7 +225,7 @@ class _FlightsPageState extends State<FlightsPage> {
         for (final f in entry.flight.flight) {
           final no = f.no.toLowerCase().replaceAll(' ', '');
           final airline = f.airline.toLowerCase();
-          final airlineName = (Database.airlineCodes[f.airline] ?? '').toLowerCase();
+          final airlineName = (Assets.airlineCodes[f.airline] ?? '').toLowerCase();
 
           final prefix = no.length >= 2 ? no.substring(0, 2) : no;
 
@@ -248,13 +248,13 @@ class _FlightsPageState extends State<FlightsPage> {
       final origin = e.flight.origin ?? [];
       final destCode = destination.join('').toLowerCase();
       final origCode = origin.join('').toLowerCase();
-      final destStr = (Database.airportCodes[destination.join('')] ?? '').toLowerCase();
-      final origStr = (Database.airportCodes[origin.join(' ')] ?? '').toLowerCase();
+      final destStr = (Assets.airportCodes[destination.join('')] ?? '').toLowerCase();
+      final origStr = (Assets.airportCodes[origin.join(' ')] ?? '').toLowerCase();
       
       return e.flight.flight.any((f) {
         final no = f.no.toLowerCase().replaceAll(' ', ''); 
         final airline = f.airline.toLowerCase(); 
-        final airlineName = (Database.airlineCodes[f.airline] ?? '').toLowerCase();
+        final airlineName = (Assets.airlineCodes[f.airline] ?? '').toLowerCase();
 
         return no.startsWith(lowerQuery) ||
           no.contains(lowerQuery) || 
@@ -418,12 +418,12 @@ class _FlightsPageState extends State<FlightsPage> {
                         SizedBox(
                           height: 80,
                           child: ListView.builder(
-                            itemCount: Database.tileLinksFlights.length,
+                            itemCount: Assets.tileLinksFlights.length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
-                                  final url = Uri.parse(Database.tileLinksFlights[index]);
+                                  final url = Uri.parse(Assets.tileLinksFlights[index]);
                                   await launchUrl(url, mode: LaunchMode.inAppWebView);
                                 },
                                 child: Container(
@@ -435,7 +435,7 @@ class _FlightsPageState extends State<FlightsPage> {
                                     border: Border.all(color: Colors.white, width: 3),
                                   ),
                                   child: Image.asset(
-                                    Database.imageHome[index],
+                                    Assets.imageHome[index],
                                     fit: BoxFit.cover,
                                   ),
                                 ),

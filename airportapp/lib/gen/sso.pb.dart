@@ -993,14 +993,12 @@ class ChangePassInitRequest extends $pb.GeneratedMessage {
 
 class ChangePassInitResponse extends $pb.GeneratedMessage {
   factory ChangePassInitResponse({
-    $core.String? code,
+    $core.String? expiryTime,
     $fixnum.Int64? uid,
-    $fixnum.Int64? expiryTime,
   }) {
     final result = create();
-    if (code != null) result.code = code;
-    if (uid != null) result.uid = uid;
     if (expiryTime != null) result.expiryTime = expiryTime;
+    if (uid != null) result.uid = uid;
     return result;
   }
 
@@ -1017,9 +1015,8 @@ class ChangePassInitResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ChangePassInitResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'code')
+    ..aOS(1, _omitFieldNames ? '' : 'expiryTime')
     ..aInt64(2, _omitFieldNames ? '' : 'uid')
-    ..aInt64(3, _omitFieldNames ? '' : 'expiryTime')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1043,13 +1040,13 @@ class ChangePassInitResponse extends $pb.GeneratedMessage {
   static ChangePassInitResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get code => $_getSZ(0);
+  $core.String get expiryTime => $_getSZ(0);
   @$pb.TagNumber(1)
-  set code($core.String value) => $_setString(0, value);
+  set expiryTime($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasCode() => $_has(0);
+  $core.bool hasExpiryTime() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCode() => $_clearField(1);
+  void clearExpiryTime() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $fixnum.Int64 get uid => $_getI64(1);
@@ -1059,15 +1056,6 @@ class ChangePassInitResponse extends $pb.GeneratedMessage {
   $core.bool hasUid() => $_has(1);
   @$pb.TagNumber(2)
   void clearUid() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $fixnum.Int64 get expiryTime => $_getI64(2);
-  @$pb.TagNumber(3)
-  set expiryTime($fixnum.Int64 value) => $_setInt64(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasExpiryTime() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearExpiryTime() => $_clearField(3);
 }
 
 class ChangePassConfirmRequest extends $pb.GeneratedMessage {

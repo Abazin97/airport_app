@@ -1,11 +1,11 @@
 import 'package:airportapp/providers/nav_provider.dart';
-import 'package:airportapp/data/database.dart';
-import 'package:airportapp/info_pages/art_in_motion.dart';
-import 'package:airportapp/info_pages/flow_of_flight.dart';
-import 'package:airportapp/info_pages/hkia_live.dart';
-import 'package:airportapp/info_pages/ink_city.dart';
-import 'package:airportapp/info_pages/reminiscence.dart';
-import 'package:airportapp/pages/all_events.dart';
+import 'package:airportapp/data/assets.dart';
+import 'package:airportapp/ui/info_pages/art_in_motion.dart';
+import 'package:airportapp/ui/info_pages/flow_of_flight.dart';
+import 'package:airportapp/ui/info_pages/hkia_live.dart';
+import 'package:airportapp/ui/info_pages/ink_city.dart';
+import 'package:airportapp/ui/info_pages/reminiscence.dart';
+import 'package:airportapp/ui/pages/all_events.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +60,7 @@ class ArtCulture extends StatelessWidget {
             height: 210,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: Database.allEventsName.length,
+              itemCount: Assets.allEventsName.length,
               itemBuilder: (context, index){
                 return Padding(
                   padding: const EdgeInsets.only(right: 20),
@@ -90,19 +90,19 @@ class ArtCulture extends StatelessWidget {
                 ),
                 clipBehavior: Clip.hardEdge,
                 child: Image.asset(
-                  Database.allEventsImage[index],
+                  Assets.allEventsImage[index],
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              Database.allEventsName[index],
+              Assets.allEventsName[index],
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 4),
             Text(
-              Database.allEventsDescription[index],
+              Assets.allEventsDescription[index],
               style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ],

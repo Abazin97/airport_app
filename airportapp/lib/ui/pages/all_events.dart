@@ -1,5 +1,5 @@
-import 'package:airportapp/data/database.dart';
-import 'package:airportapp/pages/art_culture.dart';
+import 'package:airportapp/data/assets.dart';
+import 'package:airportapp/ui/pages/art_culture.dart';
 import 'package:flutter/material.dart';
 
 
@@ -31,7 +31,7 @@ class AllEvents extends StatelessWidget {
       ),
       body: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: Database.allEventsName.length,
+        itemCount: Assets.allEventsName.length,
         itemBuilder: (context, index){
           return Padding(
             padding: const EdgeInsets.only(bottom: 20),

@@ -1,5 +1,5 @@
-import 'package:airportapp/pages/track_my_bag.dart';
-import 'package:airportapp/pages/transport_to_from.dart';
+import 'package:airportapp/ui/pages/track_my_bag.dart';
+import 'package:airportapp/ui/pages/transport_to_from.dart';
 import 'package:flutter/material.dart';
 class CellItem {
   CellItem({

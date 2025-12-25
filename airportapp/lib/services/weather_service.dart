@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:airportapp/models/weather_model.dart';
+import 'package:airportapp/domain/models/weather_model.dart';
 import 'package:http/http.dart' as http;
 
 class WeatherService {

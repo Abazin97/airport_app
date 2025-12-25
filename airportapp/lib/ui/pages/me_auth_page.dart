@@ -3,8 +3,8 @@ import 'package:airportapp/components/me_screen/cell_item.dart';
 import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/providers/nav_provider.dart';
-import 'package:airportapp/pages/home_screen.dart';
-import 'package:airportapp/pages/my_profile.dart';
+import 'package:airportapp/ui/pages/home_screen.dart';
+import 'package:airportapp/ui/pages/my_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

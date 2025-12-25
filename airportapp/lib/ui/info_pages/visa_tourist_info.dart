@@ -1,5 +1,5 @@
 import 'package:airportapp/providers/nav_provider.dart';
-import 'package:airportapp/pages/departures.dart';
+import 'package:airportapp/ui/pages/departures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';

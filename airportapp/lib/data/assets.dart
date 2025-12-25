@@ -1,11 +1,11 @@
-import 'package:airportapp/pages/beauty_you.dart';
-import 'package:airportapp/pages/mcdonalds.dart';
-import 'package:airportapp/pages/men_wah_bing_teng.dart';
-import 'package:airportapp/pages/seven_eleven.dart';
-import 'package:airportapp/pages/starbucks.dart';
+import 'package:airportapp/ui/pages/beauty_you.dart';
+import 'package:airportapp/ui/pages/mcdonalds.dart';
+import 'package:airportapp/ui/pages/men_wah_bing_teng.dart';
+import 'package:airportapp/ui/pages/seven_eleven.dart';
+import 'package:airportapp/ui/pages/starbucks.dart';
 import 'package:flutter/widgets.dart';
 
-class Database {
+class Assets {
   static List<String> imageFlights = [
     'lib/assets/pocket_wifi.jpg',
     'lib/assets/home_checkin.jpg',

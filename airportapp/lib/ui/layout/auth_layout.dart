@@ -1,7 +1,7 @@
-import 'package:airportapp/pages/me_auth_page.dart';
-import 'package:airportapp/pages/me_page.dart';
+import 'package:airportapp/ui/pages/me_auth_page.dart';
+import 'package:airportapp/ui/pages/me_page.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
-import 'package:airportapp/providers/auth_status.dart';
+import 'package:airportapp/domain/auth/auth_status.dart';
 import 'package:flutter/material.dart';
 
 

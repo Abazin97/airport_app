@@ -1,4 +1,4 @@
-import 'package:airportapp/pages/reconnect_tags.dart';
+import 'package:airportapp/ui/pages/reconnect_tags.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
