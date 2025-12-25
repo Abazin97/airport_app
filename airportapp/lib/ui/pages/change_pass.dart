@@ -77,7 +77,7 @@ class _ChangePassState extends State<ChangePass> {
         final authNotifier = context.read<AuthNotifier>();
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -130,6 +130,11 @@ class _ChangePassState extends State<ChangePass> {
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
                       child: Text('Cancel'),
                     ),
                     SizedBox(width: 8),
@@ -138,6 +143,11 @@ class _ChangePassState extends State<ChangePass> {
                         updatePassword();
                         Navigator.pop(context);
                       },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
                       child: Text('Submit'),
                     ),
                   ],
