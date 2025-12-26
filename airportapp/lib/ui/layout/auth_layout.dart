@@ -3,21 +3,34 @@ import 'package:airportapp/ui/pages/me_page.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/domain/auth/auth_status.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class AuthLayout extends StatelessWidget {
-  const AuthLayout({super.key, required this.authNotifier});
-  final AuthNotifier? authNotifier;
-
+  const AuthLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final auth = authNotifier;
+    final auth = context.watch<AuthNotifier?>();
 
-    if (auth == null || auth.status == AuthStatus.loading || auth.status == AuthStatus.unauthenticated){
-      return MePage();
+    switch (auth?.status) {
+      case AuthStatus.loading:
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+
+      case AuthStatus.unauthenticated:
+      case AuthStatus.idle:
+      case AuthStatus.error:
+        return const MePage();
+
+      case AuthStatus.authenticated:
+        return const MeAuthPage();
+
+      default:
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
     }
-    
-    return MeAuthPage();
   }
 }

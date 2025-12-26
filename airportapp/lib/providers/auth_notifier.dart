@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:airportapp/core/result/result.dart';
 import 'package:airportapp/domain/auth/change_pass_init_result.dart';
 import 'package:airportapp/gen/sso.pb.dart';
 import 'package:airportapp/domain/auth/auth_status.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/widgets.dart';
 
 
 class AuthNotifier extends ChangeNotifier{
-  final AuthService _authService;
+  AuthService _authService;
 
   final StreamController<Duration> _controller = StreamController<Duration>.broadcast();
   Stream<Duration> get remainingStream => _controller.stream;
@@ -22,14 +23,38 @@ class AuthNotifier extends ChangeNotifier{
 
   Int64? uid;
   Int64? get getUid => uid;
+
+  String? errmsg;
+  String? get getErrmsg => errmsg;
+
+  AuthStatus _status = AuthStatus.unauthenticated;
+  AuthStatus get status => _status;
+
+  bool get isLoggedIn => _status == AuthStatus.authenticated;
   
   AuthNotifier(this._authService){
     //init();
   }
 
-  AuthStatus _status = AuthStatus.loading;
-  AuthStatus get status => _status;
-  bool get isLoggedIn => _status == AuthStatus.authenticated;
+  void updateService(AuthService service) {
+    _authService = service;
+    notifyListeners();
+  }
+
+  void _setError(String message) {
+    _status = AuthStatus.error;
+    errmsg = message;
+    notifyListeners();
+  }
+
+  void clearError() {
+    errmsg = null;
+    if (_status == AuthStatus.error) {
+      _status = AuthStatus.unauthenticated;
+    }
+    notifyListeners();
+  }
+
 
   void startTimer(DateTime expiryTime){
     _timer?.cancel();
@@ -54,6 +79,7 @@ class AuthNotifier extends ChangeNotifier{
     // _status = token != null 
     //   ? AuthStatus.authenticated 
     //   : AuthStatus.unauthenticated;
+    _status = AuthStatus.unauthenticated;
     notifyListeners();
   }
 
@@ -65,17 +91,41 @@ class AuthNotifier extends ChangeNotifier{
   }
 
   Future<void> register(String title, String birthDate, String name, String lastName, String email, String password, String phone)async{
-    await _authService.register(title, birthDate, name, lastName, email, password, phone);
-  }
-
-  Future<User> login(String email, String password,) async{
-    final user = await _authService.login(email, password,);
-    
-    _user = user;
-    _status = AuthStatus.authenticated;
+    _status = AuthStatus.unauthenticated;
+    errmsg = null;
     notifyListeners();
 
-    return user;
+    final user = await _authService.register(title, birthDate, name, lastName, email, password, phone);
+
+    switch(user){
+      case Success():
+        _status = AuthStatus.idle;
+        break;
+      case Failure(: final error):
+        _user = null;
+        _setError(error.message);
+        break;
+    }
+  }
+
+  Future<void> login(String email, String password,) async{
+    _status = AuthStatus.unauthenticated;
+    notifyListeners();
+
+    final user = await _authService.login(email, password,);
+    
+    switch(user){
+      case Success(:final data):
+        _user = data;
+        _status = AuthStatus.authenticated;
+        break;
+      case Failure(: final error):
+        _user = null;
+        _setError(error.message);
+        break;
+      }
+
+    notifyListeners();
   }
 
   Future<void> logout() async{
@@ -85,10 +135,26 @@ class AuthNotifier extends ChangeNotifier{
   }
 
   Future<void> changePasswordInit(String email, String phone, String oldPassword) async {
-    _changePassData = await _authService.changePasswordInit(email, phone, oldPassword);
-    uid = _changePassData!.uid;
+    errmsg = null;
+    _status = AuthStatus.loading;
+    notifyListeners();
 
-    startTimer(_changePassData!.expiresAt);
+    final result = await _authService.changePasswordInit(email, phone, oldPassword);
+
+    switch(result){
+      case Success(:final data):
+        _changePassData = data;
+        uid = data.uid;
+        startTimer( data.expiresAt);
+        _status = AuthStatus.authenticated;
+        break;
+      case Failure(: final error):
+        _changePassData = null;
+        _setError(error.message);
+        _status = AuthStatus.unauthenticated;
+        break;
+    }
+
     notifyListeners();
   }
 

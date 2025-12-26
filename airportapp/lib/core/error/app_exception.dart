@@ -7,7 +7,7 @@ abstract class AppException implements Exception {
 }
 
 class AuthException extends AppException {
-  const AuthException(String message) : super(message);
+  const AuthException(super.message);
 }
 
 class ValidationException extends AppException {

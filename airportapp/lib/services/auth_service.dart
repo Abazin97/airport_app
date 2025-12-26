@@ -1,5 +1,6 @@
+import 'package:airportapp/core/result/result.dart';
 import 'package:airportapp/domain/auth/change_pass_init_result.dart';
-import 'package:airportapp/network/grpc_call.dart';
+import 'package:airportapp/core/network/grpc_call.dart';
 import 'package:fixnum/fixnum.dart' show Int64;
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -47,7 +48,7 @@ class AuthService {
     _client = AuthClient(_channel!);
   }
 
-  Future<int> register(String title, String birthDate, String name, String lastName, String email, String password, String phone){
+  Future<Result<int>> register(String title, String birthDate, String name, String lastName, String email, String password, String phone){
     return grpcCall(() async {
       final response = await _client.register(
         RegisterRequest(title: title, birthDate: birthDate, name: name, lastName: lastName, email: email, password: password, phone: phone),
@@ -56,7 +57,7 @@ class AuthService {
     });
   }
 
-  Future<User> login(String email, String password, {int appId = 1}) {
+  Future<Result<User>> login(String email, String password, {int appId = 1}) {
     return grpcCall(() async {
       final response = await _client.login(
         LoginRequest(email: email, password: password, appId: appId),
@@ -67,7 +68,7 @@ class AuthService {
     });
   }
 
-  Future<bool> isAdmin(int userId) {
+  Future<Result<bool>> isAdmin(int userId) {
     return grpcCall(() async {
       final token = await _storage.read(key: 'jwt');
       if (token == null) throw Exception("Unauthorized");
@@ -82,7 +83,7 @@ class AuthService {
     });
   }
 
-  Future<ChangePasswordInitResult> changePasswordInit(String email, String phone, String oldPassword) {
+  Future<Result<ChangePasswordInitResult>> changePasswordInit(String email, String phone, String oldPassword) {
     return grpcCall(() async {
       final response = await _client.changePasswordInit(
         ChangePassInitRequest(email: email, phone:phone, oldPassword: oldPassword),

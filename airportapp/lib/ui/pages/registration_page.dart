@@ -1,6 +1,6 @@
+import 'package:airportapp/domain/auth/auth_status.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -36,11 +36,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
     super.dispose();
   }
 
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.redAccent,
+      ),
+    );
+  }
+
 
   void signUp()async{
     final authNotifier = context.read<AuthNotifier>();
-    try {
-      await authNotifier.register(
+    await authNotifier.register(
       titleController.text,
       birthDateController.text,
       nameController.text,
@@ -49,11 +57,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controllerPassword.text,
       phoneController.text,
     );
-    } on GrpcError catch (e) {
-      debugPrint(e.message);
+    
+    if (authNotifier.status == AuthStatus.error) {
+      _showError(authNotifier.errmsg ?? 'error');
+      return;
     }
     if (!mounted) return;
-    popPage();
+    //popPage();
   }
 
   void linkEmailPass()async{

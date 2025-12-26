@@ -22,11 +22,9 @@ void main() async{
       ),
       ChangeNotifierProxyProvider<AuthService?, AuthNotifier?>(
         create: (_) => null,
-        update: (_, authService, _) {
-          if (authService == null){
-            return null;
-          }
-          return AuthNotifier(authService);
+        update: (_, authService, previous) {
+          if (authService == null) return null;
+          return previous ?? AuthNotifier(authService)..init();
         },
       ),
     ],

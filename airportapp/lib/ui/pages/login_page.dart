@@ -1,4 +1,5 @@
 import 'package:airportapp/data/shared_pref.dart';
+import 'package:airportapp/domain/auth/auth_status.dart';
 import 'package:airportapp/ui/pages/reset_password.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:flutter/material.dart';
@@ -32,17 +33,33 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.redAccent,
+      ),
+    );
+  }
+
   Future<void> signIn()async{
     final authNotifier = context.read<AuthNotifier>();
     await authNotifier.login(
       controllerLogin.text,
       controllerPassCode.text
     );
-    await SharedPref.set<String>("birthDate", authNotifier.getUser!.birthDate);
-    await SharedPref.set<String>("firstName", authNotifier.getUser!.name);
-    await SharedPref.set<String>("lastName", authNotifier.getUser!.lastName);
-    await SharedPref.set<String>("email", authNotifier.getUser!.email);
-    await SharedPref.set<String>("phone", authNotifier.getUser!.phone);
+
+    if (authNotifier.status == AuthStatus.error) {
+    _showError(authNotifier.errmsg ?? 'error');
+    return;
+  }
+
+    final user = authNotifier.getUser!;
+    await SharedPref.set<String>("birthDate", user.birthDate);
+    await SharedPref.set<String>("firstName", user.name);
+    await SharedPref.set<String>("lastName", user.lastName);
+    await SharedPref.set<String>("email", user.email);
+    await SharedPref.set<String>("phone", user.phone);
     popPage();
   }
 
@@ -68,6 +85,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    //final auth = context.watch<AuthNotifier>();
+
+    // if (auth.status == AuthStatus.error && auth.errmsg != null) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text(auth.errmsg!)),
+    //     );
+    //     auth.clearError();
+    //   });
+    // }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[800],
