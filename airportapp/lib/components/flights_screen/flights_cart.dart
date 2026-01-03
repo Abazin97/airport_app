@@ -1,3 +1,5 @@
+import 'package:airportapp/core/network/http_call.dart';
+import 'package:airportapp/core/result/result.dart';
 import 'package:airportapp/data/assets.dart';
 import 'package:airportapp/domain/models/weather_model.dart';
 import 'package:airportapp/ui/pages/weather_page.dart';
@@ -69,18 +71,22 @@ class _FlightsCartState extends State<FlightsCart> {
   };
 
   void _fetchWeather()async{
-    try{
-      final weather = await _weatherService.getWeather(cityName);
+    final weather = await httpCall(() => _weatherService.getWeather(cityName));
+    if (!mounted) return;
+
+    switch(weather){
+      case Success(: final data):
       setState(() {
-        _weather = weather;
+        _weather = data;
         tempTodayIcon = iconsMap[getWeatherCondition(_weather?.mainCondition)];
         tempToday = temperatureIsExist ? '${_weather!.temperature.round()}°C' : ' -';
         speed = temperatureIsExist ? '${(_weather!.speed * 3.686).round()}' : '-';
         humidity = temperatureIsExist ? '${_weather!.humidity}' : '-';
       });
-    }
-    catch(e){
-      debugPrint(e.toString());
+      case Failure():
+        setState(() {
+          _weather = null;
+        });
     }
   }
 

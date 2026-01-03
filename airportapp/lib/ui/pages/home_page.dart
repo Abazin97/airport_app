@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:airportapp/components/home_screen/cell.dart';
 import 'package:airportapp/components/home_screen/cell_item.dart';
 import 'package:airportapp/components/home_screen/static_tile.dart';
 import 'package:airportapp/components/home_screen/static_tile_item.dart';
+import 'package:airportapp/core/network/http_call.dart';
+import 'package:airportapp/core/result/result.dart';
 import 'package:airportapp/data/shared_pref.dart';
 import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/data/assets.dart';
@@ -12,7 +13,6 @@ import 'package:airportapp/ui/pages/track_my_bag.dart';
 import 'package:airportapp/services/weather_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -47,18 +47,18 @@ class _HomePageState extends State<HomePage> {
   };
 
   void _fetchWeather()async{
-    try{
-      final weather = await _weatherService.getWeather('Hong Kong');
-      if(!mounted) return;
-      setState(() {
-        _weather = weather;
-      });
-    } on SocketException{
-    
-    } on ClientException{
+    final weather = await httpCall(() => _weatherService.getWeather('Hong Kong'));
+    if(!mounted) return;
 
-    } catch(e){
-      debugPrint('Unexpected error: $e');
+    switch(weather){
+      case Success(: final data):
+      setState(() {
+        _weather = data;
+      });
+      case Failure():
+        setState(() {
+          _weather = null;
+        });
     }
   }
 
