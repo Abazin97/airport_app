@@ -58,13 +58,13 @@ class _ChangePassState extends State<ChangePass> {
 
   void sendCode()async{
     final authNotifier = context.read<AuthNotifier>();
-    await authNotifier.changePasswordInit(email ?? '', phone ?? '', controllerCurrentPass.text);
+    await authNotifier.changePasswordInit(email ?? '', phone ?? '', controllerCurrentPass.text,);
     showInputDialog();
   }
 
   void updatePassword()async{
     final authNotifier = context.read<AuthNotifier>();
-    await authNotifier.changePasswordConfirm(controllerCode.text, authNotifier.getUid!, controllerEmail.text, controllerNewPass.text);
+    await authNotifier.changePasswordConfirm(controllerCode.text, authNotifier.getUid!, controllerEmail.text, controllerNewPass.text,);
     popPage();
   }
   

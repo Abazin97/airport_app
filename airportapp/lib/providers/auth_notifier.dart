@@ -29,11 +29,10 @@ class AuthNotifier extends ChangeNotifier{
 
   AuthStatus _status = AuthStatus.unauthenticated;
   AuthStatus get status => _status;
-
-  bool get isLoggedIn => _status == AuthStatus.authenticated;
+  
   
   AuthNotifier(this._authService){
-    //init();
+    init();
   }
 
   void updateService(AuthService service) {
@@ -44,7 +43,7 @@ class AuthNotifier extends ChangeNotifier{
   void _setError(String message) {
     _status = AuthStatus.error;
     errmsg = message;
-    notifyListeners();
+    //notifyListeners();
   }
 
   void clearError() {
@@ -75,11 +74,10 @@ class AuthNotifier extends ChangeNotifier{
   }
 
   Future<void> init()async{
-    //final token = await _authService.getToken();
-    // _status = token != null 
-    //   ? AuthStatus.authenticated 
-    //   : AuthStatus.unauthenticated;
-    _status = AuthStatus.unauthenticated;
+    final isLoggedIn = await _authService.isLoggedIn();
+    _status = isLoggedIn
+      ? AuthStatus.authenticated
+      : AuthStatus.unauthenticated;
     notifyListeners();
   }
 
@@ -90,7 +88,7 @@ class AuthNotifier extends ChangeNotifier{
     super.dispose();
   }
 
-  Future<void> register(String title, String birthDate, String name, String lastName, String email, String password, String phone)async{
+  Future<void> register(String title, String birthDate, String name, String lastName, String email, String password, String phone,)async{
     _status = AuthStatus.unauthenticated;
     errmsg = null;
     notifyListeners();
@@ -108,11 +106,11 @@ class AuthNotifier extends ChangeNotifier{
     }
   }
 
-  Future<void> login(String email, String password,) async{
+  Future<void> login(String email, String password) async{
     _status = AuthStatus.unauthenticated;
     notifyListeners();
 
-    final user = await _authService.login(email, password,);
+    final user = await _authService.login(email, password, );
     
     switch(user){
       case Success(:final data):
@@ -134,12 +132,12 @@ class AuthNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> changePasswordInit(String email, String phone, String oldPassword) async {
+  Future<void> changePasswordInit(String email, String phone, String oldPassword,) async {
     errmsg = null;
     _status = AuthStatus.loading;
     notifyListeners();
 
-    final result = await _authService.changePasswordInit(email, phone, oldPassword);
+    final result = await _authService.changePasswordInit(email, phone, oldPassword,);
 
     switch(result){
       case Success(:final data):
@@ -158,7 +156,7 @@ class AuthNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> changePasswordConfirm(String code, Int64 uid, String email, String newPassword) async{
-    await _authService.changePasswordConfirm(code, uid, email, newPassword);
+  Future<void> changePasswordConfirm(String code, Int64 uid, String email, String newPassword,) async{
+    await _authService.changePasswordConfirm(code, uid, email, newPassword,);
   }
 }

@@ -2,6 +2,16 @@ import 'package:airportapp/core/error/app_exception.dart';
 import 'package:grpc/grpc.dart';
 
 AppException mapGrpcErrorToException(GrpcError e) {
+  if (e.code == StatusCode.unavailable){
+    final message = e.message?.toLowerCase() ?? '';
+    if (message.contains('socketexception') || 
+        message.contains('connection refused') ||
+        message.contains('network is unreachable')){
+      return NetworkException('No internet connection');
+    }
+
+    return NetworkException('Service unavailable');
+  }
   switch (e.code) {
     case StatusCode.unauthenticated:
       return AuthException('Unauthenticated');

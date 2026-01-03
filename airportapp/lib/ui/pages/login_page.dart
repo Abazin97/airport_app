@@ -46,13 +46,13 @@ class _LoginPageState extends State<LoginPage> {
     final authNotifier = context.read<AuthNotifier>();
     await authNotifier.login(
       controllerLogin.text,
-      controllerPassCode.text
+      controllerPassCode.text,
     );
 
     if (authNotifier.status == AuthStatus.error) {
-    _showError(authNotifier.errmsg ?? 'error');
-    return;
-  }
+      _showError(authNotifier.errmsg ?? 'error');
+      return;
+    }
 
     final user = authNotifier.getUser!;
     await SharedPref.set<String>("birthDate", user.birthDate);

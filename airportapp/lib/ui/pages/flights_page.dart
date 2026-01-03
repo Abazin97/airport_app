@@ -1,4 +1,6 @@
 import 'package:airportapp/components/flights_screen/calendar_cell.dart';
+import 'package:airportapp/core/network/http_call.dart';
+import 'package:airportapp/core/result/result.dart';
 import 'package:airportapp/data/assets.dart';
 import 'package:airportapp/domain/models/flightDay.dart';
 import 'package:airportapp/components/flights_screen/flights_tile.dart';
@@ -112,68 +114,77 @@ class _FlightsPageState extends State<FlightsPage> {
   // getting data from API
   Future<void> fetchData(String dateStr) async {
     _setLoading(true);
-    try {
-      final responses = await Future.wait([
-        dio.get(
-          'https://www.hongkongairport.com/flightinfo-rest/rest/flights/past',
-          queryParameters: {
-            'date': dateStr,
-            'lang': 'en',
-            'cargo': false,
-            'arrival': false,
-          },
-        ),
-        dio.get(
-          'https://www.hongkongairport.com/flightinfo-rest/rest/flights/past',
-          queryParameters: {
-            'date': dateStr,
-            'lang': 'en',
-            'cargo': false,
-            'arrival': true,
-          },
-        ),
-      ]);
 
-      final List<FlightEntry> allFlights = [];
-      for (var day in (responses[0].data as List).map((e) => FlightDay.fromJson(e))) {
-        for (var f in day.list) {
-          allFlights.add(FlightEntry(
-            isArrival: false,
-            date: day.date,
-            flight: f,
-          ));
+    final responsesResult = await httpCall(() => Future.wait([
+          dio.get(
+            'https://www.hongkongairport.com/flightinfo-rest/rest/flights/past',
+            queryParameters: {
+              'date': dateStr,
+              'lang': 'en',
+              'cargo': false,
+              'arrival': false,
+            },
+          ),
+          dio.get(
+            'https://www.hongkongairport.com/flightinfo-rest/rest/flights/past',
+            queryParameters: {
+              'date': dateStr,
+              'lang': 'en',
+              'cargo': false,
+              'arrival': true,
+            },
+          ),
+        ]));
+
+    _setLoading(false);
+
+    switch (responsesResult) {
+      case Success():
+        final List<FlightEntry> allFlights = [];
+        final responses = responsesResult.data;
+        for (var day in (responses[0].data as List)
+            .map((e) => FlightDay.fromJson(e))) {
+          for (var f in day.list) {
+            allFlights.add(FlightEntry(
+              isArrival: false,
+              date: day.date,
+              flight: f,
+            ));
+          }
         }
-      }
-      for (var day in (responses[1].data as List).map((e) => FlightDay.fromJson(e))) {
-        for (var f in day.list) {
-          allFlights.add(FlightEntry(
-            isArrival: true,
-            date: day.date,
-            flight: f,
-          ));
+
+        for (var day in (responses[1].data as List)
+            .map((e) => FlightDay.fromJson(e))) {
+          for (var f in day.list) {
+            allFlights.add(FlightEntry(
+              isArrival: true,
+              date: day.date,
+              flight: f,
+            ));
+          }
         }
-      }
 
-      allFlights.sort((a, b) {
-        final dateA = DateTime.parse(a.date);
-        final dateB = DateTime.parse(b.date);
+        allFlights.sort((a, b) {
+          final dateA = DateTime.parse(a.date);
+          final dateB = DateTime.parse(b.date);
 
-        if (dateA != dateB) return dateA.compareTo(dateB);
+          if (dateA != dateB) return dateA.compareTo(dateB);
 
-        final timeA = _parseTime(a.flight.time);
-        final timeB = _parseTime(b.flight.time);
-        return timeA.compareTo(timeB);
-      });
+          final timeA = _parseTime(a.flight.time);
+          final timeB = _parseTime(b.flight.time);
+          return timeA.compareTo(timeB);
+        });
 
-      setState(() {
-        _flights = allFlights;
-        _applyFilter();
-      });
-      _setLoading(false);
-    } catch (e) {
-      debugPrint('Ошибка загрузки данных: $e');
+        if (!mounted) return;
+        setState(() {
+          _flights = allFlights;
+          _applyFilter();
+        });
+
+      case Failure():
     }
   }
+
 
   // filter by date 
   DateTime _parseTime(String time) {

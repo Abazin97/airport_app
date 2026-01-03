@@ -1,8 +1,10 @@
+import 'package:airportapp/providers/bloc/network_bloc.dart';
 import 'package:airportapp/providers/nav_provider.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:airportapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:airportapp/ui/pages/load_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 
@@ -16,6 +18,7 @@ void main() async{
       ChangeNotifierProvider(
         create: (context) => NavProvider(),
       ),
+      BlocProvider(create:  (_) => NetworkBloc()),
       FutureProvider(
         create: (_) => AuthService.create(), 
         initialData: null,
@@ -24,7 +27,7 @@ void main() async{
         create: (_) => null,
         update: (_, authService, previous) {
           if (authService == null) return null;
-          return previous ?? AuthNotifier(authService)..init();
+          return previous ?? AuthNotifier(authService);
         },
       ),
     ],

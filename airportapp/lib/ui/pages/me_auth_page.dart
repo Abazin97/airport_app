@@ -34,14 +34,9 @@ class _MeAuthPageState extends State<MeAuthPage> {
   }
 
   void logout()async{
-      try {
-        final authNotifier = context.read<AuthNotifier>();
-        await authNotifier.logout();
-        await SharedPref.remove();
-      } on Exception catch (e) {
-        debugPrint(e.toString());
-      }
-    }
+    final authNotifier = context.read<AuthNotifier>();
+    await authNotifier.logout();
+  }
 
   @override
   Widget build(BuildContext context) {
