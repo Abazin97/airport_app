@@ -30,7 +30,6 @@ class Mcdonalds extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                
                 ExpansionTile(
                   title: Text('Near Check-in Aisle F, Departures Level(L8)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   children: [

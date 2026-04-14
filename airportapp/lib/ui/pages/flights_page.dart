@@ -138,6 +138,7 @@ class _FlightsPageState extends State<FlightsPage> {
 
     _setLoading(false);
 
+    print(responsesResult);
     switch (responsesResult) {
       case Success():
         final List<FlightEntry> allFlights = [];

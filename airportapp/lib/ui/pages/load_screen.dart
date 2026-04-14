@@ -16,6 +16,7 @@ class _LoadScreenState extends State<LoadScreen> with SingleTickerProviderStateM
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     Future.delayed(Duration(seconds: 1), () {
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => HomeScreen(),

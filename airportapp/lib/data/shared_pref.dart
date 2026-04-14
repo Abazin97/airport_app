@@ -41,5 +41,6 @@ class SharedPref {
   static Future<void> remove() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+  
     }
 }

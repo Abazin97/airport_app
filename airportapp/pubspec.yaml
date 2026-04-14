@@ -34,13 +34,14 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_secure_storage: 9.2.4
   fixnum: 1.1.1
-  dio: ^5.3.3
+  dio: ^5.9.2
   json_annotation: ^4.9.0
   http: ^1.2.3
   intl: ^0.17.0
   shared_preferences: ^2.5.4
   url_launcher: ^6.3.2
   cupertino_icons: ^1.0.8
+  sign_in_with_apple: ^7.0.1
   provider: ^6.1.2
   build_runner: ^2.4.6
   flutter_phone_direct_caller: ^2.2.1

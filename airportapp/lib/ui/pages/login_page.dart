@@ -4,6 +4,7 @@ import 'package:airportapp/ui/pages/reset_password.dart';
 import 'package:airportapp/providers/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
       body: ListView(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height + 200,
+            height: MediaQuery.of(context).size.height + 250,
             child: Column(
               children: [
                 Expanded(
@@ -253,24 +254,29 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                   }, 
                                   style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, minimumSize: Size(double.infinity, 40), shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero)), child: Text('Log In', style: TextStyle(color: Colors.white))),
-                                Row(children: [
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
-                                      thickness: 1,
-                                      endIndent: 40, 
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(children: [
+                                    Expanded(
+                                      child: Divider(
+                                        color: Colors.grey,
+                                        thickness: 1,
+                                        endIndent: 40, 
+                                      ),
                                     ),
-                                  ),
-                                  Text('Or log in with'),
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
-                                      thickness: 1,
-                                      indent: 40,
+                                    Text('Or log in with'),
+                                    Expanded(
+                                      child: Divider(
+                                        color: Colors.grey,
+                                        thickness: 1,
+                                        indent: 40,
+                                      ),
                                     ),
-                                  ),
-                                ]),
-                                
+                                  ]),
+                                ),
+                                SignInWithAppleButton(onPressed:  () async {
+                                  // Implement Apple Sign-In
+                                }),
                               ],
                             ),
                           )
